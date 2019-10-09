@@ -2,5 +2,22 @@ include ../../mixins/form.jade
 .issue-route 
   h1 {{ m('issue-heading') }}
   +form({data:'issue'})
-    +input({name:'name'})
+    .form-section
+      .form-label {{ m('issue-label-tenant') }}
+      +input({name:'tenantTitle', model:'tenant.title'})
+      +input({name:'tenantFirstName', model:'tenant.firstName'})
+      +input({name:'tenantLastName', model:'tenant.lastName'})
+      +input({name:'tenantPhone', model:'tenant.phone'})
+      +input({name:'tenantEmail', model:'tenant.email', type:'email'})
+    .form-section
+      .form-label {{ m('issue-label-address') }}
+      +input({name:'address1'})
+      +input({name:'address2'})
+      +input({name:'postcode'})
+    .form-section
+      .form-label {{ m('issue-label-title') }}
+      +input({name:'title'})
+    .form-section
+      .form-label {{ m('issue-label-detail') }}
+      +textarea({name:'details'})
     +controls()

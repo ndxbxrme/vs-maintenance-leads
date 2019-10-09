@@ -8,4 +8,4 @@ angular.module 'vs-maintenance-leads'
     controller: 'IssueCtrl'
     data:
       title: 'issue'
-      auth: ['anon']
+      auth: ['superadmin', 'admin', 'agency']

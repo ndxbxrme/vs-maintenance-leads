@@ -8,4 +8,4 @@ angular.module 'vs-maintenance-leads'
     controller: 'ContractorCtrl'
     data:
       title: 'contractor'
-      auth: ['anon']
+      auth: ['superadmin','admin','agency']

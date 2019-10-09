@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module 'vs-agency'
+angular.module 'vs-maintenance-leads'
 .controller 'SetupCtrl', ($scope, $http, $filter, $timeout, progressionPopup, alert) ->
   $scope.editor = true
   $scope.newUser =

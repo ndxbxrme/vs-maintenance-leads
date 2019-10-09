@@ -9,6 +9,10 @@ angular.module 'vs-maintenance-leads', [
 .config ($locationProvider, $urlRouterProvider) ->
   $urlRouterProvider.otherwise '/'
   $locationProvider.html5Mode true
+  gravatarServiceProvider.defaults =
+    size: 16
+    "default": 'mm'
+    rating: 'pg'
 .run ($rootScope) ->
   $rootScope.makeDownloadUrl = (document) ->
     if document

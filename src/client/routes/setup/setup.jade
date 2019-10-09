@@ -1,13 +1,5 @@
 .setup
   h1 Setup
-  .cleanup
-    button.cleanup(ui-sref='cleanup') Clean up
-  .progressions
-    h2 Progressions
-    progression(ng-repeat='progression in progressions.items', data='progression')
-    .progressions-controls
-      button.add-progression(ng-click='addProgression()') Add Progression
-      button.reset-progressions(ng-click='resetProgressions()', ng-show="auth.checkRoles('superadmin')") Reset Property Progressions
   .row
     .email-templates
       h2 Email templates
@@ -27,22 +19,6 @@
             i.far.fa-times-circle(aria-hidden='true')
       div
         a.add-sms-template(ui-sref="template({id:'new',type:'sms'})") Add sms template
-  .dashboard
-    h2 Dashboard
-    .row
-      .overview
-        h3 Overview
-        .dashboard-item(ng-repeat='item in dashboard.items | filter:{type:"overview"}')
-          a.name(ui-sref="dashboardItem({id:item._id,type:'overview'})") {{item.name}}
-          .controls(ng-show='auth.checkRoles(["admin","superadmin"])')
-            a(href='', ng-click='moveDIUp(item)')
-              i.far.fa-sort-up(aria-hidden='true')
-            a(href='', ng-click='moveDIDown(item)')
-              i.far.fa-sort-down(aria-hidden='true')
-            a(href='', ng-click='removeDI(item)')
-              i.far.fa-times-circle(aria-hidden='true')
-        div
-          a.add-dashboard-overview(ui-sref="dashboardItem({id:'new',type:'overview'})") Add overview item
   .users
     h2 Users
     .row

@@ -8,6 +8,4 @@ angular.module 'vs-maintenance-leads'
     controller: 'SetupCtrl'
     data:
       title: 'Vitalspace Lettings - Setup'
-    resolve:
-      user: (Auth) ->
-        Auth.getPromise(['admin', 'superadmin'])
+      auth: ['superadmin','admin']

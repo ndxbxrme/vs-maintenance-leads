@@ -29,6 +29,13 @@
     "ndx-check-for-changes": "^0.0.4",
     "ndx-pagination": "^0.1.3",
     "ndx-sorter": "^0.0.3",
-    "ng-file-upload": "^12.2.13"
+    "ng-file-upload": "^12.2.13",
+    "angular-gravatar": "^0.4.2",
+    "objtrans": "^0.0.15",
+    "ndx-array-extras": "^0.0.4",
+    "ndx-codemirror": "^0.0.9",
+    "ndx-markdown": "^0.0.4",
+    "ndx-modal": "^0.0.5",
+    "ndx-alert": "^0.0.2"
   }
 }

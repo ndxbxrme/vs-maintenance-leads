@@ -4,6 +4,7 @@ angular.module 'vs-maintenance-leads', [
   'ndx'
   'ui.router'
   'ngFileUpload'
+  'ui.gravatar'
 ]
 .config ($locationProvider, $urlRouterProvider) ->
   $urlRouterProvider.otherwise '/'

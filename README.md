@@ -11,4 +11,5 @@ docker run -v /c/Users/lewis/DEV/vs-maintenance-leads/src:/src -v /c/Users/lewis
 ```
 ctrl-C to exit, the server will keep running  
 to stop it run `docker stop maintenance-leads`  
+to start it again `docker start maintenance-leads`  
 if you add an npm or bower package, stop the container, run `docker rm maintenance-leads` then rebuild  

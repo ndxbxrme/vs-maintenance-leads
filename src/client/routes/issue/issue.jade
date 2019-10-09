@@ -1,0 +1,6 @@
+include ../../mixins/form.jade
+.issue-route 
+  h1 {{ m('issue-heading') }}
+  +form({data:'issue'})
+    +input({name:'name'})
+    +controls()

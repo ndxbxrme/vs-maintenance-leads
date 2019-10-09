@@ -1,0 +1,8 @@
+@import 'variables'
+body
+  font-family 'Arial', sans-serif
+  color #333
+  .container
+    display flex
+    justify-content space-between
+    align-items baseline

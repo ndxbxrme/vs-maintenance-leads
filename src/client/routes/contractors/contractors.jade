@@ -1,0 +1,6 @@
+include ../../mixins/form.jade
+.contractors-route 
+  h1 {{ m('contractors-heading') }}
+  button(ui-sref='contractor({_id:""})') {{ m('contractors-button-new') }}
+  .contractor(ng-repeat='contractor in contractors.items', ui-sref='contractor({_id:contractor._id})') {{ contractor.name }}
+  pagination(ng-model='contractors.args.page', total='contractors.total', page-size='contractors.args.pageSize')

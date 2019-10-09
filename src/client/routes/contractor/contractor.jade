@@ -1,0 +1,6 @@
+include ../../mixins/form.jade
+.contractor-route 
+  h1 {{ m('contractor-heading') }}
+  +form({data:'contractor'})
+    +input({name:'name'})
+    +controls()

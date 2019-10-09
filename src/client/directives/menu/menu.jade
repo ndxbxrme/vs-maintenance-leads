@@ -1,0 +1,12 @@
+.menu-dir
+  ul
+    li(ng-show='auth.isAuthorized("dashboard")')
+      a(ui-sref='dashboard', ng-class='{selected:state("dashboard")}') {{ m('menu-dashboard') }}
+    li(ng-show='auth.isAuthorized("users")')
+      a(ui-sref='users', ng-class='{selected:state(["users", "user"])}') {{ m('menu-users') }}
+    li(ng-show='auth.isAuthorized("issues")')
+      a(ui-sref='issues', ng-class='{selected:state(["issues", "issue"])}') {{ m('menu-issues') }}
+    li(ng-show='auth.isAuthorized("contractors")')
+      a(ui-sref='contractors', ng-class='{selected:state(["contractors", "contractor"])}') {{ m('menu-contractors') }}
+    li(ng-show='auth.isAuthorized("setup")')
+      a(ui-sref='setup', ng-class='{selected:state(["setup"])}') {{ m('menu-setup') }}

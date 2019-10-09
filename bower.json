@@ -1,0 +1,34 @@
+{
+  "name": "vs-maintenance-leads",
+  "description": "",
+  "main": "server/app.js",
+  "authors": [
+    ""
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "bower",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.4.1",
+    "angular": "^1.7.8",
+    "angular-touch": "^1.7.8",
+    "angular-ui-router": "^1.0.23",
+    "ndx-auth": "^0.3.26",
+    "ndx-scroll-top": "^0.1.0",
+    "ndx-rest": "^0.2.36",
+    "ndx-socket": "^0.0.6",
+    "ndx-form-extras": "^0.0.17",
+    "ndx-check-for-changes": "^0.0.4",
+    "ndx-pagination": "^0.1.3",
+    "ndx-sorter": "^0.0.3",
+    "ng-file-upload": "^12.2.13"
+  }
+}

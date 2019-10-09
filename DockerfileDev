@@ -1,0 +1,25 @@
+FROM node
+WORKDIR /
+COPY package.json /
+COPY bower.json /
+COPY env-enc.sh /
+COPY key-enc.pem /
+COPY cert-enc.pem /
+RUN mkdir /data && mkdir /backup && mkdir /logs && mkdir /uploads
+RUN npm install
+RUN npm install -g bower grunt grunt-cli
+RUN bower install --allow-root
+COPY Gruntfile.coffee /
+ARG KEY
+RUN if test -e env-enc.sh; then openssl aes-256-cbc -d -in env-enc.sh -out env.sh -k $KEY; fi
+RUN if test -e key-enc.pem; then openssl aes-256-cbc -d -in key-enc.pem -out key.pem -k $KEY; fi
+RUN if test -e cert-enc.pem; then openssl aes-256-cbc -d -in cert-enc.pem -out cert.pem -k $KEY; fi
+VOLUME src
+VOLUME templates
+VOLUME data
+ENV NODE_ENV=live
+ENV LIVERELOAD_PORT=4015
+ENV SSL_PORT=
+EXPOSE 4014
+EXPOSE 4015
+CMD if test -e env.sh; then . /env.sh; fi && grunt

@@ -1,0 +1,6 @@
+include ../../mixins/form.jade
+.issues-route 
+  h1 {{ m('issues-heading') }}
+  button(ui-sref='issue({_id:""})') {{ m('issues-button-new') }}
+  .issue(ng-repeat='issue in issues.items', ui-sref='issue({_id:issue._id})') {{ issue.name }}
+  pagination(ng-model='issues.args.page', total='issues.total', page-size='issues.args.pageSize')

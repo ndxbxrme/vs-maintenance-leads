@@ -6,7 +6,7 @@ angular.module 'vs-maintenance-leads', [
   'ngFileUpload'
   'ui.gravatar'
 ]
-.config ($locationProvider, $urlRouterProvider) ->
+.config ($locationProvider, $urlRouterProvider, gravatarServiceProvider) ->
   $urlRouterProvider.otherwise '/'
   $locationProvider.html5Mode true
   gravatarServiceProvider.defaults =

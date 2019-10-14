@@ -1,0 +1,9 @@
+.modal.issue-delete.small
+  h1 {{ m('modal-user-delete-title') }}
+  h2 {{ m('modal-user-delete-text') }}
+  form(name='myForm', ng-submit='submit()')
+    .controls
+      label  
+      input.button(type='submit', value='OK')
+      button(type='button', ng-click='cancel()') Cancel
+  //a.close-reveal-modal(ng-click='cancel()') &times;

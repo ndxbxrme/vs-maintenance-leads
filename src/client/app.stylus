@@ -1,8 +1,121 @@
 @import 'variables'
+*
+  outline-color vs-orange
+button, input[type=submit], input[type=button]
+  vs-button()
+input[type=text], input[type=email], input[type=password], select, textarea
+  padding .4rem
+a
+  color vs-orange
+body, html
+  margin 0
+  height 100%
+  min-height 100%
 body
   font-family 'Arial', sans-serif
   color #333
-  .container
+  .space-between
     display flex
     justify-content space-between
     align-items baseline
+    .right
+      display flex
+      flex-direction column
+      justify-content flex-end
+      button
+        margin-bottom .5rem
+      .showing
+        font-size .8rem
+        text-align right
+        margin-top .2rem
+  .flex-start
+    display flex
+    justify-content flex-start
+    align-items baseline
+  .page
+    min-height 100%
+    box-sizing border-box
+    display flex
+    flex-direction column
+    transition filter 0.8s
+    padding-top 6rem
+  .body
+    display flex
+    flex 1
+    justify-content center
+    .view
+      width calc(100% - 4rem)
+  .form-section
+    display flex
+    flex-wrap wrap
+    margin-bottom 1rem
+    align-items baseline
+    .form-label
+      min-width 8rem
+      font-weight bold
+      p
+        font-weight normal
+    .form-controls
+      display flex
+      flex-wrap wrap
+      flex 1
+      justify-content space-between
+    .third
+      width 31%
+    .form-item
+      display flex
+      width 100%
+      flex-direction column
+      margin-bottom .4rem
+      textarea
+        min-height 6rem
+.reveal-modal-bg, .reveal-moal-bg.fade
+  background rgba(0,0,0,0)!important
+body.modal-open
+  .page
+    filter blur(4px) saturate(0)
+    opacity 0.6
+.modal
+  display flex
+  flex-direction column
+  justify-content center
+  align-items center
+  padding 1rem
+  border 1px solid vs-orange
+  h1, h2
+    font-weight normal
+    margin 0 0 1rem 0
+  h1
+    font-size 1.4rem
+  h2
+    font-size 1rem
+  form, form .form-item
+    display flex
+    flex-direction column
+    align-items center
+    input
+      margin-top .4rem
+    input[type=text]
+      flex 1
+table.issue-table
+  margin-top 1rem
+  border-collapse collapse
+  border 1px solid vs-lightgray
+  thead
+    tr
+      th
+        padding 1rem
+        background vs-orange
+        text-align left
+        color white
+        font-size .8rem
+        font-weight 100
+        border-bottom 1px solid vs-grey
+  tbody:nth-child(odd)
+    tr
+      background vs-tablegrey
+  td
+    border-bottom 1px solid vs-lightgrey
+    font-size .8rem
+    vertical-align middle
+    padding 1rem

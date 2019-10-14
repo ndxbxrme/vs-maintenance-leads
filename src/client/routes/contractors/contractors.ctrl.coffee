@@ -2,7 +2,18 @@
 
 angular.module 'vs-maintenance-leads'
 .controller 'ContractorsCtrl', ($scope, Sorter) ->
+  $scope.page = 1
+  $scope.limit = 15
+  $scope.pageChange = ->
+    $('html, body').animate
+      scrollTop: 0
+    , 200
   $scope.contractors = $scope.list 'contractors',
     page: 1
-    pageSize: 10
+    pageSize: $scope.limit
+  , (contractors) ->
+    for contractor in contractors.items
+      contractor.issues = $scope.list 'issues',
+        where:
+          booked: contractor._id
   $scope.contractors.sort = Sorter.create $scope.contractors.args

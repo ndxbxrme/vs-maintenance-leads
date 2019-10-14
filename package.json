@@ -1,6 +1,6 @@
 {
   "name": "vs-maintenance-leads",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "",
   "main": "server/app.js",
   "scripts": {
@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "marked": "^0.7.0",
+    "ndx-connect": "0.0.6",
     "ndx-cors": "0.0.11",
     "ndx-database-backup": "^0.1.0",
     "ndx-file-upload": "^0.2.4",

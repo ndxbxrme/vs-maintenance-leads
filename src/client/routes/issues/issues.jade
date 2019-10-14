@@ -1,6 +1,29 @@
 include ../../mixins/form.jade
 .issues-route 
-  h1 {{ m('issues-heading') }}
-  button(ui-sref='issue({_id:""})') {{ m('issues-button-new') }}
-  .issue(ng-repeat='issue in issues.items', ui-sref='issue({_id:issue._id})') {{ issue.name }}
+  .space-between
+    .left
+      h1 {{ m('issues-heading') }}
+    .right
+      button(ui-sref='issue({_id:""})') {{ m('issues-button-new') }}  
+      .search
+        input(type='text', ng-model='search', placeholder='Search Cases', ng-change='page=1')
+      .showing Showing {{filterData.length}} of {{issues.items.length}} issue{{totalProps!==1?'s':''}}
+  table.issue-table(ng-show='filterData.length > 0')
+    thead
+      tr
+        th(width='5%') {{ m('issues-heading-source') }}
+        th(width='30%') {{ m('issues-heading-date') }}
+        th(width='30%') {{ m('issues-heading-address') }}
+        th(width='30%') {{ m('issues-heading-tenant') }}
+        th(width='5%') {{ m('issues-heading-options') }}
+    tbody(ng-repeat='issue in filterData =(issues.items | filter:search | orderBy:sort) | limitTo:limit:limit*(page-1)')
+      tr
+        td.source
+          .source-icon(class='{{issue.source}}') {{ issue.source }}
+        td.date {{ issue.date | date }}
+        td.address {{ issue.address }}
+        td.tenant {{ issue.tenant }}
+        td.options
+          button(ui-sref='issue({_id:issue._id})') View
+  .empty-table(ng-show='!filterData.length') {{ m('issues-empty-table') }}
   pagination(ng-model='issues.args.page', total='issues.total', page-size='issues.args.pageSize')

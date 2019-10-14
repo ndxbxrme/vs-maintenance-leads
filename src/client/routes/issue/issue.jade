@@ -1,23 +1,106 @@
 include ../../mixins/form.jade
 .issue-route 
-  h1 {{ m('issue-heading') }}
-  +form({data:'issue'})
-    .form-section
-      .form-label {{ m('issue-label-tenant') }}
-      +input({name:'tenantTitle', model:'tenant.title'})
-      +input({name:'tenantFirstName', model:'tenant.firstName'})
-      +input({name:'tenantLastName', model:'tenant.lastName'})
-      +input({name:'tenantPhone', model:'tenant.phone'})
-      +input({name:'tenantEmail', model:'tenant.email', type:'email'})
-    .form-section
-      .form-label {{ m('issue-label-address') }}
-      +input({name:'address1'})
-      +input({name:'address2'})
-      +input({name:'postcode'})
-    .form-section
-      .form-label {{ m('issue-label-title') }}
-      +input({name:'title'})
-    .form-section
-      .form-label {{ m('issue-label-detail') }}
-      +textarea({name:'details'})
-    +controls()
+  .add-edit(ng-if='!issue.item._id')
+    h1 {{ m('issue-heading-add') }}
+    +form({data:'issue'})
+      .form-section
+        .form-label {{ m('issue-label-source') }}
+        .form-controls
+          +select({name:'source', list:'sources', nolabel:true, errors:{required:true}})
+      .form-section
+        .form-label {{ m('issue-label-tenant') }}
+        .form-controls
+          .third
+            +input({name:'tenantTitle', errors:{required:true}})
+          .third
+            +input({name:'tenantFirstName', errors:{required:true}})
+          .third
+            +input({name:'tenantLastName', errors:{required:true}})
+          +input({name:'tenantPhone', errors:{required:true}})
+          +input({name:'tenantEmail', type:'email', errors:{required:true,email:true}})
+      .form-section
+        .form-label {{ m('issue-label-address') }}
+        .form-controls
+          +input({name:'address1', errors:{required:true}})
+          +input({name:'address2'})
+          +input({name:'postcode', errors:{required:true}})
+      .form-section
+        .form-label {{ m('issue-label-title') }}
+        .form-controls
+          +input({name:'title', nolabel:true, errors:{required:true}})
+      .form-section
+        .form-label {{ m('issue-label-detail') }}
+        .form-controls
+          +textarea({name:'details'})
+      .form-section
+        .form-label
+        .form-controls
+          +controls()
+  .issue-details(ng-if='issue.item._id')
+    .space-between
+      .flex-start
+        h1 {{ m('issue-heading-issue') }} -&nbsp;
+        h2 {{ issue.item.address }}
+      .cfpJobNumber
+        .label {{ m('issue-heading-cfp') }} -
+        .number {{ issue.item.cfpJobNumber }}
+    +form({data:'issue'}).form-controls
+      .form-section
+        .form-label
+          .source
+            .source-icon(class='{{issue.item.source}}') {{ issue.item.source }}
+        .form-controls.space-between
+          .date {{ issue.item.date | date:'mediumDate' }}
+          .icn-camera
+      .form-section
+        .form-label 
+          strong {{ m('issue-heading-tenant-contact') }}
+          p {{ issue.item.tenantFirstName }} {{ issue.item.tenantLastName }}
+          p {{ issue.item.tenantEmail }}
+          p {{ issue.item.tenantPhone }}
+        .form-controls
+          .title
+            strong {{ m('issue-heading-issue-title') }}
+            span &nbsp;- {{ issue.item.title }}
+          .details
+            strong {{ m('issue-heading-fault-detail') }}
+            span &nbsp;- {{ issue.item.details }}
+      .form-section
+        .form-label {{ m('issue-heading-action-taken') }}
+        .form-controls
+          .third
+            +select({name:'repliedToTenant', list:'yesno', errors:{required:true}}) 
+          .third
+            +select({name:'landlordInformed', list:'yesno', errors:{required:true}})
+          .third
+            +select({name:'contractorArranged', list:'yesno', errors:{required:true}})
+      .form-section
+        .form-label {{ m('issue-heading-contractor-assigned') }}
+        .form-controls
+          .two-thirds
+            +select({name:'booked', list:'contractors.items', errors:{required:true}})
+          .third
+            button(type='button', ng-click='deleteIssue(issue)') {{ m('forms-delete') }}
+            input(type='submit', value='{{ m("forms-book") }}')  
+      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked')
+        .form-label {{ m('issue-heading-chase') }}
+        .form-controls
+          .buttons
+            button(type='button', ng-click='chaseContractor("email", issue)') {{ m('issue-label-email') }}
+            button(type='button', ng-click='chaseContractor("sms", issue)') {{ m('issue-label-sms') }}
+      .case-notes
+        h2.orange {{ m('issue-heading-notes') }}
+        .case-note(ng-repeat='note in notesData = ( issue.item.notes | orderBy:"-date" ) | limitTo:notesLimit:notesLimit*(notesPage-1)')
+          .date {{note.date | date:'mediumDate'}}, {{note.date | date:'shortTime'}} | 
+            img(gravatar-src='note.user.local.email')  
+            span {{note.user.displayName || note.user.local.email}}
+            a.delete(href='', ng-click='deleteNote(note)', ng-show='auth.checkRoles(["admin", "superadmin"])') {{ m('forms-delete') }}
+            a.edit(href='', ng-click='editNote(note)', ng-show='auth.checkRoles(["admin","superadmin"])') {{ m('forms-edit') }}
+          .note 
+            .details
+              span(ng-show='note.side') - {{note.side}}
+              .note-body(ng-bind-html='note.text | markdown:true')
+      pagination.pagination-sm.pagination(total='notesData.length', ng-model='notesPage', page-size='notesLimit')
+      .add-note
+          code-mirror(ng-model='$parent.note.text', options='{mode:markdown, lineWrapping:true}')
+          button(type='button', ng-click='addNote()') {{note.date?'Update':'Add'}} Note

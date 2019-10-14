@@ -1,0 +1,27 @@
+include ../../mixins/form.jade
+.works-route 
+  .space-between
+    .left
+      h1 {{ m('works-heading') }}
+    .right
+      .search
+        input(type='text', ng-model='search', placeholder='Search Cases', ng-change='page=1')
+      .showing Showing {{filterData.length}} of {{issues.items.length}} lead{{totalProps!==1?'s':''}}
+  table.issue-table(ng-show='filterData.length > 0')
+    thead
+      tr
+        th(width='15%') {{ m('works-heading-date') }}
+        th(width='30%') {{ m('works-heading-address') }}
+        th(width='30%') {{ m('works-heading-tenant') }}
+        th(width='20%') {{ m('works-heading-contractor') }}
+        th(width='5%') {{ m('works-heading-options') }}
+    tbody(ng-repeat='issue in filterData =(issues.items | filter:search | orderBy:sort) | limitTo:limit:limit*(page-1)')
+      tr
+        td.date {{ issue.date | date }}
+        td.address {{ issue.address }}
+        td.tenant {{ issue.tenant }}
+        td.contractor {{ dbItem.get('contractors', issue.booked) }}
+        td.options
+          button(ui-sref='issue({_id:issue._id})') View
+  .empty-table(ng-show='!filterData.length') {{ m('works-empty-table') }}
+  pagination(ng-model='issues.args.page', total='issues.total', page-size='issues.args.pageSize')

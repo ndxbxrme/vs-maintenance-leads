@@ -1,1 +1,41 @@
 @import '../../variables'
+.dashboard-route
+  .icn-house
+    background-image: url("data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9JzMwMHB4JyB3aWR0aD0nMzAwcHgnICBmaWxsPSIjMUExQTFBIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjAiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTIzIDEyMyIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTIzIDEyMyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0zNy4xLDczLjNoMjAuMnYzOS40SDM3LjFWNzMuM0wzNy4xLDczLjN6IE02MS40LDEwLjRMMCw3MC44bDcuNiw3LjhsMy45LTMuOSAgbDAuMSwzOEgyM0wyMyw2Ni41aC0zLjJsNDEuNi00MC45bDM5LjksNDAuOWgtMi45djQ2LjFoMTAuN1Y3Mi42bDYuMSw2bDcuNi03LjhMNjEuNCwxMC40TDYxLjQsMTAuNHogTTIzLjcsMTIuOGgxNy4ydjEzLjMgIGwtMTcsMTYuNkwyMy43LDEyLjhMMjMuNywxMi44eiBNNjguNiw3NS42aDIwLjV2MjAuNUg2OC42Vjc1LjZ6Ij48L3BhdGg+PC9zdmc+")
+    background-size cover
+    width 2.6rem
+    height 2.6rem
+    margin-right 1rem
+  .heading
+    margin 1rem 0 2rem 0
+    background #333
+    color white
+    font-size 2rem
+    font-weight bold
+    text-align center
+    padding 1rem
+  .boxes
+    display flex
+    justify-content space-between
+    align-items flex-start
+    .box
+      width calc(33% - 1rem)
+      border 1px solid #999
+      .title
+        padding .4rem
+        background #ccc
+        font-weight bold
+      .number
+        color vs-orange
+        font-size 6rem
+        text-align center
+        margin 1rem
+        border-bottom 1px solid #999
+        &.empty
+          border-bottom none
+      .issue
+        display flex
+        margin 1rem
+        .address
+          font-weight bold
+          margin-bottom .4rem

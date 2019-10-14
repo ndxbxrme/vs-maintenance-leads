@@ -17,6 +17,7 @@ RUN if test -e cert-enc.pem; then openssl aes-256-cbc -d -in cert-enc.pem -out c
 VOLUME src
 VOLUME templates
 VOLUME data
+VOLUME public
 ENV NODE_ENV=live
 ENV LIVERELOAD_PORT=4015
 ENV SSL_PORT=

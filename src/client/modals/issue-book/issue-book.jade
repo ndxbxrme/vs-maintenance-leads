@@ -1,0 +1,9 @@
+include ../../mixins/form.jade
+.modal.issue-book.small
+  h1 {{ m('modal-issue-book-title') }}
+  +form({name:'forms.myForm'})
+    +input({name:'jobnumber', errors:{required:true}})
+    .controls
+      label  
+      input.button(type='submit', value='Book')
+      button(type='button', ng-click='cancel()') Cancel

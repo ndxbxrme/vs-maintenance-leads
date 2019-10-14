@@ -26,6 +26,7 @@
         .user(ng-repeat='user in myusers = (users.items | filter:"!superadmin" | filter:"!cors")') 
           img(gravatar-src='user.local.email') 
           span {{user.displayName || user.local.email}}
+          .delete(ng-click='deleteUser(user)') Delete
       .add-user
         h3 Invite user
         form(name='addUserForm', ng-submit='addUser()')

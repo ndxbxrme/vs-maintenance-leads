@@ -1,2 +1,64 @@
 @import '../../variables'
+.issue-route 
+  .issue-details
+    .cfpJobNumber
+      display flex
+      .label
+        font-weight bold
+        font-size 1.6rem
+      .number
+        font-size 1.6rem
+        color vs-orange
+        padding-left .6rem
+    .form-controls
+      .title, .details
+        width 100%
+        margin-bottom 1rem
+      .form-label
+        min-width 8rem
+        width 16rem
+      .icn-camera
+        background-image url("data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9JzMwMHB4JyB3aWR0aD0nMzAwcHgnICBmaWxsPSIjMUExQTFBIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGRhdGEtbmFtZT0iTGF5ZXIgMSIgdmlld0JveD0iMCAwIDEyOCAxMjgiIHg9IjBweCIgeT0iMHB4Ij48dGl0bGU+bWlzY2VsbGFuZW91cyA3MyBzb2xpZDwvdGl0bGU+PHBhdGggZD0iTTk2LDE0YTIsMiwwLDAsMCwwLDRoMTBhMiwyLDAsMCwwLDAtNFoiPjwvcGF0aD48cGF0aCBkPSJNNjQsMzhBMzMsMzMsMCwxLDAsOTcsNzEsMzMuMDMyNTYsMzMuMDMyNTYsMCwwLDAsNjQsMzhabTAsNTdBMjQsMjQsMCwxLDEsODgsNzEsMjQuMDMxODksMjQuMDMxODksMCwwLDEsNjQsOTVaIj48L3BhdGg+PHBhdGggZD0iTTEyMCwyOGgtN1YyNGEzLjk5ODg3LDMuOTk4ODcsMCwwLDAtNC00SDkxYTMuOTk4ODcsMy45OTg4NywwLDAsMC00LDR2NEg4MmEzLjk5ODg3LDMuOTk4ODcsMCwwLDAtNC00SDc0YTMuOTk4ODcsMy45OTg4NywwLDAsMC00LDRIOGE4LjAxMDYyLDguMDEwNjIsMCwwLDAtOCw4djcwYTguMDEwNjYsOC4wMTA2NiwwLDAsMCw4LDhIMTIwYTguMDEwNjYsOC4wMTA2NiwwLDAsMCw4LThWMzZBOC4wMTA2Miw4LjAxMDYyLDAsMCwwLDEyMCwyOFpNMTA0LDQxYTMuOTk4ODcsMy45OTg4NywwLDAsMSw0LTRoOGEzLjk5ODg3LDMuOTk4ODcsMCwwLDEsNCw0djRhMy45OTg5MSwzLjk5ODkxLDAsMCwxLTQsNGgtOGEzLjk5ODkxLDMuOTk4OTEsMCwwLDEtNC00Wk0xMCwzOWg4YTIsMiwwLDAsMSwwLDRIMTBhMiwyLDAsMCwxLDAtNFptMTE0LDY3YTMuOTk4OTEsMy45OTg5MSwwLDAsMS00LDRIOGEzLjk5ODkxLDMuOTk4OTEsMCwwLDEtNC00VjU4LjY1QTYuMDQ4LDYuMDQ4LDAsMCwwLDYsNTlIMjkuMDFhMzYuOTg2LDM2Ljk4NiwwLDAsMSw2OS45OCwwSDEyMmE2LjA0OCw2LjA0OCwwLDAsMCwyLS4zNVoiPjwvcGF0aD48cmVjdCB4PSIxMDgiIHk9IjQxIiB3aWR0aD0iOCIgaGVpZ2h0PSI0Ij48L3JlY3Q+PHBhdGggZD0iTTYwLDY4YTYsNiwwLDEsMC02LTZBNi4wMDY4LDYuMDA2OCwwLDAsMCw2MCw2OFptMC04YTIsMiwwLDEsMS0yLDJBMiwyLDAsMCwxLDYwLDYwWiI+PC9wYXRoPjxwYXRoIGQ9Ik02NC43MDA2OCw3Ny4zNzU0OWwtOC4yMzE0NS01LjYxMDg0TDQ3LjIwNjczLDgxLjgyMjk0YTE5Ljk3ODYsMTkuOTc4NiwwLDAsMCwzNi43ODUtMTAuNjU5NDhsLTcuMDQ5MzItNy4wNDk2OFoiPjwvcGF0aD48L3N2Zz4=")
+        background-size cover
+        width 3rem
+        height 3rem
+      select
+        width 100% 
+  .case-notes
+    border 1px solid vs-lightgrey
+    border-radius 5px
+    margin 20px 0
+    padding 10px 20px 20px 20px
+    .case-note
+      border 1px solid #f1f1f1
+      padding 10px
+      border-radius 5px
+      margin-bottom 10px
+      .date 
+        font-weight 600
+        .edit, .delete
+          display inline
+          float right
+          color vs-orange
+          margin-left 1rem
+      p, h1, h2, h3, h4, h5, h6
+        margin 0 0 0px 0
+      img
+        margin-right 5px
+  .add-note
+    .CodeMirror
+      border 1px solid vs-lightgrey
+      border-radius 5px
+      background #f1f1f1
+      padding-left 15px
+      height 120px
+      pre
+        font-size 1.8rem
+    button
+      margin-top 15px
+      background vs-orange
+      color white
+      border vs-orange
+      &:hover
+        background vs-grey
   

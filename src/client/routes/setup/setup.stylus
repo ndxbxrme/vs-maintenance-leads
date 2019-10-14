@@ -48,6 +48,10 @@
     .users
       img
         margin-right 5px
+      .user
+        display flex
+        span
+          flex 1
     .email-template, .sms-template, .dashboard-item
       display flex
       border-bottom 1px solid vs-lightgrey

@@ -1,0 +1,32 @@
+include ../../mixins/form.jade
+.historic-route 
+  .space-between
+    .left
+      h1 {{ m('historic-heading') }}
+    .right
+      .search
+        input(type='text', ng-model='search', placeholder='Search Cases', ng-change='page=1')
+      .showing Showing {{filterData.length}} of {{historic.items.length}} issue{{totalProps!==1?'s':''}}
+  table.issue-table(ng-show='filterData.length > 0')
+    thead
+      tr
+        th(width='20%') {{ m('historic-heading-date') }}
+        th(width='30%') {{ m('historic-heading-address') }}
+        th(width='15%') {{ m('historic-heading-tenant') }}
+        th(width='15%') {{ m('historic-heading-contractor') }}
+        th(width='10%') {{ m('historic-heading-status') }}
+        th(width='5%') {{ m('historic-heading-view') }}
+        th(width='5%') {{ m('historic-heading-restore') }}
+    tbody(ng-repeat='issue in filterData =(historic.items | filter:search | orderBy:sort) | limitTo:limit:limit*(page-1)')
+      tr
+        td.date {{ issue.date | date }}
+        td.address {{ issue.address }}
+        td.tenant {{ issue.tenant }}
+        td.contractor {{ dbItem.get('contractors', issue.booked) }}
+        td.status {{ issue.deleted?'Deleted':issue.booked?'Booked':'' }}
+        td.view
+          button(type='button', ui-sref='issue({_id:issue._id})') View Issue
+        td.restore
+          button(type='button', ng-click='restoreIssue(issue)', ng-show='issue.deleted') Restore Issue
+  .empty-table(ng-show='!filterData.length') {{ m('historic-empty-table') }}
+  pagination(ng-model='historic.args.page', total='historic.total', page-size='historic.args.pageSize')

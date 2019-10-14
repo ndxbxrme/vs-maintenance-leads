@@ -20,6 +20,16 @@ angular.module 'vs-maintenance-leads'
       $scope.inviteError = err.data
     $scope.newUser =
       role: 'agency'
+  $scope.deleteUser = (user) ->
+    $scope.modal
+      template: 'user-delete'
+      controller: 'IssueDeleteCtrl'
+      size: 'small'
+    .then ->
+      $scope.users.delete(user)
+      alert.log 'User deleted'
+    , (err) ->
+      console.log 'err', err
   $scope.copyInviteToClipboard = ->
     $('.invite-url input').select()
     alert.log 'Copied to clipboard'

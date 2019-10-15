@@ -1,7 +1,7 @@
 .login-dir(ng-hide='auth.loggedIn() || auth.loading()')
   .login-holder
     .login-form
-      h2 Log in or Sign up
+      h2 Log in
       form(name='loginForm', novalidate, ng-submit='login()', ignore='true')
         div.inputs
           input(type='email', name='email', required, ng-model='email', placeholder='Email address')

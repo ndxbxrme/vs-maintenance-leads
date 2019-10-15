@@ -1,2 +1,5 @@
 @import '../../variables'
-//.footer-dir
+.footer-dir
+  display flex
+  justify-content flex-end
+  padding .4rem

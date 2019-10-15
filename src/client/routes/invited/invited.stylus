@@ -1,8 +1,15 @@
 @import '../../variables'
-.invited
+.invited-route
+  display flex
+  flex-direction column
+  justify-content center
+  align-items center
   form
     display flex
     flex-direction column
-    max-width 320px
+    width 18rem
     input
-      margin-bottom 2rem
+      margin-bottom .4rem
+    .controls
+      display flex
+      justify-content flex-end

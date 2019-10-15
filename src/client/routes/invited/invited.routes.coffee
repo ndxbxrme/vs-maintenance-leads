@@ -6,3 +6,5 @@ angular.module 'vs-maintenance-leads'
     url: '/invite/:code'
     templateUrl: 'routes/invited/invited.html'
     controller: 'InvitedCtrl'
+    data:
+      title: 'Invited'

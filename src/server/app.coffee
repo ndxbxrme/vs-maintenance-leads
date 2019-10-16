@@ -15,8 +15,8 @@ require 'ndx-server'
         args.obj.address = "#{args.obj.address1}#{if args.obj.address2 then ', ' + args.obj.address2 else ''}, #{args.obj.postcode}"
         args.obj.tenant = "#{if args.obj.tenantTitle then args.obj.tenantTitle + ' ' else ''}#{args.obj.tenantFirstName} #{args.obj.tenantLastName}"
     cb true
-  ndx.database.on 'update', assignAddressAndNames
-  ndx.database.on 'insert', assignAddressAndNames
+  ndx.database.on 'preUpdate', assignAddressAndNames
+  ndx.database.on 'preInsert', assignAddressAndNames
 .use (ndx) ->
   ndx.app.get '/api/chase/:method/:issueId', ndx.authenticate(), (req, res, next) ->
     template = await ndx.database.selectOne req.params.method + 'templates', name: 'Chase'

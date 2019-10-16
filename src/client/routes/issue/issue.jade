@@ -54,7 +54,7 @@ include ../../mixins/form.jade
           .date {{ issue.item.date | date:'mediumDate' }}
           .right
             .icn-camera(ng-class='{active:issue.item.images}')
-            .icn-edit(ng-click='$parent.editing=true', ng-hide='editing')
+            .icn-edit(ng-click='$parent.editing=true', ng-hide='editing', ng-class='{disabled:issue.item.completed}')
       .form-section
         .form-label 
           strong {{ m('issue-heading-tenant-contact') }}
@@ -72,12 +72,12 @@ include ../../mixins/form.jade
         .form-label {{ m('issue-heading-action-taken') }}
         .form-controls
           .third
-            +select({name:'repliedToTenant', list:'yesno', errors:{required:true}}) 
+            +select({name:'repliedToTenant', list:'yesno', disabled:'issue.item.completed', errors:{required:true}}) 
           .third
-            +select({name:'landlordInformed', list:'yesno', errors:{required:true}})
+            +select({name:'landlordInformed', list:'yesno', disabled:'issue.item.completed',errors:{required:true}})
           .third
-            +select({name:'contractorArranged', list:'yesno', errors:{required:true}})
-      .form-section
+            +select({name:'contractorArranged', list:'yesno', disabled:'issue.item.completed',errors:{required:true}})
+      .form-section(ng-show='!issue.item.completed')
         .form-label {{ m('issue-heading-contractor-assigned') }}
         .form-controls
           .two-thirds
@@ -85,18 +85,23 @@ include ../../mixins/form.jade
           .third.delete-book
             button(type='button', ng-click='deleteIssue(issue)') {{ m('forms-delete') }}
             input(type='submit', value='{{ m("forms-book") }}')  
-      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked')
+      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked && !issue.item.completed')
         .form-label {{ m('issue-heading-chase') }}
         .form-controls
           .buttons
             button(type='button', ng-click='chaseContractor("email", issue)') {{ m('issue-label-email') }}
             button(type='button', ng-click='chaseContractor("sms", issue)') {{ m('issue-label-sms') }}
-      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked')
+      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked && !issue.item.completed')
         .form-label {{ m('issue-heading-inform') }}
         .form-controls
           .buttons
             button(type='button', ng-click='informTenant("email", issue)') {{ m('issue-label-email-tenant') }}
             button(type='button', ng-click='informTenant("sms", issue)') {{ m('issue-label-sms-tenant') }}
+      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked && !issue.item.completed')
+        .form-label {{ m('issue-heading-complete') }}
+        .form-controls
+          .buttons
+            button(type='button', ng-click='completeIssue(issue)') {{ m('issue-label-complete') }}
       .case-notes
         h2.orange {{ m('issue-heading-notes') }}
         .case-note(ng-repeat='note in notesData = ( issue.item.notes | orderBy:"-date" ) | limitTo:notesLimit:notesLimit*(notesPage-1)')

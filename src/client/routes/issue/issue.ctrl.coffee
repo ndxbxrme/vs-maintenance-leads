@@ -97,6 +97,19 @@ angular.module 'vs-maintenance-leads'
           side: ''
           user: Auth.getUser()
         $scope.issue.save()
+  $scope.completeIssue = (issue) ->
+    $http.get '/api/complete/' + issue.item._id
+    .then (res) ->
+      if res.data is 'OK'
+        alert.log 'Issue Completed' 
+        $scope.issue.item.notes = $scope.issue.item.notes or []
+        $scope.issue.item.notes.push
+          date: new Date().valueOf()
+          text: 'Issue completed by ' + method
+          item: 'Note'
+          side: ''
+          user: Auth.getUser()
+        $scope.issue.save()
   $scope.saveFn = (cb) ->
     if $scope.issue.item.date && !$scope.editing
       $scope.modal

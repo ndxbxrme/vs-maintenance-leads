@@ -13,4 +13,5 @@ angular.module 'vs-maintenance-leads'
     pageSize: $scope.limit
     where:
       booked: null
+      completed: null
   $scope.issues.sort = Sorter.create $scope.issues.args

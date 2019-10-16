@@ -56,4 +56,35 @@ require 'ndx-server'
             body: template.body
           , template
     res.end 'OK'
+  ndx.app.get '/api/complete/:issueId', ndx.authenticate(), (req, res, next) ->
+    ndx.database.update 'issues',
+      completed:
+        by: ndx.user
+        at: new Date().valueOf()
+    ,
+      _id: req.params.issueId
+    issue = await ndx.database.selectOne 'issue', _id: req.params.issueId
+    if issue
+      sendMessage = (method, mailOrNo) ->
+        template = await ndx.database.selectOne method + 'templates', name: 'Complete'
+        if issue and template
+          contractor = await ndx.database.selectOne 'contractors', _id:issue.booked
+          if contractor and mailOrNo
+            issue.contractor = contractor.name
+            if method is 'email'
+              template.to = mailOrNo.trim()
+              template.text = marked template.text
+              Object.assign template, issue
+              ndx.email.send template
+            else if method is 'sms'
+              ndx.sms.send
+                originator: 'VitalSpace'
+                numbers: [mailOrNo.trim()]
+                body: template.body
+              , template
+      users = await ndx.database.select 'users'
+      for user in users
+        await sendMessage 'email', user.email
+        await sendMessage 'sms', user.phone
+    res.end 'OK'
 .start()

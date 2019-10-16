@@ -15,4 +15,5 @@ angular.module 'vs-maintenance-leads'
     where:
       booked:
         $ne: null
+      completed: null
   $scope.issues.sort = Sorter.create $scope.issues.args

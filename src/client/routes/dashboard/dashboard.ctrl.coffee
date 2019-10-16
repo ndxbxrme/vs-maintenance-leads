@@ -9,12 +9,14 @@ angular.module 'vs-maintenance-leads'
       date:
         $gt: yesterday.valueOf()
       booked: null
+      completed: null
   $scope.maintenanceToday.sort = Sorter.create $scope.maintenanceToday.args
   $scope.maintenanceOutstanding = $scope.list 'issues',
     where:
       date:
         $lte: yesterday.valueOf()
       booked: null
+      completed: null
   $scope.maintenanceOutstanding.sort = Sorter.create $scope.maintenanceOutstanding.args
   $scope.worksOutstanding = $scope.list 'issues',
     where:
@@ -22,5 +24,6 @@ angular.module 'vs-maintenance-leads'
         $gt: yesterday.valueOf()
       booked:
         $ne: null
+      completed: null
   $scope.worksOutstanding.sort = Sorter.create $scope.worksOutstanding.args
   true

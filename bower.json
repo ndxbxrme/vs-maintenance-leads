@@ -38,6 +38,7 @@
     "ndx-modal": "^0.0.5",
     "ndx-alert": "^0.0.2",
     "humane-js": "^3.2.2",
-    "ng-sumoselect": "^0.0.22"
+    "ng-sumoselect": "^0.0.22",
+    "jade": "1.11.0"
   }
 }

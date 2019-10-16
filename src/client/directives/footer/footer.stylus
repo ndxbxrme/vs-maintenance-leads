@@ -2,4 +2,5 @@
 .footer-dir
   display flex
   justify-content flex-end
-  padding .4rem
+  padding .4rem 1rem
+  font-size .8rem

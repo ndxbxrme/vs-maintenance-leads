@@ -9,5 +9,4 @@
       |  
       a(href='/api/logout', target='_self') 
         img.logo(src="public/img/icons/logout.svg")
-    button.lines-btn(ng-click='toggleMobileMenu($event)')
-      span.lines
+    .lines-btn.icn-menu(ng-click='mobileMenuOut=!mobileMenuOut;$event.stopPropagation()')

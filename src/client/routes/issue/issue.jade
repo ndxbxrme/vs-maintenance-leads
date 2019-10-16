@@ -51,7 +51,7 @@ include ../../mixins/form.jade
             .source-icon(class='{{issue.item.source}}') {{ issue.item.source }}
         .form-controls.space-between
           .date {{ issue.item.date | date:'mediumDate' }}
-          .icn-camera
+          .icn-camera(ng-class='{active:issue.item.images}')
       .form-section
         .form-label 
           strong {{ m('issue-heading-tenant-contact') }}
@@ -79,7 +79,7 @@ include ../../mixins/form.jade
         .form-controls
           .two-thirds
             +select({name:'booked', list:'contractors.items', errors:{required:true}})
-          .third
+          .third.delete-book
             button(type='button', ng-click='deleteIssue(issue)') {{ m('forms-delete') }}
             input(type='submit', value='{{ m("forms-book") }}')  
       .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked')

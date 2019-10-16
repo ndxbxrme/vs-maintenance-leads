@@ -39,17 +39,27 @@ body
     flex-direction column
     transition filter 0.8s
     padding-top 6rem
-  .body
+  .body, .holder
     display flex
     flex 1
     justify-content center
     .view
       width calc(100% - 4rem)
+  .holder
+    transition 0.4s
+    transform translateX(0px)
+    &.mobile-menu-out
+      transform translateX(-180px)
+  .SumoSelect
+    width 100%
   .form-section
     display flex
     flex-wrap wrap
     margin-bottom 1rem
     align-items baseline
+    p.error
+      color vs-warning
+      margin 0
     .form-label
       min-width 8rem
       font-weight bold
@@ -61,14 +71,25 @@ body
       flex 1
       justify-content space-between
     .third
-      width 31%
+      width calc(33.3% - 1rem)
+      @media screen and (max-width: 50rem)
+        width 100%
+    .two-thirds
+      width calc(66.6% - .5rem)
+      @media screen and (max-width: 50rem)
+        width 100%
     .form-item
       display flex
       width 100%
       flex-direction column
       margin-bottom .4rem
+      position relative
       textarea
         min-height 6rem
+      &.required:after
+        position absolute
+        right 0
+        content '*'
 .reveal-modal-bg, .reveal-moal-bg.fade
   background rgba(0,0,0,0)!important
 body.modal-open

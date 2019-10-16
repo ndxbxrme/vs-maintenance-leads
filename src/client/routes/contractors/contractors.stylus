@@ -33,3 +33,15 @@
           padding-right .5rem
         .number
           font-weight bold
+      .issues
+        margin-top 1.2rem
+        .issue
+          margin .2rem 0
+          padding .2rem 0
+          border-bottom 1px solid vs-lightgrey
+          cursor pointer
+          .address
+            font-weight bold
+          &:hover
+            .address
+              color vs-orange

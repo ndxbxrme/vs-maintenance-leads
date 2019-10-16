@@ -108,6 +108,11 @@ angular.module 'vs-maintenance-leads'
     "issues-empty-table": "There are no outstanding maintenance issues to show"
     "historic-empty-table": "There are no historic issues to show"
     "contractors-empty-table": "There are no contractors to show"
+    "forgotUser-email-label": "Email address"
+    "newUser-button-next": "Submit"
+    "forgotUser-email-error-required": "Please enter your email address"
+    "forgotUser-email-error-email": "Please enter a valid email address"
+    "forgot-codeRequested-message": "Your code has been emailed"
     
   fillTemplate = (template, data) -> 
     template.replace /\{\{(.+?)\}\}/g, (all, match) ->

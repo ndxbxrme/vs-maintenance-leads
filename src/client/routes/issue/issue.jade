@@ -91,6 +91,12 @@ include ../../mixins/form.jade
           .buttons
             button(type='button', ng-click='chaseContractor("email", issue)') {{ m('issue-label-email') }}
             button(type='button', ng-click='chaseContractor("sms", issue)') {{ m('issue-label-sms') }}
+      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked')
+        .form-label {{ m('issue-heading-inform') }}
+        .form-controls
+          .buttons
+            button(type='button', ng-click='informTenant("email", issue)') {{ m('issue-label-email-tenant') }}
+            button(type='button', ng-click='informTenant("sms", issue)') {{ m('issue-label-sms-tenant') }}
       .case-notes
         h2.orange {{ m('issue-heading-notes') }}
         .case-note(ng-repeat='note in notesData = ( issue.item.notes | orderBy:"-date" ) | limitTo:notesLimit:notesLimit*(notesPage-1)')

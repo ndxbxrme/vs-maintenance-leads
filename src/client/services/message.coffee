@@ -114,6 +114,9 @@ angular.module 'vs-maintenance-leads'
     "forgotUser-email-error-required": "Please enter your email address"
     "forgotUser-email-error-email": "Please enter a valid email address"
     "forgot-codeRequested-message": "Your code has been emailed"
+    "issue-heading-inform": "Inform tenant"
+    "issue-label-email-tenant": "Email Tenant"
+    "issue-label-sms-tenant": "SMS Tenant"
     
   fillTemplate = (template, data) -> 
     template.replace /\{\{(.+?)\}\}/g, (all, match) ->

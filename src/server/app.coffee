@@ -37,4 +37,23 @@ require 'ndx-server'
             body: template.body
           , template
     res.end 'OK'
+  ndx.app.get '/api/inform/:method/:issueId', ndx.authenticate(), (req, res, next) ->
+    template = await ndx.database.selectOne req.params.method + 'templates', name: 'Inform'
+    issue = await ndx.database.selectOne 'issues', _id:req.params.issueId
+    if template and issue and issue.booked
+      contractor = await ndx.database.selectOne 'contractors', _id:issue.booked
+      if contractor
+        issue.contractor = contractor.name
+        if req.params.method is 'email'
+          template.to = issue.tenantEmail.trim()
+          template.text = marked template.text
+          Object.assign template, issue
+          ndx.email.send template
+        else if req.params.method is 'sms'
+          ndx.sms.send
+            originator: 'VitalSpace'
+            numbers: [issue.tenantPhone.trim()]
+            body: template.body
+          , template
+    res.end 'OK'
 .start()

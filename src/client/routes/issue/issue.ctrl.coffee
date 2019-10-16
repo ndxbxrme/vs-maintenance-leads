@@ -84,6 +84,19 @@ angular.module 'vs-maintenance-leads'
           side: ''
           user: Auth.getUser()
         $scope.issue.save()
+  $scope.informTenant = (method, issue) ->
+    $http.get '/api/inform/' + method + '/' + issue.item._id
+    .then (res) ->
+      if res.data is 'OK'
+        alert.log 'Tenant informed' 
+        $scope.issue.item.notes = $scope.issue.item.notes or []
+        $scope.issue.item.notes.push
+          date: new Date().valueOf()
+          text: 'Tenant informed by ' + method
+          item: 'Note'
+          side: ''
+          user: Auth.getUser()
+        $scope.issue.save()
   $scope.saveFn = (cb) ->
     if $scope.issue.item.date && !$scope.editing
       $scope.modal

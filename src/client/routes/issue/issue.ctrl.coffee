@@ -85,7 +85,7 @@ angular.module 'vs-maintenance-leads'
           user: Auth.getUser()
         $scope.issue.save()
   $scope.saveFn = (cb) ->
-    if $scope.issue.item.date
+    if $scope.issue.item.date && !$scope.editing
       $scope.modal
         template: 'issue-book'
         controller: 'IssueBookCtrl'

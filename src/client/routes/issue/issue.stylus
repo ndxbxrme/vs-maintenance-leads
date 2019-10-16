@@ -17,14 +17,19 @@
       .form-label
         min-width 8rem
         width 16rem
-      .icn-camera
-        background-size cover
-        width 3rem
-        height 3rem
-        opacity 0.4
-        &.active
-          opacity 1
+      .right
+        flex-direction row
+        .icn-camera, .icn-edit
+          background-size cover
+          width 3rem
+          height 3rem
           cursor pointer
+        .icn-camera
+          opacity 0.4
+          margin-right .4rem
+          &.active
+            opacity 1
+            cursor pointer
       select
         width 100% 
   .delete-book

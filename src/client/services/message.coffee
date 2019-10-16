@@ -24,6 +24,7 @@ angular.module 'vs-maintenance-leads'
     "issue-details-label": "Additional details about the issue"
     "issue-heading": "Adding a Maintenance Issue"
     "issue-heading-add": "Add an issue"
+    "issue-heading-edit": "Edit issue"
     "issue-heading-issue": "Maintenance Issue"
     "issue-label-address": "Address"
     "issue-label-detail": "Fault Detail"

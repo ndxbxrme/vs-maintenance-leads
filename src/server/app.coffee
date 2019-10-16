@@ -11,9 +11,9 @@ require 'ndx-server'
 .use (ndx) ->
   assignAddressAndNames = (args, cb) ->
     if args.table is 'issues'
-      console.log 'i\'m doin summat at least'
-      args.obj.address = "#{args.obj.address1}#{if args.obj.address2 then ', ' + args.obj.address2 else ''}, #{args.obj.postcode}"
-      args.obj.tenant = "#{if args.obj.tenantTitle then args.obj.tenantTitle + ' ' else ''}#{args.obj.tenantFirstName} #{args.obj.tenantLastName}"
+      if args.obj.address1 and args.obj.tenantFirstName
+        args.obj.address = "#{args.obj.address1}#{if args.obj.address2 then ', ' + args.obj.address2 else ''}, #{args.obj.postcode}"
+        args.obj.tenant = "#{if args.obj.tenantTitle then args.obj.tenantTitle + ' ' else ''}#{args.obj.tenantFirstName} #{args.obj.tenantLastName}"
     cb true
   ndx.database.on 'update', assignAddressAndNames
   ndx.database.on 'insert', assignAddressAndNames

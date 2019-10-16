@@ -90,6 +90,11 @@ body
         position absolute
         right 0
         content '*'
+      &.required.no-label:after
+        position absolute
+        right 0
+        bottom 100%
+        content '*'
 .reveal-modal-bg, .reveal-moal-bg.fade
   background rgba(0,0,0,0)!important
 body.modal-open

@@ -7,5 +7,5 @@ angular.module 'vs-maintenance-leads'
     templateUrl: 'routes/works-orders/works-orders.html'
     controller: 'WorksOrdersCtrl'
     data:
-      title: 'Outstanding Works Orders'
+      title: 'Vitalspace Mainenance Leads - Outstanding Works Orders'
       auth: ['superadmin','admin','agency']

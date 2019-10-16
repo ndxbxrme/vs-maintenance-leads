@@ -55,7 +55,6 @@ angular.module 'ndx'
       "/worker/" + @._id
   ]
   get = (key, data, asObject, cb) ->
-    console.log 'me got called'
     if key and data
       type = Object.prototype.toString.call data
       if type is '[object Object]'

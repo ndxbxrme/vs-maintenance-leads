@@ -9,6 +9,7 @@
         padding .5rem 1rem
         color white
         white-space nowrap
+        no-select()
         &.selected
           border-bottom 2px solid
 
@@ -31,3 +32,4 @@
           color black
           &.selected
             color vs-orange
+          no-select()

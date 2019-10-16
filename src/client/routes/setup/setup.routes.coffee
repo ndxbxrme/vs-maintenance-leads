@@ -7,5 +7,5 @@ angular.module 'vs-maintenance-leads'
     templateUrl: 'routes/setup/setup.html'
     controller: 'SetupCtrl'
     data:
-      title: 'Vitalspace Lettings - Setup'
+      title: 'Vitalspace Maintenance Leads - Setup'
       auth: ['superadmin','admin']

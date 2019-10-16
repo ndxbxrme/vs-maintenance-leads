@@ -10,11 +10,11 @@ include ../../mixins/form.jade
   table.issue-table(ng-show='filterData.length > 0')
     thead
       tr
-        th(width='20%') {{ m('historic-heading-date') }}
-        th(width='30%') {{ m('historic-heading-address') }}
-        th(width='15%') {{ m('historic-heading-tenant') }}
-        th(width='15%') {{ m('historic-heading-contractor') }}
-        th(width='10%') {{ m('historic-heading-status') }}
+        th(width='20%', ng-click='sort.set("date")', ng-class='sort.class("date")') {{ m('historic-heading-date') }}
+        th(width='30%', ng-click='sort.set("address")', ng-class='sort.class("address")') {{ m('historic-heading-address') }}
+        th(width='15%', ng-click='sort.set("tenant")', ng-class='sort.class("tenant")') {{ m('historic-heading-tenant') }}
+        th(width='15%', ng-click='sort.set("contractor")', ng-class='sort.class("contractor")') {{ m('historic-heading-contractor') }}
+        th(width='10%', ng-click='sort.set("status")', ng-class='sort.class("status")') {{ m('historic-heading-status') }}
         th(width='5%') {{ m('historic-heading-view') }}
         th(width='5%') {{ m('historic-heading-restore') }}
     tbody(ng-repeat='issue in filterData =(historic.items | filter:search | orderBy:sort) | limitTo:limit:limit*(page-1)')
@@ -23,7 +23,7 @@ include ../../mixins/form.jade
         td.address {{ issue.address }}
         td.tenant {{ issue.tenant }}
         td.contractor {{ dbItem.get('contractors', issue.booked) }}
-        td.status {{ issue.completed?'Completed':issue.deleted?'Deleted':issue.booked?'Booked':'' }}
+        td.status {{ issue.status }}
         td.view
           button(type='button', ui-sref='issue({_id:issue._id})') View Issue
         td.restore

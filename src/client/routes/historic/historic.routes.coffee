@@ -7,5 +7,5 @@ angular.module 'vs-maintenance-leads'
     templateUrl: 'routes/historic/historic.html'
     controller: 'HistoricCtrl'
     data:
-      title: 'Historic'
+      title: 'Vitalspace Mainenance Leads - Historic Issues'
       auth: ['superadmin','admin']

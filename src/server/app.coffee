@@ -14,6 +14,9 @@ require 'ndx-server'
       if args.obj.address1 and args.obj.tenantFirstName
         args.obj.address = "#{args.obj.address1}#{if args.obj.address2 then ', ' + args.obj.address2 else ''}, #{args.obj.postcode}"
         args.obj.tenant = "#{if args.obj.tenantTitle then args.obj.tenantTitle + ' ' else ''}#{args.obj.tenantFirstName} #{args.obj.tenantLastName}"
+      args.obj.status = 'Waiting'
+      args.obj.status = 'Deleted' if args.obj.deleted
+      args.obj.status = 'Completed' if args.obj.completed
     cb true
   ndx.database.on 'preUpdate', assignAddressAndNames
   ndx.database.on 'preInsert', assignAddressAndNames

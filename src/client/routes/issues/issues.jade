@@ -11,10 +11,10 @@ include ../../mixins/form.jade
   table.issue-table(ng-show='filterData.length > 0')
     thead
       tr
-        th(width='5%') {{ m('issues-heading-source') }}
-        th(width='30%') {{ m('issues-heading-date') }}
-        th(width='30%') {{ m('issues-heading-address') }}
-        th(width='30%') {{ m('issues-heading-tenant') }}
+        th(width='5%', ng-click='sort.set("source")', ng-class='sort.class("source")') {{ m('issues-heading-source') }}
+        th(width='30%', ng-click='sort.set("date")', ng-class='sort.class("date")') {{ m('issues-heading-date') }}
+        th(width='30%', ng-click='sort.set("address")', ng-class='sort.class("address")') {{ m('issues-heading-address') }}
+        th(width='30%', ng-click='sort.set("tenant")', ng-class='sort.class("tenant")') {{ m('issues-heading-tenant') }}
         th(width='5%') {{ m('issues-heading-options') }}
     tbody(ng-repeat='issue in filterData =(issues.items | filter:search | orderBy:sort) | limitTo:limit:limit*(page-1)')
       tr

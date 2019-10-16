@@ -7,5 +7,5 @@ angular.module 'vs-maintenance-leads'
     templateUrl: 'routes/contractor/contractor.html'
     controller: 'ContractorCtrl'
     data:
-      title: 'contractor'
+      title: 'Vitalspace Mainenance Leads - Contractor'
       auth: ['superadmin','admin','agency']

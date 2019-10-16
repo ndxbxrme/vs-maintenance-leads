@@ -7,5 +7,5 @@ angular.module 'vs-maintenance-leads'
     templateUrl: 'routes/issues/issues.html'
     controller: 'IssuesCtrl'
     data:
-      title: 'issues'
+      title: 'Vitalspace Mainenance Leads - Issues'
       auth: ['superadmin','admin','agency']

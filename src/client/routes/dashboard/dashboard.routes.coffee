@@ -8,4 +8,4 @@ angular.module 'vs-maintenance-leads'
     templateUrl: 'routes/dashboard/dashboard.html'
     controller: 'DashboardCtrl'
     data:
-      title: 'Dashboard'
+      title: 'Vitalspace Mainenance Leads - Dashboard'

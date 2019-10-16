@@ -131,12 +131,13 @@ table.issue-table
     tr
       th
         padding 1rem
-        background vs-orange
+        background-color vs-orange
         text-align left
         color white
         font-size .8rem
         font-weight 100
         border-bottom 1px solid vs-grey
+        no-select()
   tbody:nth-child(odd)
     tr
       background vs-tablegrey
@@ -145,3 +146,9 @@ table.issue-table
     font-size .8rem
     vertical-align middle
     padding 1rem
+.has-sort
+  cursor pointer
+.sorting
+  background-size 1.6rem
+  background-repeat no-repeat
+  background-position center right

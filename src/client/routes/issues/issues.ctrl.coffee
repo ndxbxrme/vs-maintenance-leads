@@ -11,7 +11,9 @@ angular.module 'vs-maintenance-leads'
   $scope.issues = $scope.list 'issues',
     page: 1
     pageSize: $scope.limit
+    sort: 'date'
+    sortDir: 'DESC'
     where:
       booked: null
       completed: null
-  $scope.issues.sort = Sorter.create $scope.issues.args
+  $scope.sort = Sorter.create $scope.issues.args

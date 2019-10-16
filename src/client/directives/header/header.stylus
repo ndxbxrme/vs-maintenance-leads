@@ -21,6 +21,9 @@
   .branding
     img
       width 195px
+  .user
+    a
+      color white
   .user.mobile-hide
     display flex
     align-items center

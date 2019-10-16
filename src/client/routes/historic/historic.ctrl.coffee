@@ -12,13 +12,15 @@ angular.module 'vs-maintenance-leads'
   $scope.historic = $scope.list 'issues',
     page: 1
     pageSize: $scope.limit
+    sort: 'date'
+    sortDir: 'DESC'
     where:
       $or: [
         deleted: $ne: null
       ,
         deleted: null
       ]
-  $scope.historic.sort = Sorter.create $scope.historic.args
+  $scope.sort = Sorter.create $scope.historic.args
   $scope.restoreIssue = (issue) ->
     $scope.modal
       template: 'issue-restore'

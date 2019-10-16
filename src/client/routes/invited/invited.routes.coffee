@@ -7,4 +7,4 @@ angular.module 'vs-maintenance-leads'
     templateUrl: 'routes/invited/invited.html'
     controller: 'InvitedCtrl'
     data:
-      title: 'Invited'
+      title: 'Vitalspace Mainenance Leads - Invited'

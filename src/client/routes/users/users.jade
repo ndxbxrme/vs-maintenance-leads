@@ -1,6 +1,0 @@
-include ../../mixins/form.jade
-.users-route 
-  h1 {{ m('users-heading') }}
-  button(ui-sref='user({_id:""})') {{ m('users-button-new') }}
-  .user(ng-repeat='user in users.items', ui-sref='user({_id:user._id})') {{ user.name }}
-  pagination(ng-model='users.args.page', total='users.total', page-size='users.args.pageSize')

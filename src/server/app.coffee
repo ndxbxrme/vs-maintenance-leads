@@ -82,9 +82,7 @@ require 'ndx-server'
                 numbers: [mailOrNo.trim()]
                 body: template.body
               , template
-      users = await ndx.database.select 'users'
-      for user in users
-        await sendMessage 'email', user.email
-        await sendMessage 'sms', user.phone
+      await sendMessage 'email', template.tenantEmail
+      await sendMessage 'sms', template.tenantPhone
     res.end 'OK'
 .start()

@@ -42,7 +42,7 @@ include ../../mixins/form.jade
       .flex-start
         h1 {{ m('issue-heading-issue') }} -&nbsp;
         h2 {{ issue.item.address }}
-      .cfpJobNumber
+      .cfpJobNumber(ng-show='issue.item.cfpJobNumber')
         .label {{ m('issue-heading-cfp') }} -
         .number {{ issue.item.cfpJobNumber }}
     +form({data:'issue'}).form-controls

@@ -13,11 +13,14 @@ module.exports = (ndx) ->
           resolve res.body if res.body 
           reject {} if not res.body
   fetchAllProps = ->
+    console.log 'fetch all props'
     fetchProps = (url) ->
+      console.log 'fetch props', url
       index = await fetch url
       await sleep 200
       if index.Items and index.Items.length
         for item in index.Items
+          console.log 'fetching', item
           prop = await fetch item
           if prop
             issue =

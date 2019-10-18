@@ -51,7 +51,7 @@ include ../../mixins/form.jade
           .source
             .source-icon(class='{{issue.item.source}}') {{ issue.item.source }}
         .form-controls.space-between
-          .date {{ issue.item.date | date:'mediumDate' }}
+          .date {{ issue.item.date | date:medium }}
           .right
             .icn-camera(ng-class='{active:issue.item.images}')
             .icn-edit(ng-click='$parent.editing=true', ng-hide='editing', ng-class='{disabled:issue.item.completed}')
@@ -105,7 +105,7 @@ include ../../mixins/form.jade
       .case-notes
         h2.orange {{ m('issue-heading-notes') }}
         .case-note(ng-repeat='note in notesData = ( issue.item.notes | orderBy:"-date" ) | limitTo:notesLimit:notesLimit*(notesPage-1)')
-          .date {{note.date | date:'mediumDate'}}, {{note.date | date:'shortTime'}} | 
+          .date {{note.date | date:medium}}, {{note.date | date:'shortTime'}} | 
             img(gravatar-src='note.user.local.email')  
             span {{note.user.displayName || note.user.local.email}}
             a.delete(href='', ng-click='deleteNote(note)', ng-show='auth.checkRoles(["admin", "superadmin"])') {{ m('forms-delete') }}

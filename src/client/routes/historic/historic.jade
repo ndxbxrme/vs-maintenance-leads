@@ -19,7 +19,7 @@ include ../../mixins/form.jade
         th(width='5%') {{ m('historic-heading-restore') }}
     tbody(ng-repeat='issue in filterData =(historic.items | filter:search | orderBy:sort) | limitTo:limit:limit*(page-1)')
       tr
-        td.date {{ issue.date | date }}
+        td.date {{ issue.date | date:medium }}
         td.address {{ issue.address }}
         td.tenant {{ issue.tenant }}
         td.contractor {{ dbItem.get('contractors', issue.booked) }}

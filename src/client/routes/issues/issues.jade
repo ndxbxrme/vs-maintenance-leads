@@ -20,7 +20,7 @@ include ../../mixins/form.jade
       tr
         td.source
           .source-icon(class='{{issue.source}}') {{ issue.source }}
-        td.date {{ issue.date | date }}
+        td.date {{ issue.date | date:medium }}
         td.address {{ issue.address }}
         td.tenant {{ issue.tenant }}
         td.options

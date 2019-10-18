@@ -18,6 +18,7 @@ angular.module 'vs-maintenance-leads', [
   $rootScope.makeDownloadUrl = (document) ->
     if document
       '/api/download/' + btoa JSON.stringify({path:document.path,filename:document.originalFilename})
+  $rootScope.medium = 'dd/MM/yyyy @ HH:mm'
 try
   angular.module 'ndx'
 catch e

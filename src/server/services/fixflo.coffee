@@ -1,3 +1,5 @@
+superagent = require 'superagent'
+
 module.exports = (ndx) ->
   ndx.database.on 'ready', ->
     issuesUrl = process.env.FIXFLOW_ISSUES_URL

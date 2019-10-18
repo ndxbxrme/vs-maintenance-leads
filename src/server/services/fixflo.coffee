@@ -58,4 +58,4 @@ module.exports = (ndx) ->
             await sleep 200
         await fetchProps index.NextURL if index.NextURL
       fetchProps issuesUrl
-    fetchAllProps()
+    #fetchAllProps()

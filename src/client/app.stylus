@@ -4,7 +4,10 @@
 button, input[type=submit], input[type=button]
   vs-button()
 input[type=text], input[type=email], input[type=password], select, textarea
-  padding .4rem
+  padding .8rem
+  border 1px solid vs-grey
+  border-radius 3px
+  -webkit-appearance none
 a
   color vs-orange
 body, html

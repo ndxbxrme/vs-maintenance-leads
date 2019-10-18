@@ -3,8 +3,10 @@ include ../../mixins/form.jade
   .space-between
     .left
       h1 {{ m('issues-heading') }}
+      button(ui-sref='issue({_id:""})')
+        i.fas.fa-plus 
+        | {{ m('issues-button-new') }}
     .right
-      button(ui-sref='issue({_id:""})') {{ m('issues-button-new') }}  
       .search
         input(type='text', ng-model='search', placeholder='Search Cases', ng-change='page=1')
       .showing Showing {{filterData.length}} of {{issues.items.length}} issue{{totalProps!==1?'s':''}}

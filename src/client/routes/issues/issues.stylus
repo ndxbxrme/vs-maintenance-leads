@@ -1,1 +1,12 @@
 @import '../../variables'
+.issues-route
+  button
+    background vs-grey
+    color white
+    text-transform uppercase
+    svg
+      margin-right 5px
+  .search
+    input
+      width 300px
+      margin-bottom 30px

@@ -3,19 +3,21 @@ include ../../mixins/form.jade
   .space-between
     .left
       h1 {{ m('issues-heading') }}
+      button(ui-sref='issue({_id:""})')
+        i.fas.fa-plus 
+        | {{ m('issues-button-new') }}
     .right
-      button(ui-sref='issue({_id:""})') {{ m('issues-button-new') }}  
       .search
         input(type='text', ng-model='search', placeholder='Search Cases', ng-change='page=1')
       .showing Showing {{filterData.length}} of {{issues.items.length}} issue{{totalProps!==1?'s':''}}
   table.issue-table(ng-show='filterData.length > 0')
     thead
       tr
-        th(width='5%', ng-click='sort.set("source")', ng-class='sort.class("source")') {{ m('issues-heading-source') }}
-        th(width='30%', ng-click='sort.set("date")', ng-class='sort.class("date")') {{ m('issues-heading-date') }}
+        th(width='10%', ng-click='sort.set("source")', ng-class='sort.class("source")') {{ m('issues-heading-source') }}
+        th(width='25%', ng-click='sort.set("date")', ng-class='sort.class("date")') {{ m('issues-heading-date') }}
         th(width='30%', ng-click='sort.set("address")', ng-class='sort.class("address")') {{ m('issues-heading-address') }}
-        th(width='30%', ng-click='sort.set("tenant")', ng-class='sort.class("tenant")') {{ m('issues-heading-tenant') }}
-        th(width='5%') {{ m('issues-heading-options') }}
+        th(width='25%', ng-click='sort.set("tenant")', ng-class='sort.class("tenant")') {{ m('issues-heading-tenant') }}
+        th(width='10%') {{ m('issues-heading-options') }}
     tbody(ng-repeat='issue in filterData =(issues.items | filter:search | orderBy:sort) | limitTo:limit:limit*(page-1)')
       tr
         td.source

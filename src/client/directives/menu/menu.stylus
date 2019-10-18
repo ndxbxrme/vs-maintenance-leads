@@ -6,9 +6,10 @@
     li
       a
         text-decoration none
-        padding .5rem 1rem
+        padding .5rem .7rem
         color white
         white-space nowrap
+        text-transform uppercase
         no-select()
         &.selected
           border-bottom 2px solid

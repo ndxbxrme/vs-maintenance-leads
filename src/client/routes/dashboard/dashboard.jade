@@ -1,7 +1,7 @@
 mixin box(args)
   .box
     .title(ui-sref=args.link)= args.title
-    .number(ng-class='{empty:!' + args.list + '.total}')= '{{' + args.list + '.total}}'
+    .box-number(ng-class='{empty:!' + args.list + '.total}')= '{{' + args.list + '.total}}'
     .issue(ng-repeat='issue in ' + args.list + '.items', ui-sref='issue({_id:issue._id})')
       .icn-house
       .details

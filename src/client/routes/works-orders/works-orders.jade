@@ -6,7 +6,7 @@ include ../../mixins/form.jade
     .right
       .search
         input(type='text', ng-model='search', placeholder='Search Cases', ng-change='page=1')
-      .showing Showing {{filterData.length}} of {{issues.items.length}} lead{{totalProps!==1?'s':''}}
+      .showing Showing {{filterData.length}} of {{issues.total}} lead{{issues.total!==1?'s':''}}
   table.issue-table(ng-show='filterData.length > 0')
     thead
       tr

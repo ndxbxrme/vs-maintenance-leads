@@ -24,7 +24,7 @@
         padding .4rem
         background #ccc
         font-weight bold
-      .number
+      .box-number
         color vs-orange
         font-size 6rem
         text-align center

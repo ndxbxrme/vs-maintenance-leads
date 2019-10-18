@@ -1,29 +1,24 @@
 @import '../../variables'
 .dashboard-route
-  .icn-house
-    background-size cover
-    width 2.6rem
-    height 2.6rem
-    margin-right 1rem
   .heading
     margin 1rem 0 2rem 0
-    background #333
-    color white
-    font-size 2rem
-    font-weight bold
-    text-align center
-    padding 1rem
+    color vs-orange
+    font-size 1.6rem
+    font-weight 300
   .boxes
     display flex
     justify-content space-between
     align-items flex-start
     .box
       width calc(33% - 1rem)
-      border 1px solid #999
+      border 1px solid vs-grey
+      border-radius 2px;
       .title
-        padding .4rem
-        background #ccc
+        padding 0.8rem
+        background vs-grey
         font-weight bold
+        color: white
+        text-align center
       .box-number
         color vs-orange
         font-size 6rem
@@ -39,7 +34,12 @@
         padding-bottom .2rem
         .address
           font-weight bold
-          margin-bottom .4rem
+          margin-bottom .2rem
+        .issue-title
+          font-size 0.9rem
         &:hover
           .address
             color vs-orange
+        svg 
+          font-size 1rem
+          margin-right 10px

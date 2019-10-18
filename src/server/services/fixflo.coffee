@@ -52,9 +52,10 @@ module.exports = (ndx) ->
                 date: new Date(prop.Created).valueOf()
                 fixfloId: prop.Id
                 fixfloUrl: item
+                fixfloStatus: prop.Status
               await ndx.database.upsert 'issues', issue, fixfloId: issue.fixfloId
               console.log 'fetched', issue.address1
             await sleep 200
         await fetchProps index.NextURL if index.NextURL
       fetchProps issuesUrl
-    #fetchAllProps()
+    fetchAllProps()

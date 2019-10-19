@@ -2,13 +2,6 @@ superagent = require 'superagent'
 
 module.exports = (ndx) ->
   ndx.database.on 'ready', ->
-    issues = await ndx.database.select 'issues'
-    if issues and issues.length
-      for issue in issues
-        issue.details = issue.details or issue.description
-        issue.description = null
-        issue.search = (issue.address or '') + '|' + (issue.tenant or '') + '|' + (issue.contractor or '') + '|' + (issue.title or '')
-        ndx.database.upsert 'issues', issue
     issuesUrl = process.env.FIXFLO_ISSUES_URL
     index = []
     sleep = (time) ->

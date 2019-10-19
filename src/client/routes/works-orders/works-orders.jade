@@ -5,9 +5,9 @@ include ../../mixins/form.jade
       h1 {{ m('works-heading') }}
     .right
       .search
-        input(type='text', ng-model='search', placeholder='Search Cases', ng-change='page=1')
-      .showing Showing {{filterData.length}} of {{issues.total}} lead{{issues.total!==1?'s':''}}
-  table.issue-table(ng-show='filterData.length > 0')
+        input(type='text', ng-model='mysearch.$like', placeholder='Search Cases', ng-change='page=1')
+      .showing Showing {{issues.items.length}} of {{issues.total}} lead{{issues.total!==1?'s':''}}
+  table.issue-table(ng-show='issues.items.length > 0')
     thead
       tr
         th(width='15%', ng-click='sort.set("date")', ng-class='sort.class("date")') {{ m('works-heading-date') }}
@@ -15,7 +15,7 @@ include ../../mixins/form.jade
         th(width='30%', ng-click='sort.set("tenant")', ng-class='sort.class("tenant")') {{ m('works-heading-tenant') }}
         th(width='20%', ng-click='sort.set("contractor")', ng-class='sort.class("contractor")') {{ m('works-heading-contractor') }}
         th(width='5%') {{ m('works-heading-options') }}
-    tbody(ng-repeat='issue in filterData =(issues.items | filter:search | orderBy:sort) | limitTo:limit:limit*(page-1)')
+    tbody(ng-repeat='issue in issues.items')
       tr
         td.date {{ issue.date | date:medium }}
         td.address {{ issue.address }}
@@ -23,5 +23,5 @@ include ../../mixins/form.jade
         td.contractor {{ dbItem.get('contractors', issue.booked) }}
         td.options
           button(ui-sref='issue({_id:issue._id})') View
-  .empty-table(ng-show='!filterData.length') {{ m('works-empty-table') }}
+  .empty-table(ng-show='!issues.items.length') {{ m('works-empty-table') }}
   pagination(ng-model='issues.args.page', total='issues.total', page-size='issues.args.pageSize')

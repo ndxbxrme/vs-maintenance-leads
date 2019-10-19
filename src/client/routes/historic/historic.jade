@@ -5,8 +5,8 @@ include ../../mixins/form.jade
       h1 {{ m('historic-heading') }}
     .right
       .search
-        input(type='text', ng-model='search', placeholder='Search Cases', ng-change='page=1')
-      .showing Showing {{filterData.length}} of {{historic.total}} issue{{historic.total!==1?'s':''}}
+        input(type='text', ng-model='mysearch.$like', placeholder='Search Cases', ng-change='page=1')
+      .showing Showing {{historic.items.length}} of {{historic.total}} issue{{historic.total!==1?'s':''}}
   table.issue-table(ng-show='filterData.length > 0')
     thead
       tr
@@ -17,7 +17,7 @@ include ../../mixins/form.jade
         th(width='10%', ng-click='sort.set("status")', ng-class='sort.class("status")') {{ m('historic-heading-status') }}
         th(width='5%') {{ m('historic-heading-view') }}
         th(width='5%') {{ m('historic-heading-restore') }}
-    tbody(ng-repeat='issue in filterData =(historic.items | filter:search | orderBy:sort) | limitTo:limit:limit*(page-1)')
+    tbody(ng-repeat='issue in fhistoric.items')
       tr
         td.date {{ issue.date | date:medium }}
         td.address {{ issue.address }}
@@ -28,5 +28,5 @@ include ../../mixins/form.jade
           button(type='button', ui-sref='issue({_id:issue._id})') View Issue
         td.restore
           button(type='button', ng-click='restoreIssue(issue)', ng-show='issue.deleted') Restore Issue
-  .empty-table(ng-show='!filterData.length') {{ m('historic-empty-table') }}
+  .empty-table(ng-show='!historic.items.length') {{ m('historic-empty-table') }}
   pagination(ng-model='historic.args.page', total='historic.total', page-size='historic.args.pageSize')

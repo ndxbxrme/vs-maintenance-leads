@@ -5,6 +5,8 @@ angular.module 'vs-maintenance-leads'
   $scope.dbItem = DbItem
   $scope.page = 1
   $scope.limit = 15
+  $scope.mysearch =
+    $like: ''
   $scope.pageChange = ->
     $('html, body').animate
       scrollTop: 0
@@ -18,4 +20,5 @@ angular.module 'vs-maintenance-leads'
       booked:
         $ne: null
       completed: null
+      search: $scope.mysearch
   $scope.sort = Sorter.create $scope.issues.args

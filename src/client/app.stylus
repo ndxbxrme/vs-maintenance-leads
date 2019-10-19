@@ -1,6 +1,6 @@
 @import 'variables'
 *
-  outline-color vs-orange
+  outline-color transparent
 button, input[type=submit], input[type=button]
   vs-button()
   text-transform uppercase

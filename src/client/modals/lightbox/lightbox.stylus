@@ -1,0 +1,29 @@
+@import '../../variables'
+.reveal-modal.large
+  max-width calc(100vw - 2rem)
+  max-height calc(100vh - 2rem)
+  top 1rem
+  border none
+  background none
+  box-shadow none
+.modal.lightbox
+  display flex
+  position relative
+  .big-img
+    max-width 100%
+    max-height 100%
+    object-fit cover
+  .img-index
+    position absolute
+    bottom 1rem
+    right 1rem
+    display flex
+    background white
+    border 1px solid vs-orange
+    padding .2rem
+    .index-img
+      background-size cover
+      width 3rem
+      height 3rem
+      cursor pointer
+      margin .2rem

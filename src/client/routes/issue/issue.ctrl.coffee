@@ -71,6 +71,15 @@ angular.module 'vs-maintenance-leads'
       alert.log 'Issue deleted'
     , (err) ->
       console.log 'err', err
+  $scope.showLightbox = (media) ->
+    console.log 'show lightbox'
+    $scope.modal
+      template: 'lightbox'
+      controller: 'LightboxCtrl'
+      size: 'large'
+      data: media
+    .then ->
+      #just be happy
   $scope.chaseContractor = (method, issue) ->
     $http.get '/api/chase/' + method + '/' + issue.item._id
     .then (res) ->

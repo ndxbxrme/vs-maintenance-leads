@@ -7,7 +7,7 @@ include ../../mixins/form.jade
       .search
         input(type='text', ng-model='mysearch.$like', placeholder='Search Cases', ng-change='page=1')
       .showing Showing {{historic.items.length}} of {{historic.total}} issue{{historic.total!==1?'s':''}}
-  table.issue-table(ng-show='filterData.length > 0')
+  table.issue-table(ng-show='historic.items.length > 0')
     thead
       tr
         th(width='20%', ng-click='sort.set("date")', ng-class='sort.class("date")') {{ m('historic-heading-date') }}

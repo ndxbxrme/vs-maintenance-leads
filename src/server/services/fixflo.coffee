@@ -7,9 +7,9 @@ module.exports = (ndx) ->
       for issue in issues
         issue.details = issue.details or issue.description
         issue.description = null
-        issue.search = issue.address + '|' + issue.tenant + '|' + issue.contractor + '|' + issue.title
+        issue.search = (issue.address or '') + '|' + (issue.tenant or '') + '|' + (issue.contractor or '') + '|' + (issue.title or '')
         ndx.database.upsert 'issues', issue
-    issuesUrl = process.env.FIXFLOW_ISSUES_URL
+    issuesUrl = process.env.FIXFLO_ISSUES_URL
     index = []
     sleep = (time) ->
       new Promise (resolve) ->
@@ -17,7 +17,7 @@ module.exports = (ndx) ->
     fetch = (url) ->
       new Promise (resolve, reject) ->
         superagent.get url
-        .set 'Authorization', 'Bearer ' + process.env.FIXFLOW_KEY
+        .set 'Authorization', 'Bearer ' + process.env.FIXFLO_KEY
         .set 'Accept', 'application/json'
         .end (err, res) ->
           if err

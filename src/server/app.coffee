@@ -9,12 +9,22 @@ require 'ndx-server'
   hasForgot: true
   softDelete: true
 .use (ndx) ->
+  ndx.database.on 'ready', ->
+    issues = ndx.database.select 'issues'
+    for issue in issues
+      ndx.database.upsert 'issues', issue
   assignAddressAndNames = (args, cb) ->
     if args.table is 'issues'
-      if args.obj.address1 and args.obj.tenantFirstName
-        args.obj.address = "#{args.obj.address1}#{if args.obj.address2 then ', ' + args.obj.address2 else ''}, #{args.obj.postcode}"
-        args.obj.tenant = "#{if args.obj.tenantTitle then args.obj.tenantTitle + ' ' else ''}#{args.obj.tenantFirstName} #{args.obj.tenantLastName}"
-      args.obj.status = 'Waiting'
+      console.log args
+      if args.obj.booked 
+        contractor = await ndx.database.selectOne 'contractors', _id:args.obj.booked
+        args.obj.contractor = contractor.name
+      args.obj.address = "#{args.obj.address1 or args.oldObj.address1}#{if args.obj.address2 or args.oldObj.address2 then ', ' + args.obj.address2 or args.oldObj.address2 else ''}, #{args.obj.postcode or args.oldObj.postcode}"
+      args.obj.tenant = "#{if args.obj.tenantTitle or args.oldObj.tenantTitle then (args.obj.tenantTitle or args.oldObj.tenantTitle) + ' ' else ''}#{args.obj.tenantFirstName or args.oldObj.tenantFirstName} #{args.obj.tenantLastName or args.oldObj.tenantLastName}"
+      args.obj.search = (args.obj.address or '') + '|' + (args.obj.tenant or '') + '|' + (args.obj.contractor or '') + '|' + (args.obj.title or args.oldObj.title or '')
+      args.obj.status = 'Reported'
+      args.obj.status = args.obj.fixfloStatus if args.obj.fixfloStatus
+      args.obj.status = 'Booked' if args.obj.booked
       args.obj.status = 'Deleted' if args.obj.deleted
       args.obj.status = 'Completed' if args.obj.completed
     cb true

@@ -17,7 +17,7 @@ include ../../mixins/form.jade
         th(width='10%', ng-click='sort.set("status")', ng-class='sort.class("status")') {{ m('historic-heading-status') }}
         th(width='5%') {{ m('historic-heading-view') }}
         th(width='5%') {{ m('historic-heading-restore') }}
-    tbody(ng-repeat='issue in fhistoric.items')
+    tbody(ng-repeat='issue in historic.items')
       tr
         td.date {{ issue.date | date:medium }}
         td.address {{ issue.address }}

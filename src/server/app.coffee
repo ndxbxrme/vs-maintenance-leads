@@ -9,10 +9,6 @@ require 'ndx-server'
   hasForgot: true
   softDelete: true
 .use (ndx) ->
-  ndx.database.on 'ready', ->
-    issues = ndx.database.select 'issues'
-    for issue in issues
-      ndx.database.upsert 'issues', issue
   assignAddressAndNames = (args, cb) ->
     if args.table is 'issues'
       console.log args

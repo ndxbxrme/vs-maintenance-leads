@@ -3,11 +3,26 @@
   outline-color vs-orange
 button, input[type=submit], input[type=button]
   vs-button()
+  text-transform uppercase
+  &.button-alt
+    vs-button-alt()
+  &.button-green
+    vs-button-green()
+  &.button-grey
+    vs-button-grey()
+  svg
+    margin-right 5px
 input[type=text], input[type=email], input[type=password], select, textarea
   padding .8rem
-  border 1px solid vs-grey
+  border 1px solid vs-lightgrey
   border-radius 3px
-  -webkit-appearance none
+  background vs-tablegrey
+label 
+  margin-bottom 3px
+.search
+    input
+      width 300px
+      margin-bottom 30px
 a
   color vs-orange
 body, html
@@ -33,6 +48,9 @@ body
         font-size .8rem
         text-align right
         margin-top .2rem
+  form
+    max-width 700px
+    margin 0 auto
   .flex-start
     display flex
     justify-content flex-start
@@ -57,6 +75,13 @@ body
       transform translateX(-180px)
   .SumoSelect
     width 100%
+    > .CaptionCont
+      border 1px solid vs-lightgrey
+      background vs-tablegrey
+      padding 10px
+    > .optWrapper > .options li.opt
+      background vs-lightgrey
+      padding 10px
   .form-section
     display flex
     flex-wrap wrap
@@ -95,6 +120,7 @@ body
         position absolute
         right 0
         content '*'
+        color vs-orange
       &.required.no-label:after
         position absolute
         right 0
@@ -142,6 +168,7 @@ table.issue-table
         font-size 1rem
         font-weight 100
         border-bottom 1px solid vs-grey
+        border-right: 1px solid rgba(255,255,255,0.1);
         no-select()
   tbody:nth-child(odd)
     tr

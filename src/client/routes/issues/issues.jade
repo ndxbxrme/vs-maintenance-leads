@@ -3,7 +3,7 @@ include ../../mixins/form.jade
   .space-between
     .left
       h1 {{ m('issues-heading') }}
-      button(ui-sref='issue({_id:""})')
+      button(ui-sref='issue({_id:""})', class='button-green')
         i.fas.fa-plus 
         | {{ m('issues-button-new') }}
     .right
@@ -26,6 +26,8 @@ include ../../mixins/form.jade
         td.address {{ issue.address }}
         td.tenant {{ issue.tenant }}
         td.options
-          button(ui-sref='issue({_id:issue._id})') View
+          button.button-grey(ui-sref='issue({_id:issue._id})') 
+            i.fal.fa-eye
+            | View
   .empty-table(ng-show='!issues.items.length') {{ m('issues-empty-table') }}
   pagination(ng-model='issues.args.page', total='issues.total', page-size='issues.args.pageSize')

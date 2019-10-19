@@ -9,7 +9,9 @@
           a(href='', ng-click='emailTemplates.delete(template)')
             i.far.fa-times-circle(aria-hidden='true')
       div
-        a.add-email-template(ui-sref="template({id:'new',type:'email'})") Add email template
+        a.add-email-template.button-green(ui-sref="template({id:'new',type:'email'})") 
+          i.fas.fa-plus 
+          | Add email template
     .sms-templates
       h2 Sms templates
       .sms-template(ng-repeat='template in smsTemplates.items')
@@ -18,7 +20,9 @@
           a(href='', ng-click='smsTemplates.delete(template)')
             i.far.fa-times-circle(aria-hidden='true')
       div
-        a.add-sms-template(ui-sref="template({id:'new',type:'sms'})") Add sms template
+        a.add-sms-template(ui-sref="template({id:'new',type:'sms'})") 
+          i.fas.fa-plus 
+          | Add sms template
   .users
     h2 Users
     .row

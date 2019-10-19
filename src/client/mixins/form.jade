@@ -175,4 +175,4 @@ mixin controls(args)
   .controls&attributes(attributes)
     - if(!args.nocancel)
       button.btn.cancel(type='button', ng-click=args.cancel) {{ m('#{args.cancelText}') }}
-    input.btn(type='submit', value="{{ m('#{args.submitText}') }}", ng-disabled=args.submitDisabled)
+    input.btn.button-alt(type='submit', value="{{ m('#{args.submitText}') }}", ng-disabled=args.submitDisabled)

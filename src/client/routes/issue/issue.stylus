@@ -1,6 +1,23 @@
 @import '../../variables'
-.issue-route 
+.issue-route
   .issue-details
+    form
+      max-width 100%
+      .source-icon
+        &.telephone
+          margin 0px
+          width 54px
+          height 48px
+  .issue-details
+    h1
+      margin-bottom 0px
+    h2
+      color vs-orange
+      font-weight 300
+      margin-top 0px
+      span
+        font-size 1rem
+        color vs-grey
     .cfpJobNumber
       display flex
       .label

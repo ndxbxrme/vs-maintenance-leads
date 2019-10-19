@@ -36,6 +36,51 @@ vs-button()
     &:hover
       background white
       color vs-orange
+vs-button-alt()
+  display inline-block
+  white-space nowrap
+  padding .6rem 1.6rem
+  border 1px solid vs-orange
+  border-radius 0.5rem
+  color white
+  background vs-orange
+  transition all 0.4s ease-in-out
+  outline none
+  cursor default
+  &:hover
+    background vs-grey
+    color white
+  &:disabled
+    opacity 0.4
+    &:hover
+      background white
+      color vs-orange
+vs-button-green()
+  display inline-block
+  white-space nowrap
+  padding .6rem 1.6rem
+  border 1px solid #00A685
+  border-radius 0.5rem
+  background #00A685
+  color white
+  transition all 0.4s ease-in-out
+  outline none
+  cursor default
+  &:hover
+    background vs-grey
+vs-button-grey()
+  display inline-block
+  white-space nowrap
+  padding .6rem 1.6rem
+  border 1px solid vs-grey
+  border-radius 0.5rem
+  background vs-grey
+  color white
+  transition all 0.4s ease-in-out
+  outline none
+  cursor default
+  &:hover
+    background vs-orange
 no-select()
   -webkit-touch-callout none
   -webkit-user-select none

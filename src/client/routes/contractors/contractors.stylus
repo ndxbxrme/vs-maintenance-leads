@@ -23,7 +23,6 @@
           border-bottom none
       .name
         font-size 1.2rem
-        color vs-orange
       .no-issues
         display flex
         align-items baseline

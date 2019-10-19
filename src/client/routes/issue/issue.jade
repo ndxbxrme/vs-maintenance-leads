@@ -38,10 +38,10 @@ include ../../mixins/form.jade
         .form-controls
           +controls()
   .issue-details(ng-if='issue.item._id && !editing')
-    .space-between
-      .flex-start
-        h1 {{ m('issue-heading-issue') }} -&nbsp;
-        h2 {{ issue.item.address }}
+    .left
+      h1 {{ m('issue-heading-issue') }}
+      h2 {{ issue.item.address }} 
+        span {{ issue.item.date | date:medium }}
       .cfpJobNumber(ng-show='issue.item.cfpJobNumber')
         .label {{ m('issue-heading-cfp') }} -
         .number {{ issue.item.cfpJobNumber }}
@@ -51,7 +51,6 @@ include ../../mixins/form.jade
           .source
             .source-icon(class='{{issue.item.source}}') {{ issue.item.source }}
         .form-controls.space-between
-          .date {{ issue.item.date | date:medium }}
           .right
             .icn-camera(ng-class='{active:issue.item.images}')
             .icn-edit(ng-click='$parent.editing=true', ng-hide='editing', ng-class='{disabled:issue.item.completed}')

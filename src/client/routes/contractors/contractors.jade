@@ -3,8 +3,10 @@ include ../../mixins/form.jade
   .space-between
     .left
       h1 {{ m('contractors-heading') }}
-    .right
-      button(ui-sref='contractor({_id:""})') {{ m('contractors-button-new') }}  
+      button.button-green(ui-sref='contractor({_id:""})') 
+        i.fas.fa-plus 
+        | {{ m('contractors-button-new') }}
+    .right  
       .search
         input(type='text', ng-model='search', placeholder='Search Cases', ng-change='page=1')
       .showing Showing {{filterData.length}} of {{contractors.items.length}} contractor{{totalProps!==1?'s':''}}
@@ -15,9 +17,13 @@ include ../../mixins/form.jade
         .no-issues
           .label Issues
           .number {{ contractor.issues.total }}
-      button(type='button', ng-click='contractor.showList=!contractor.showList', ng-show='contractor.issues.total')
-        span(ng-show='contractor.showList') Hide List
-        span(ng-hide='contractor.showList') View List
+      button.button-alt(type='button', ng-click='contractor.showList=!contractor.showList', ng-show='contractor.issues.total')
+        span(ng-show='contractor.showList') 
+          i.fal.fa-eye-slash
+          | Hide List
+        span(ng-hide='contractor.showList')
+          i.fal.fa-eye 
+          | View List
       .issues(ng-show='contractor.showList')
         .issue(ng-repeat='issue in contractor.issues.items', ui-sref='issue({_id:issue._id})')
           .address {{ issue.address }}

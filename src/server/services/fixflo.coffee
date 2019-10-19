@@ -14,6 +14,7 @@ module.exports = (ndx) ->
         .set 'Accept', 'application/json'
         .end (err, res) ->
           if err
+            console.log 'oh i errored', err
             reject err
           else
             resolve res.body if res.body 
@@ -56,5 +57,6 @@ module.exports = (ndx) ->
     doFixflo = ->
       date = new Date(new Date().setHours(new Date().getHours() - 1))
       await fetchAllProps issuesUrl + '?CreatedSince=' + date.toISOString()
-      setTimeout doFixflo, 10 * 60 * 1000
+      console.log 'made it back'
+      setTimeout doFixflo, 1 * 60 * 1000
     doFixflo()

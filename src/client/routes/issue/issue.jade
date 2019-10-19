@@ -50,10 +50,10 @@ include ../../mixins/form.jade
         .form-label
           .source
             .source-icon(class='{{issue.item.source}}') {{ issue.item.source }}
-        .form-controls.space-between
+        .form-controls.space-between.issue-controls
           .right
-            .icn-camera(ng-class='{active:issue.item.images}')
-            .icn-edit(ng-click='$parent.editing=true', ng-hide='editing', ng-class='{disabled:issue.item.completed}')
+            i.fad.fa-camera-retro(ng-class='{active:issue.item.images}')
+            i.fad.fa-edit(ng-click='$parent.editing=true', ng-hide='editing', ng-class='{disabled:issue.item.completed}')
       .form-section
         .form-label 
           strong {{ m('issue-heading-tenant-contact') }}
@@ -82,8 +82,10 @@ include ../../mixins/form.jade
           .two-thirds
             +select({name:'booked', list:'contractors.items', errors:{required:true}})
           .third.delete-book
-            button(type='button', ng-click='deleteIssue(issue)') {{ m('forms-delete') }}
-            input(type='submit', value='{{ m("forms-book") }}')  
+            button.button-alt(type='button', ng-click='deleteIssue(issue)') 
+              i.fal.fa-trash-alt
+              | {{ m('forms-delete') }}
+            input.button-green(type='submit', value='{{ m("forms-book") }}')  
       .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked && !issue.item.completed')
         .form-label {{ m('issue-heading-chase') }}
         .form-controls
@@ -116,4 +118,6 @@ include ../../mixins/form.jade
       pagination.pagination-sm.pagination(total='notesData.length', ng-model='notesPage', page-size='notesLimit')
       .add-note
           code-mirror(ng-model='$parent.note.text', options='{mode:markdown, lineWrapping:true}')
-          button(type='button', ng-click='addNote()') {{note.date?'Update':'Add'}} Note
+          button(type='button', ng-click='addNote()') 
+            .fal.fa-plus
+            | {{note.date?'Update':'Add'}} Note

@@ -8,8 +8,8 @@ include ../../mixins/form.jade
         | {{ m('issues-button-new') }}
     .right
       .search
-        input(type='text', ng-model='search', placeholder='Search Cases', ng-change='page=1')
-      .showing Showing {{filterData.length}} of {{issues.items.length}} issue{{totalProps!==1?'s':''}}
+        input(type='text', ng-model='mysearch.$like', placeholder='Search Cases', ng-change='page=1')
+      .showing Showing {{issues.items.length}} of {{issues.total}} issue{{issues.total!==1?'s':''}}
   table.issue-table(ng-show='filterData.length > 0')
     thead
       tr
@@ -18,7 +18,7 @@ include ../../mixins/form.jade
         th(width='30%', ng-click='sort.set("address")', ng-class='sort.class("address")') {{ m('issues-heading-address') }}
         th(width='25%', ng-click='sort.set("tenant")', ng-class='sort.class("tenant")') {{ m('issues-heading-tenant') }}
         th(width='10%') {{ m('issues-heading-options') }}
-    tbody(ng-repeat='issue in filterData =(issues.items | filter:search | orderBy:sort) | limitTo:limit:limit*(page-1)')
+    tbody(ng-repeat='issue in issues.items')
       tr
         td.source
           .source-icon(class='{{issue.source}}') {{ issue.source }}
@@ -27,5 +27,5 @@ include ../../mixins/form.jade
         td.tenant {{ issue.tenant }}
         td.options
           button(ui-sref='issue({_id:issue._id})') View
-  .empty-table(ng-show='!filterData.length') {{ m('issues-empty-table') }}
+  .empty-table(ng-show='!issues.items.length') {{ m('issues-empty-table') }}
   pagination(ng-model='issues.args.page', total='issues.total', page-size='issues.args.pageSize')

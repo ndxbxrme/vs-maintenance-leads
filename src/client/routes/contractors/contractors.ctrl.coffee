@@ -11,6 +11,8 @@ angular.module 'vs-maintenance-leads'
   $scope.contractors = $scope.list 'contractors',
     page: 1
     pageSize: $scope.limit
+    sort: 'name'
+    sortDir: 'ASC'
   , (contractors) ->
     for contractor in contractors.items
       contractor.issues = $scope.list 'issues',

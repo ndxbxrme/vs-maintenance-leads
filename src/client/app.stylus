@@ -158,6 +158,7 @@ table.issue-table
   margin-top 1rem
   border-collapse collapse
   border 1px solid vs-lightgray
+  width 100%
   thead
     tr
       th

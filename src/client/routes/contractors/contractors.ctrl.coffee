@@ -16,4 +16,6 @@ angular.module 'vs-maintenance-leads'
       contractor.issues = $scope.list 'issues',
         where:
           booked: contractor._id
+          deleted: null
+          completed: null
   $scope.contractors.sort = Sorter.create $scope.contractors.args

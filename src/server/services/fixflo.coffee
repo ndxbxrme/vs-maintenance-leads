@@ -18,7 +18,7 @@ module.exports = (ndx) ->
           else
             resolve res.body if res.body 
             reject {} if not res.body
-    fetchAllProps = ->
+    fetchAllProps = (url) ->
       console.log 'fetch all props'
       fetchProps = (url) ->
         console.log 'fetch props', url
@@ -27,28 +27,34 @@ module.exports = (ndx) ->
         if index.Items and index.Items.length
           for item in index.Items
             console.log 'fetching', item
-            prop = await fetch item
-            if prop
-              issue =
-                address1: prop.Address.AddressLine1
-                address2: prop.Address.AddressLine2 or prop.Address.Town
-                postcode: prop.Address.PostCode
-                media: if prop.Media and prop.Media.length then prop.Media else null
-                tenantTitle: prop.Salutation
-                tenantFirstName: prop.Firstname
-                tenantLastName: prop.Surname
-                tenantEmailAddress: prop.EmailAddress
-                tenantPhone: prop.ContactNumber
-                title: prop.Title or prop.FaultTitle
-                description: prop.FaultNotes
-                source: 'fixflo'
-                date: new Date(prop.Created).valueOf()
-                fixfloId: prop.Id
-                fixfloUrl: item
-                fixfloStatus: prop.Status
-              await ndx.database.upsert 'issues', issue, fixfloId: issue.fixfloId
-              console.log 'fetched', issue.address1
+            testprop = await ndx.database.selectOne 'issues', fixfloUrl: item
+            if not testprop
+              prop = await fetch item
+              if prop
+                issue =
+                  address1: prop.Address.AddressLine1
+                  address2: prop.Address.AddressLine2 or prop.Address.Town
+                  postcode: prop.Address.PostCode
+                  media: if prop.Media and prop.Media.length then prop.Media else null
+                  tenantTitle: prop.Salutation
+                  tenantFirstName: prop.Firstname
+                  tenantLastName: prop.Surname
+                  tenantEmailAddress: prop.EmailAddress
+                  tenantPhone: prop.ContactNumber
+                  title: prop.Title or prop.FaultTitle
+                  description: prop.FaultNotes
+                  source: 'fixflo'
+                  date: new Date(prop.Created).valueOf()
+                  fixfloId: prop.Id
+                  fixfloUrl: item
+                  fixfloStatus: prop.Status
+                await ndx.database.upsert 'issues', issue, fixfloId: issue.fixfloId
+                console.log 'fetched', issue.address1
             await sleep 200
         await fetchProps index.NextURL if index.NextURL
-      fetchProps issuesUrl
-    #fetchAllProps()
+      fetchProps url
+    doFixflo = ->
+      date = new Date().setHours(new Date().getHours() - 1)
+      await fetchAllProps issuesUrl + '?CreatedSince=' + date.toISOString()
+      setTimeout doFixflo, 10 * 60 * 1000
+    doFixFlo

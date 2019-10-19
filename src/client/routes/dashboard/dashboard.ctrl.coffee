@@ -30,8 +30,6 @@ angular.module 'vs-maintenance-leads'
     page: 1
     pageSize: 20
     where:
-      date:
-        $gt: yesterday.valueOf()
       booked:
         $ne: null
       completed: null

@@ -9,16 +9,6 @@ require 'ndx-server'
   hasForgot: true
   softDelete: true
 .use (ndx) ->
-  ndx.database.on 'ready', ->
-    issues = await ndx.database.select 'issues'
-    for issue in issues
-      if issue.fixfloId
-        ndx.database.update 'issues',
-          completed:
-            by: 'system'
-            at: new Date().valueOf()
-        ,
-          _id: issue._id
   assignAddressAndNames = (args, cb) ->
     if args.table is 'issues'
       console.log args

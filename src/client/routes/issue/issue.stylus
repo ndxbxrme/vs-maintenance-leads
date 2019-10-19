@@ -4,10 +4,19 @@
     form
       max-width 100%
       .source-icon
-        &.telephone
+        &.telephone,
+        &.walkin,
+        &.fixflo,
+        &.email
           margin 0px
           width 54px
           height 48px
+        &.walkin
+          width 69px
+        &.fixflo
+          width 84px
+        &.email
+          width 48px
     h1
       margin-bottom 0px
     h2
@@ -84,7 +93,7 @@
       padding-left 15px
       height 120px
       pre
-        font-size 1.8rem
+        font-size 1rem
     button
       margin-top 15px
       background vs-orange

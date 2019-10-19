@@ -38,13 +38,15 @@ include ../../mixins/form.jade
         .form-controls
           +controls()
   .issue-details(ng-if='issue.item._id && !editing')
-    .left
-      h1 {{ m('issue-heading-issue') }}
-      h2 {{ issue.item.address }} 
-        span {{ issue.item.date | date:medium }}
-      .cfpJobNumber(ng-show='issue.item.cfpJobNumber')
-        .label {{ m('issue-heading-cfp') }} -
-        .number {{ issue.item.cfpJobNumber }}
+    .space-between
+      .left
+        h1 {{ m('issue-heading-issue') }}
+        h2 {{ issue.item.address }} 
+          span {{ issue.item.date | date:medium }}
+      .right
+        .cfpJobNumber(ng-show='issue.item.cfpJobNumber')
+          .label {{ m('issue-heading-cfp') }} -
+          .number {{ issue.item.cfpJobNumber }}
     +form({data:'issue'}).form-controls
       .form-section
         .form-label
@@ -52,8 +54,10 @@ include ../../mixins/form.jade
             .source-icon(class='{{issue.item.source}}') {{ issue.item.source }}
         .form-controls.space-between.issue-controls
           .right
-            i.fad.fa-camera-retro(ng-class='{active:issue.item.images}')
-            i.fad.fa-edit(ng-click='$parent.editing=true', ng-hide='editing', ng-class='{disabled:issue.item.completed}')
+            span(ng-class='{active:issue.item.images}')
+              i.fad.fa-camera-retro
+            span(ng-click='$parent.editing=true', ng-hide='editing', ng-class='{disabled:issue.item.completed}')
+              i.fad.fa-edit
       .form-section
         .form-label 
           strong {{ m('issue-heading-tenant-contact') }}
@@ -85,24 +89,36 @@ include ../../mixins/form.jade
             button.button-alt(type='button', ng-click='deleteIssue(issue)') 
               i.fal.fa-trash-alt
               | {{ m('forms-delete') }}
-            input.button-green(type='submit', value='{{ m("forms-book") }}')  
+            button.button-green(type='submit', value='{{ m("forms-book") }}')
+              i.fal.fa-ballot-check
+              | Book
       .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked && !issue.item.completed')
         .form-label {{ m('issue-heading-chase') }}
         .form-controls
           .buttons
-            button(type='button', ng-click='chaseContractor("email", issue)') {{ m('issue-label-email') }}
-            button(type='button', ng-click='chaseContractor("sms", issue)') {{ m('issue-label-sms') }}
+            button.button-alt(type='button', ng-click='chaseContractor("email", issue)') 
+              i.fal.fa-at
+              | {{ m('issue-label-email') }}
+            button.button-grey(type='button', ng-click='chaseContractor("sms", issue)') 
+              i.fal.fa-sms
+              | {{ m('issue-label-sms') }}
       .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked && !issue.item.completed')
         .form-label {{ m('issue-heading-inform') }}
         .form-controls
           .buttons
-            button(type='button', ng-click='informTenant("email", issue)') {{ m('issue-label-email-tenant') }}
-            button(type='button', ng-click='informTenant("sms", issue)') {{ m('issue-label-sms-tenant') }}
+            button.button-alt(type='button', ng-click='informTenant("email", issue)') 
+              i.fal.fa-at
+              | {{ m('issue-label-email-tenant') }}
+            button.button-grey(type='button', ng-click='informTenant("sms", issue)') 
+              i.fal.fa-sms
+              | {{ m('issue-label-sms-tenant') }}
       .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked && !issue.item.completed')
         .form-label {{ m('issue-heading-complete') }}
         .form-controls
           .buttons
-            button(type='button', ng-click='completeIssue(issue)') {{ m('issue-label-complete') }}
+            button.button-green(type='button', ng-click='completeIssue(issue)') 
+              i.fal.fa-check
+              | {{ m('issue-label-complete') }}
       .case-notes
         h2.orange {{ m('issue-heading-notes') }}
         .case-note(ng-repeat='note in notesData = ( issue.item.notes | orderBy:"-date" ) | limitTo:notesLimit:notesLimit*(notesPage-1)')

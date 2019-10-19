@@ -22,7 +22,7 @@ include ../../mixins/form.jade
         td.tenant {{ issue.tenant }}
         td.contractor {{ dbItem.get('contractors', issue.booked) }}
         td.options
-          button.button-gery(ui-sref='issue({_id:issue._id})') 
+          button.button-grey(ui-sref='issue({_id:issue._id})') 
             .fal.fa-eye
             | View
   .empty-table(ng-show='!issues.items.length') {{ m('works-empty-table') }}

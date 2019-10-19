@@ -12,8 +12,12 @@
           label From
           input(type='text', ng-model='template.item.from')
         div
-          input(type='submit', value='Save')
-          button.button(ng-click='cancel()') Cancel
+          button.button-green(type='submit', value='Save')
+            i.fal.fa-save
+            | Save
+          button.button-grey(ng-click='cancel()') 
+            i.fal.fa-times
+            | Cancel
       section
         label Body
         code-mirror(ng-model='template.item.body', options='{mode:lang, lineWrapping:true}')

@@ -1,2 +1,8 @@
 @import '../../variables'
-  
+.restore
+  button
+    svg 
+      transition all 0.4s ease-in-out
+    &:hover
+      svg 
+        transform rotate(-360deg)

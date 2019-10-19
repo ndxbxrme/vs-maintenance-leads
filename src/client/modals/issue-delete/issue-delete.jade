@@ -4,6 +4,10 @@
   form(name='myForm', ng-submit='submit()')
     .controls
       label  
-      input.button(type='submit', value='OK')
-      button(type='button', ng-click='cancel()') Cancel
+      button.button-alt(type='submit', value='OK')
+        i.fal.fa-trash-alt
+        | OK
+      button.button-grey(type='button', ng-click='cancel()') 
+        i.fal.fa-times
+        | Cancel
   //a.close-reveal-modal(ng-click='cancel()') &times;

@@ -5,5 +5,9 @@ include ../../mixins/form.jade
     +input({name:'jobnumber', errors:{required:true}})
     .controls
       label  
-      input.button(type='submit', value='Book')
-      button(type='button', ng-click='cancel()') Cancel
+      button.button-green(type='submit', value='Book')
+        i.fal.fa-ballot-check
+        | Book
+      button.button-grey(type='button', ng-click='cancel()') 
+        i.fal.fa-times
+        | Cancel

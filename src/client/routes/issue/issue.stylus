@@ -1,5 +1,7 @@
 @import '../../variables'
 .issue-route
+  .issue-header 
+    border-bottom 1px solid vs-tablegrey
   .issue-details
     form
       max-width 100%
@@ -44,20 +46,18 @@
         width 16rem
       .issue-controls
         justify-content flex-end
+        margin-top 20px
       .right
         flex-direction row
         svg
           background-size cover
-          width 2rem
-          height 2rem
+          width 1.5rem
+          height 1.5rem
           cursor pointer
           margin-left 10px
-          &.disabled
-            opacity 0.4
-            pointer-events none
-          &.active
-            opacity 1
-            cursor pointer
+        .disabled 
+          opacity 0.4
+          pointer-events none
       select
         width 100% 
   .delete-book
@@ -65,10 +65,9 @@
     input, button
       width 49%
   .case-notes
-    border 1px solid vs-lightgrey
-    border-radius 5px
-    margin 20px 0
-    padding 10px 20px 20px 20px
+    border-top 1px solid vs-lightgrey
+    margin 50px 0 30px 0
+    padding 20px
     .case-note
       border 1px solid #f1f1f1
       padding 10px

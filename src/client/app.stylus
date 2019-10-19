@@ -18,7 +18,7 @@ input[type=text], input[type=email], input[type=password], select, textarea
   border-radius 3px
   background vs-tablegrey
 label 
-  margin-bottom 3px
+  margin-bottom 5px
 .search
     input
       width 300px
@@ -144,16 +144,21 @@ body.modal-open
     margin 0 0 1rem 0
   h1
     font-size 1.4rem
+    color vs-orange
+    text-transform uppercase
   h2
     font-size 1rem
   form, form .form-item
     display flex
     flex-direction column
     align-items center
+    width 90%
     input
       margin-top .4rem
     input[type=text]
       flex 1
+      width 100%
+      margin-bottom 10px
 table.issue-table
   margin-top 1rem
   border-collapse collapse

@@ -57,4 +57,4 @@ module.exports = (ndx) ->
       date = new Date().setHours(new Date().getHours() - 1)
       await fetchAllProps issuesUrl + '?CreatedSince=' + date.toISOString()
       setTimeout doFixflo, 10 * 60 * 1000
-    doFixFlo
+    doFixflo()

@@ -55,7 +55,7 @@ include ../../mixins/form.jade
         .form-controls.space-between.issue-controls
           .right
             span(ng-click='$parent.showLightbox(issue.item.media)')
-              i.fad.fa-camera-retro
+              i.fad.fa-camera-retro(ng-show='issue.item.media.length')
             span(ng-click='$parent.editing=true', ng-hide='editing', ng-class='{disabled:issue.item.completed}')
               i.fad.fa-edit
       .form-section

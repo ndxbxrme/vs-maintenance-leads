@@ -1,14 +1,20 @@
 @import '../../variables'
 .reveal-modal.large
+  width 70%
   max-width calc(100vw - 2rem)
   max-height calc(100vh - 2rem)
   top 1rem
   border none
   background none
   box-shadow none
+  .close-reveal-modal
+    color vs-orange
+  &:focus
+    outline none
 .modal.lightbox
   display flex
   position relative
+  padding 0px
   .big-img
     max-width 100%
     max-height 100%

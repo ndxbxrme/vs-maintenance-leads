@@ -184,6 +184,12 @@ table.issue-table
     font-size .8rem
     vertical-align middle
     padding 1rem
+    position relative
+    svg.fa-camera-retro
+      position absolute
+      top 50%
+      right 10px
+      transform translateY(-50%)
 .has-sort
   cursor pointer
 .sorting

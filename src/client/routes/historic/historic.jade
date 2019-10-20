@@ -21,6 +21,7 @@ include ../../mixins/form.jade
       tr
         td.date {{ issue.date | date:medium }}
         td.address {{ issue.address }}
+          i.fad.fa-camera-retro(ng-show='issue.media.length')
         td.tenant {{ issue.tenant }}
         td.contractor {{ dbItem.get('contractors', issue.booked) }}
         td.status {{ issue.status }}

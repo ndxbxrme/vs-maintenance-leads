@@ -1,5 +1,5 @@
 .modal.lightbox.large
   img.big-img(src='{{imgSrc}}')
   .img-index(ng-show='imgIndex.length>1')
-    .index-img(style='background-image: url({{img.URL}})', ng-repeat='img in imgIndex', ng-click='imgSrc=img.URL')
+    .index-img(style='background-image: url({{img.URL}})', ng-repeat='img in imgIndex', ng-click='$parent.imgSrc=img.URL')
   a.close-reveal-modal(ng-click='cancel()') &times;

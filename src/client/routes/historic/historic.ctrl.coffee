@@ -30,8 +30,13 @@ angular.module 'vs-maintenance-leads'
       controller: 'IssueDeleteCtrl'
       size: 'small'
     .then ->
+      issue.history = issue.history or []
+      issue.history.push
+        deleted: issue.deleted
+        completed: issue.completed
       issue.deleted = null
+      issue.completed = null
       $scope.historic.save issue
-      alert.log 'Issue deleted'
+      alert.log 'Issue restored'
     , (err) ->
       console.log 'err', err

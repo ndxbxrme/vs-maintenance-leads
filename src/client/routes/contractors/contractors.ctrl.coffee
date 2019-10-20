@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module 'vs-maintenance-leads'
-.controller 'ContractorsCtrl', ($scope, Sorter) ->
+.controller 'ContractorsCtrl', ($scope, Sorter, alert) ->
   $scope.page = 1
   $scope.limit = 15
   $scope.pageChange = ->
@@ -21,3 +21,14 @@ angular.module 'vs-maintenance-leads'
           deleted: null
           completed: null
   $scope.contractors.sort = Sorter.create $scope.contractors.args
+  $scope.deleteContractor = (contractor) ->
+    $scope.modal
+      template: 'contractor-delete'
+      controller: 'IssueDeleteCtrl'
+      size: 'small'
+    .then ->
+      $scope.contractors.delete contractor
+      $state.go 'contractors'
+      alert.log 'Contractor deleted'
+    , (err) ->
+      console.log 'err', err

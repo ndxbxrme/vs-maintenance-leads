@@ -29,7 +29,7 @@ include ../../mixins/form.jade
             .fal.fa-eye
             | View Issue
         td.restore
-          button.button-grey(type='button', ng-click='restoreIssue(issue)', ng-show='issue.deleted')
+          button.button-grey(type='button', ng-click='restoreIssue(issue)', ng-show='issue.deleted || issue.completed')
             .fal.fa-undo-alt
             | Restore Issue
   .empty-table(ng-show='!historic.items.length') {{ m('historic-empty-table') }}

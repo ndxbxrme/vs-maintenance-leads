@@ -78,6 +78,8 @@ angular.module 'vs-maintenance-leads'
     "modal-issue-restore-text": "Are you sure you wish to restore this issue?"
     "modal-user-delete-title": "Delete User"
     "modal-user-delete-text": "Are you sure you wish to delete this user?"
+    "modal-contractor-delete-title": "Delete Contractor"
+    "modal-contractor-delete-text": "Are you sure you wish to delete this contractor?"
     "historic-heading": "Historic Issues"
     "historic-heading-date": "Date Raised"
     "historic-heading-address": "Property Address"

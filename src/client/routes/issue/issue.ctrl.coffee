@@ -2,6 +2,7 @@
 
 angular.module 'vs-maintenance-leads'
 .controller 'IssueCtrl', ($scope, $stateParams, $state, $http, Auth, alert) ->
+  $scope.fetched = false
   $scope.submitted = false
   $scope.sources = [
     name: 'Telephone', _id: 'telephone'
@@ -24,6 +25,7 @@ angular.module 'vs-maintenance-leads'
     ]
   $scope.issue = $scope.single 'issues', myParams, (issue) ->
     issue.item.source = 'telephone' if not issue.item.source
+    $scope.fetched = true
   $scope.contractors = $scope.list 'contractors'
   $scope.addNote = ->
     console.log 'add note', $scope.note

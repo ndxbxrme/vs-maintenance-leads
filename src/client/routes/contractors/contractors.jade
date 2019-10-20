@@ -24,7 +24,9 @@ include ../../mixins/form.jade
         span(ng-hide='contractor.showList')
           i.fal.fa-eye 
           | View List
-      button(type='button', ng-click='deleteContractor(contractor)', ng-if='auth.isAuthorized(["superadmin", "admin"])') Delete
+      button.button-grey(type='button', ng-click='deleteContractor(contractor)', ng-if='auth.isAuthorized(["superadmin", "admin"])') 
+        i.fal.fa-trash-alt
+        | Delete
       .issues(ng-show='contractor.showList')
         .issue(ng-repeat='issue in contractor.issues.items', ui-sref='issue({_id:issue._id})')
           .address {{ issue.address }}

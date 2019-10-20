@@ -89,7 +89,7 @@ include ../../mixins/form.jade
             button.button-alt(type='button', ng-click='deleteIssue(issue)') 
               i.fal.fa-trash-alt
               | {{ m('forms-delete') }}
-            button.button-green(type='submit', value='{{ m("forms-book") }}', ng-hide='issue.item.booked || issue.item.completed')
+            button.button-green(type='submit', value='{{ m("forms-book") }}', ng-hide='issue.item.contractor || issue.item.completed')
               i.fal.fa-ballot-check
               | Book
       .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked && !issue.item.completed')

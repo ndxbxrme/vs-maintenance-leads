@@ -1,5 +1,5 @@
 include ../../mixins/form.jade
-.issue-route 
+.issue-route(ng-show='issue.item')
   .add-edit(ng-if='!issue.item._id || editing')
     h1(ng-show='!editing') {{ m('issue-heading-add') }}
     h1(ng-show='editing') {{ m('issue-heading-edit') }}

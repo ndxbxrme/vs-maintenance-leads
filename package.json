@@ -1,6 +1,6 @@
 {
   "name": "vs-maintenance-leads",
-  "version": "0.1.31",
+  "version": "0.1.32",
   "description": "",
   "main": "server/app.js",
   "scripts": {

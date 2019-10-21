@@ -62,7 +62,7 @@ include ../../mixins/form.jade
         .form-label 
           strong {{ m('issue-heading-tenant-contact') }}
           p {{ issue.item.tenantFirstName }} {{ issue.item.tenantLastName }}
-          p {{ issue.item.tenantEmail }}
+          a(href='mailto:{{issue.item.tenantEmail}}') {{ issue.item.tenantEmail }}
           p {{ issue.item.tenantPhone }}
         .form-controls
           .title

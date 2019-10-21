@@ -15,7 +15,7 @@ require 'ndx-server'
       if args.obj.booked 
         contractor = await ndx.database.selectOne 'contractors', _id:args.obj.booked
         args.obj.contractor = contractor.name
-      args.obj.address = "#{args.obj.address1 or args.oldObj.address1}#{if args.obj.address2 or args.oldObj.address2 then ', ' + args.obj.address2 or args.oldObj.address2 else ''}, #{args.obj.postcode or args.oldObj.postcode}"
+      args.obj.address = "#{args.obj.address1 or args.oldObj.address1}#{if (args.obj.address2 or args.oldObj.address2) then ', ' + (args.obj.address2 or args.oldObj.address2) else ''}, #{args.obj.postcode or args.oldObj.postcode}"
       args.obj.tenant = "#{if args.obj.tenantTitle or args.oldObj.tenantTitle then (args.obj.tenantTitle or args.oldObj.tenantTitle) + ' ' else ''}#{args.obj.tenantFirstName or args.oldObj.tenantFirstName} #{args.obj.tenantLastName or args.oldObj.tenantLastName}"
       args.obj.search = (args.obj.address or '') + '|' + (args.obj.tenant or '') + '|' + (args.obj.contractor or '') + '|' + (args.obj.title or args.oldObj.title or '')
       args.obj.status = 'Reported'
@@ -29,12 +29,10 @@ require 'ndx-server'
 .use (ndx) ->
   ndx.app.get '/api/chase/:method/:issueId', ndx.authenticate(), (req, res, next) ->
     template = await ndx.database.selectOne req.params.method + 'templates', name: 'Chase'
-    console.log 'template', template
     issue = await ndx.database.selectOne 'issues', _id:req.params.issueId
     if template and issue and issue.booked
       contractor = await ndx.database.selectOne 'contractors', _id:issue.booked
       if contractor
-        console.log contractor.phone
         issue.contractor = contractor.name
         if req.params.method is 'email'
           template.to = contractor.email.trim()

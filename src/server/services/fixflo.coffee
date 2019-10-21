@@ -43,7 +43,7 @@ module.exports = (ndx) ->
                   tenantEmailAddress: prop.EmailAddress
                   tenantPhone: prop.ContactNumber
                   title: prop.Title or prop.FaultTitle
-                  description: prop.FaultNotes
+                  details: prop.FaultNotes
                   source: 'fixflo'
                   date: new Date(prop.Created).valueOf()
                   fixfloId: prop.Id

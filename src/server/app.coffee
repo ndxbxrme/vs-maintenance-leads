@@ -34,10 +34,11 @@ require 'ndx-server'
     if template and issue and issue.booked
       contractor = await ndx.database.selectOne 'contractors', _id:issue.booked
       if contractor
+        console.log contractor.phone
         issue.contractor = contractor.name
         if req.params.method is 'email'
           template.to = contractor.email.trim()
-          template.text = marked template.text
+          template.subject = marked template.subject
           Object.assign template, issue
           ndx.email.send template
         else if req.params.method is 'sms'
@@ -56,7 +57,7 @@ require 'ndx-server'
         issue.contractor = contractor.name
         if req.params.method is 'email'
           template.to = issue.tenantEmail.trim()
-          template.text = marked template.text
+          template.subject = marked template.subject
           Object.assign template, issue
           ndx.email.send template
         else if req.params.method is 'sms'
@@ -83,7 +84,7 @@ require 'ndx-server'
             issue.contractor = contractor.name
             if method is 'email'
               template.to = mailOrNo.trim()
-              template.text = marked template.text
+              template.subject = marked template.subject
               Object.assign template, issue
               ndx.email.send template
             else if method is 'sms'

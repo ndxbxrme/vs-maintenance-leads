@@ -10,7 +10,7 @@ angular.module 'vs-maintenance-leads'
     where:
       date:
         $gt: yesterday.valueOf()
-      booked: null
+      isBooked: null
       completed: null
     sort: 'date'
     sortDir: 'DESC'
@@ -21,7 +21,7 @@ angular.module 'vs-maintenance-leads'
     where:
       date:
         $lte: yesterday.valueOf()
-      booked: null
+      isBooked: null
       completed: null
     sort: 'date'
     sortDir: 'DESC'
@@ -30,8 +30,7 @@ angular.module 'vs-maintenance-leads'
     page: 1
     pageSize: 20
     where:
-      booked:
-        $ne: null
+      isBooked: true
       completed: null
     sort: 'date'
     sortDir: 'DESC'

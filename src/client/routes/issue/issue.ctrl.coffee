@@ -130,6 +130,7 @@ angular.module 'vs-maintenance-leads'
         size: 'small'
       .then (cfpJobNumber) ->
         $scope.issue.item.cfpJobNumber = cfpJobNumber
+        $scope.issue.item.isBooked = true
         alert.log 'Issue Booked'
         cb true
       , (err) ->

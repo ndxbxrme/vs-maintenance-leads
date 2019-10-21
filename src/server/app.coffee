@@ -20,7 +20,7 @@ require 'ndx-server'
       args.obj.search = (args.obj.address or '') + '|' + (args.obj.tenant or '') + '|' + (args.obj.contractor or '') + '|' + (args.obj.title or args.oldObj.title or '')
       args.obj.status = 'Reported'
       args.obj.status = args.obj.fixfloStatus if args.obj.fixfloStatus
-      args.obj.status = 'Booked' if args.obj.booked
+      args.obj.status = 'Booked' if args.obj.isBooked
       args.obj.status = 'Deleted' if args.obj.deleted
       args.obj.status = 'Completed' if args.obj.completed
     cb true
@@ -30,7 +30,7 @@ require 'ndx-server'
   ndx.app.get '/api/chase/:method/:issueId', ndx.authenticate(), (req, res, next) ->
     template = await ndx.database.selectOne req.params.method + 'templates', name: 'Chase'
     issue = await ndx.database.selectOne 'issues', _id:req.params.issueId
-    if template and issue and issue.booked
+    if template and issue and issue.isBooked
       contractor = await ndx.database.selectOne 'contractors', _id:issue.booked
       if contractor
         issue.contractor = contractor.name
@@ -49,7 +49,7 @@ require 'ndx-server'
   ndx.app.get '/api/inform/:method/:issueId', ndx.authenticate(), (req, res, next) ->
     template = await ndx.database.selectOne req.params.method + 'templates', name: 'Inform'
     issue = await ndx.database.selectOne 'issues', _id:req.params.issueId
-    if template and issue and issue.booked
+    if template and issue and issue.isBooked
       contractor = await ndx.database.selectOne 'contractors', _id:issue.booked
       if contractor
         issue.contractor = contractor.name

@@ -24,6 +24,7 @@ angular.module 'vs-maintenance-leads'
     address1: "22 Flixton Road"
     address2: "Urmston"
     booked: "5da63ec84cba301a96c94984"
+    isBooked: true
     cfpJobNumber: "986754"
     contractorArranged: "yes"
     date: 1571176184159

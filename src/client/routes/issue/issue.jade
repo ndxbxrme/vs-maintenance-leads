@@ -92,7 +92,7 @@ include ../../mixins/form.jade
             button.button-green(type='submit', value='{{ m("forms-book") }}', ng-hide='issue.item.contractor || issue.item.completed')
               i.fal.fa-ballot-check
               | Book
-      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked && !issue.item.completed')
+      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.isBooked && !issue.item.completed')
         .form-label {{ m('issue-heading-chase') }}
         .form-controls
           .buttons
@@ -102,7 +102,7 @@ include ../../mixins/form.jade
             button.button-grey(type='button', ng-click='chaseContractor("sms", issue)') 
               i.fal.fa-sms
               | {{ m('issue-label-sms') }}
-      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked && !issue.item.completed')
+      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.isBooked && !issue.item.completed')
         .form-label {{ m('issue-heading-inform') }}
         .form-controls
           .buttons
@@ -112,7 +112,7 @@ include ../../mixins/form.jade
             button.button-grey(type='button', ng-click='informTenant("sms", issue)') 
               i.fal.fa-sms
               | {{ m('issue-label-sms-tenant') }}
-      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.booked && !issue.item.completed')
+      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.isBooked && !issue.item.completed')
         .form-label {{ m('issue-heading-complete') }}
         .form-controls
           .buttons

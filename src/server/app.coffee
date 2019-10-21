@@ -36,7 +36,7 @@ require 'ndx-server'
         issue.contractor = contractor.name
         if req.params.method is 'email'
           template.to = contractor.email.trim()
-          template.subject = marked template.subject
+          template.subject = template.subject
           Object.assign template, issue
           ndx.email.send template
         else if req.params.method is 'sms'
@@ -55,7 +55,7 @@ require 'ndx-server'
         issue.contractor = contractor.name
         if req.params.method is 'email'
           template.to = issue.tenantEmail.trim()
-          template.subject = marked template.subject
+          template.subject = template.subject
           Object.assign template, issue
           ndx.email.send template
         else if req.params.method is 'sms'
@@ -82,7 +82,7 @@ require 'ndx-server'
             issue.contractor = contractor.name
             if method is 'email'
               template.to = mailOrNo.trim()
-              template.subject = marked template.subject
+              template.subject = template.subject
               Object.assign template, issue
               ndx.email.send template
             else if method is 'sms'

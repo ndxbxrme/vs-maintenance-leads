@@ -1,5 +1,5 @@
 'use strict'
- 
+marked = require 'marked'
 require 'ndx-server'
 .config
   database: 'db'

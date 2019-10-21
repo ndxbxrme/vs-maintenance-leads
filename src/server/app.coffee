@@ -29,6 +29,7 @@ require 'ndx-server'
 .use (ndx) ->
   ndx.app.get '/api/chase/:method/:issueId', ndx.authenticate(), (req, res, next) ->
     template = await ndx.database.selectOne req.params.method + 'templates', name: 'Chase'
+    console.log 'template', template
     issue = await ndx.database.selectOne 'issues', _id:req.params.issueId
     if template and issue and issue.booked
       contractor = await ndx.database.selectOne 'contractors', _id:issue.booked

@@ -72,7 +72,7 @@ require 'ndx-server'
         at: new Date().valueOf()
     ,
       _id: req.params.issueId
-    issue = await ndx.database.selectOne 'issue', _id: req.params.issueId
+    issue = await ndx.database.selectOne 'issues', _id: req.params.issueId
     if issue
       sendMessage = (method, mailOrNo) ->
         template = await ndx.database.selectOne method + 'templates', name: 'Complete'

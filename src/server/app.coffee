@@ -76,7 +76,7 @@ require 'ndx-server'
     if issue
       console.log 'got issue'
       sendMessage = (method, mailOrNo) ->
-        console.log 'send message'
+        console.log 'send message', method, mailOrNo
         template = await ndx.database.selectOne method + 'templates', name: 'Complete'
         if issue and template
           console.log 'got template'
@@ -94,7 +94,7 @@ require 'ndx-server'
                 numbers: [mailOrNo.trim()]
                 body: template.body
               , template
-      await sendMessage 'email', issue.tenantEmail
-      await sendMessage 'sms', issue.tenantPhone
+      sendMessage 'email', issue.tenantEmail
+      sendMessage 'sms', issue.tenantPhone
     res.end 'OK'
 .start()

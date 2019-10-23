@@ -91,7 +91,7 @@ require 'ndx-server'
                 numbers: [mailOrNo.trim()]
                 body: template.body
               , template
-        await sendMessage 'email', template.tenantEmail
-        await sendMessage 'sms', template.tenantPhone
+        await sendMessage 'email', issue.tenantEmail
+        await sendMessage 'sms', issue.tenantPhone
     res.end 'OK'
 .start()

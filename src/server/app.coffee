@@ -11,7 +11,6 @@ require 'ndx-server'
 .use (ndx) ->
   assignAddressAndNames = (args, cb) ->
     if args.table is 'issues'
-      console.log args
       if args.obj.booked 
         contractor = await ndx.database.selectOne 'contractors', _id:args.obj.booked
         args.obj.contractor = contractor.name
@@ -66,6 +65,7 @@ require 'ndx-server'
           , template
     res.end 'OK'
   ndx.app.get '/api/complete/:issueId', ndx.authenticate(), (req, res, next) ->
+    console.log 'completing'
     ndx.database.update 'issues',
       completed:
         by: ndx.user
@@ -74,9 +74,12 @@ require 'ndx-server'
       _id: req.params.issueId
     issue = await ndx.database.selectOne 'issues', _id: req.params.issueId
     if issue
+      console.log 'got issue'
       sendMessage = (method, mailOrNo) ->
+        console.log 'send message'
         template = await ndx.database.selectOne method + 'templates', name: 'Complete'
         if issue and template
+          console.log 'got template'
           contractor = await ndx.database.selectOne 'contractors', _id:issue.booked
           if contractor and mailOrNo
             issue.contractor = contractor.name
@@ -91,7 +94,7 @@ require 'ndx-server'
                 numbers: [mailOrNo.trim()]
                 body: template.body
               , template
-        await sendMessage 'email', issue.tenantEmail
-        await sendMessage 'sms', issue.tenantPhone
+      await sendMessage 'email', issue.tenantEmail
+      await sendMessage 'sms', issue.tenantPhone
     res.end 'OK'
 .start()

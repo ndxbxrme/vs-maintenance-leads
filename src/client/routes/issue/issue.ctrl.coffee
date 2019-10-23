@@ -117,7 +117,7 @@ angular.module 'vs-maintenance-leads'
         $scope.issue.item.notes = $scope.issue.item.notes or []
         $scope.issue.item.notes.push
           date: new Date().valueOf()
-          text: 'Issue completed by ' + method
+          text: 'Issue completed'
           item: 'Note'
           side: ''
           user: Auth.getUser()

@@ -40,7 +40,7 @@ module.exports = (ndx) ->
                   tenantTitle: prop.Salutation
                   tenantFirstName: prop.Firstname
                   tenantLastName: prop.Surname
-                  tenantEmailAddress: prop.EmailAddress
+                  tenantEmail: prop.EmailAddress
                   tenantPhone: prop.ContactNumber
                   title: prop.Title or prop.FaultTitle
                   details: prop.FaultNotes

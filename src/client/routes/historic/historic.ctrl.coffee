@@ -40,6 +40,7 @@ angular.module 'vs-maintenance-leads'
       issue.completed = null
       issue.isBooked = null
       issue.booked = null
+      issue.contractor = null
       issue.cfpJobNumber = null
       $scope.historic.save issue
       alert.log 'Issue restored'

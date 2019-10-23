@@ -100,4 +100,17 @@
       border vs-orange
       &:hover
         background vs-grey
-  
+@media screen and (max-width:992px)
+  .issue-route 
+    .issue-details .form-controls .form-label
+      width 100%
+      margin-bottom 0.5rem
+      &.half
+        width 50%
+    .space-between 
+      display block
+      .right,
+      .left
+        width 100%
+      .right
+        margin-bottom 20px

@@ -5,9 +5,9 @@
         img.logo(src="public/img/VitalSpaceLogo-2016.svg")
     menu.main-menu
     .user.mobile-hide
-      a(ui-sref='profile') {{auth.getUser().displayName || auth.getUser().local.email}} 
+      a.username(ui-sref='profile') {{auth.getUser().displayName || auth.getUser().local.email}} 
       |  
       a(href='/api/logout', target='_self') 
         img.logo(src="public/img/icons/logout.svg")
-    span(ng-click='mobileMenuOut=!mobileMenuOut;$event.stopPropagation()')
-      .fal.fa-ellipsis-v
+      span.mobile-menu(ng-click='mobileMenuOut=!mobileMenuOut;$event.stopPropagation()')
+        i.fal.fa-bars

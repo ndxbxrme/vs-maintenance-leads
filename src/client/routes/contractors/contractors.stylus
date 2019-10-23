@@ -44,3 +44,9 @@
           &:hover
             .address
               color vs-orange
+@media screen and (max-width:992px)
+  .contractors-route .contractors .contractor
+    width calc(50% - 1em)
+@media screen and (max-width:620px)
+  .contractors-route .contractors .contractor
+    width 100%

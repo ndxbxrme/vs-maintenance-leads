@@ -49,7 +49,7 @@ include ../../mixins/form.jade
           .number {{ issue.item.cfpJobNumber }}
     +form({data:'issue'}).form-controls
       .form-section
-        .form-label
+        .form-label.half
           .source
             .source-icon(class='{{issue.item.source}}') {{ issue.item.source }}
         .form-controls.space-between.issue-controls

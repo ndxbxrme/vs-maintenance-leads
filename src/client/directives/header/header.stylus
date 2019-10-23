@@ -29,6 +29,8 @@
     align-items center
     img
       margin-left .4rem
+  .mobile-menu
+      display none
   .lines-btn 
     display none
     width 3rem
@@ -44,7 +46,12 @@
       flex 1
     .user
       margin-right 1rem
-    .main-menu
+    .main-menu,
+    .username
       display none
+    .mobile-menu
+      display block
+      margin-left: 10px;
+      font-size: 1.6rem;
     .lines-btn
       display inline-block!important

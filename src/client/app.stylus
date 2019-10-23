@@ -204,3 +204,32 @@ table.issue-table
     &:last-child,
     &.selected
       color vs-orange
+@media screen and (max-width:992px)
+  h1 
+    font-size 1.4rem
+  .search
+    input
+      width 240px
+      margin-bottom 15px
+  table, thead, tbody, th, td, tr
+    display block
+  thead
+    margin-bottom 30px
+    tr
+      border-bottom none 
+      th
+        padding 10px
+  th 
+    width 94%
+  tr 
+    border-bottom 3px solid vs-orange 
+  td
+    position relative
+    padding-left 50%
+    &:before
+      padding-right 30px
+      white-space nowrap
+      font-weight 700
+    svg.fa-camera-retro
+      top 20% !important
+      right 0px !important

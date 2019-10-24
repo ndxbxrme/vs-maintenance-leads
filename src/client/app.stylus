@@ -209,7 +209,7 @@ table.issue-table
     font-size 1.4rem
   .search
     input
-      width 240px
+      width 230px
       margin-bottom 15px
   table, thead, tbody, th, td, tr
     display block
@@ -233,3 +233,7 @@ table.issue-table
     svg.fa-camera-retro
       top 20% !important
       right 0px !important
+  body .space-between
+    display block
+    .left
+      margin-bottom 20px

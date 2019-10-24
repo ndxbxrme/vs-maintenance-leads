@@ -47,8 +47,11 @@ angular.module 'vs-maintenance-leads'
           side: ''
           user: Auth.getUser()
         alert.log 'Note added'
-      if $scope.issue.item?._id
-        $scope.issue.save()
+      $http.post '/api/notes/' + $scope.issue.item._id, notes: $scope.issue.item.notes
+      .then (res) ->
+        console.log res.data
+      , (err) ->
+        console.log 'error saving notes'
       $scope.note = null
   $scope.editNote = (note) ->
     $scope.note = JSON.parse JSON.stringify note

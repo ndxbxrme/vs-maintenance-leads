@@ -26,6 +26,12 @@ require 'ndx-server'
   ndx.database.on 'preUpdate', assignAddressAndNames
   ndx.database.on 'preInsert', assignAddressAndNames
 .use (ndx) ->
+  ndx.app.post '/api/notes/:issueId', ndx.authenticate(), (req, res, next) ->
+    ndx.database.update 'issues',
+      notes: req.body.notes
+    ,
+      _id: req.params.issueId
+    res.end 'OK'
   ndx.app.get '/api/chase/:method/:issueId', ndx.authenticate(), (req, res, next) ->
     template = await ndx.database.selectOne req.params.method + 'templates', name: 'Chase'
     issue = await ndx.database.selectOne 'issues', _id:req.params.issueId

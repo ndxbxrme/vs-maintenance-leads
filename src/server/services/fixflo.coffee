@@ -55,7 +55,7 @@ module.exports = (ndx) ->
         await fetchProps index.NextURL if index.NextURL
       fetchProps url
     doFixflo = ->
-      date = new Date(new Date().setHours(new Date().getHours() - 24))
+      date = new Date(new Date().setHours(new Date().getHours() - 48))
       await fetchAllProps issuesUrl + '?CreatedSince=' + date.toISOString()
       console.log 'made it back'
       setTimeout doFixflo, 1 * 60 * 1000

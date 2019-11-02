@@ -6,6 +6,7 @@ angular.module 'vs-maintenance-leads', [
   'ngFileUpload'
   'ui.gravatar'
   'ng-sumoselect'
+  'date-swiper'
 ]
 .config ($locationProvider, $urlRouterProvider, gravatarServiceProvider) ->
   $urlRouterProvider.otherwise '/'

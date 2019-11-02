@@ -8,4 +8,4 @@ angular.module 'vs-maintenance-leads'
     controller: 'HistoricCtrl'
     data:
       title: 'Vitalspace Mainenance Leads - Historic Issues'
-      auth: ['superadmin','admin']
+      auth: ['superadmin','admin','agency']

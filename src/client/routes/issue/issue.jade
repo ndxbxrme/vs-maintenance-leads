@@ -92,6 +92,12 @@ include ../../mixins/form.jade
             button.button-green(type='submit', value='{{ m("forms-book") }}', ng-hide='issue.item.contractor || issue.item.completed')
               i.fal.fa-ballot-check
               | Book
+      .form-section(ng-hide='issue.item.cfpJobNumber && issue.item.isBooked')
+        .form-label {{ m('issue-heading-diary') }}
+        .form-controls
+          button.button-grey(type='button', ui-sref='diary({_id:issue.item._id})')
+            i.fal.fa-calendar
+            | {{ m('issue-diary-label') }}
       .form-section(ng-show='issue.item.cfpJobNumber && issue.item.isBooked && !issue.item.completed')
         .form-label {{ m('issue-heading-chase') }}
         .form-controls

@@ -121,6 +121,8 @@ angular.module 'vs-maintenance-leads'
     "issue-label-sms-tenant": "SMS Tenant"
     "issue-heading-complete": "Complete"
     "issue-label-complete": "Complete Issue"
+    "issue-heading-diary": "Diary"
+    "issue-diary-label": "View Diary"
     
   fillTemplate = (template, data) -> 
     template.replace /\{\{(.+?)\}\}/g, (all, match) ->

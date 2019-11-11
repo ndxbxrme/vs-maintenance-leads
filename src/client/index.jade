@@ -13,7 +13,7 @@ html
     link(rel="icon", type="image/png", href="public/favicon/favicon-16x16.png", sizes="16x16")
     link(rel="manifest", href="public/favicon/manifest.json")
     link(rel="mask-icon", href="public/favicon/safari-pinned-tab.svg", color="#5bbad5")
-  body(ng-app='vs-maintenance-leads', ng-click='mobileMenuOut=false')
+  body(ng-app='vs-maintenance-leads', ng-click='bodyTap($event)')
     .page
       header
       menu.mobile-menu(ng-show='mobileMenuOut')
@@ -22,3 +22,5 @@ html
         .body
           .view(ui-view='')
       footer
+    date-swiper(config='{prefix:"swiper", modifier:1.5, show:false}')
+    task-popup

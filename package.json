@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "marked": "^0.7.0",
+    "ndx-auth": "^0.1.13",
     "ndx-connect": "0.0.6",
     "ndx-cors": "0.0.11",
     "ndx-database-backup": "^0.1.0",

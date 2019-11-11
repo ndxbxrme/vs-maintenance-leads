@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module 'vs-maintenance-leads'
-.directive 'calendar', ($timeout, $filter, $rootScope, TaskPopup) ->
+.directive 'calendar', ($timeout, $filter, $rootScope, $stateParams, TaskPopup) ->
   restrict: 'EA'
   templateUrl: 'directives/calendar/calendar.html'
   replace: true
@@ -29,10 +29,12 @@ angular.module 'vs-maintenance-leads'
               taskDate = new Date task.date
               if day.day.getDate() is taskDate.getDate() and day.day.getMonth() is taskDate.getMonth() and day.day.getFullYear() is taskDate.getFullYear()
                 task.date = taskDate
-                task.duration = new Date task.duration
                 dayDate = new Date day.day.getFullYear(), day.day.getMonth(), day.day.getDate(), 9
                 task.top = (taskDate.valueOf() - dayDate.valueOf()) / 3600000 * 6
-                task.height = task.duration.valueOf() / 3600000 * 6
+                task.height = task.duration / 3600000 * 6
+                task.offset = day.tasks.filter (item) ->
+                  item.top is task.top
+                .length
                 day.tasks.push task
     scope.calculateDailyIncome = (day) ->
       output =
@@ -67,7 +69,13 @@ angular.module 'vs-maintenance-leads'
               output.quotes++
       output.profitloss = output.amount - output.target
       output
-    scope.tasks = scope.list 'tasks', null, ->
+    scope.tasks = 
+      items: []
+    scope.allTasks = scope.list 'tasks', null, ->
+      scope.filterTasks()
+    scope.filterTasks = ->
+      scope.tasks.items = scope.allTasks.items.filter (task) ->
+        not scope.selectedContractors or not scope.selectedContractors.length or scope.selectedContractors.includes task.contractor
       mapTasksToDays()
     getTasks = (date, time) ->
       date = new Date date.getFullYear(), date.getMonth(), date.getDate(), 9
@@ -79,8 +87,12 @@ angular.module 'vs-maintenance-leads'
         top: (taskDate.valueOf() - date.valueOf()) / 3600000 * 6
         height: 3600000 / 3600000 * (3 * Math.floor(Math.random() * 6) + 3)
         status: statuses[Math.floor(Math.random() * statuses.length)]
-        duration: new Date(3600000)
+        duration: 3600000
       }]
+    scope.issue = scope.single 'issues', $stateParams
+    scope.contractors = scope.list 'contractors',
+      sort: 'name'
+      sortDir: 'ASC'
     scope.weeks = []
     startDate = new Date()
     selectedDate = startDate
@@ -124,6 +136,8 @@ angular.module 'vs-maintenance-leads'
       startDate = new Date(startDate.valueOf() - 24 * 60 * 60 * 1000)
     $timeout ->
       generateData startDate
+      
+      
     scope.isSelected = (day) ->
       if day.getDate() is selectedDate.getDate() and day.getMonth() is selectedDate.getMonth() and day.getFullYear() is selectedDate.getFullYear()
         return true
@@ -131,17 +145,23 @@ angular.module 'vs-maintenance-leads'
     scope.openTask = (task, ev) ->
       if TaskPopup.getHidden()
         task = task or {}
-        task.duration = task.duration or new Date 3600000
+        task.duration = task.duration or 3600000
         task.assignedTo = task.assignedTo or scope.selectedUser
         task.status = task.status or 'quote'
         task.createdDate = task.createdDate or new Date().valueOf()
         task.createdBy = task.createdBy or scope.auth.getUser()
+        task.issue = task.issue or scope.issue.item._id
+        task.title = task.title or scope.issue.item.title
+        task.address = task.address or scope.issue.item.address
+        if not task.contractor and scope.selectedContractors?.length is 1
+          task.contractor = scope.selectedContractors[0]
         scope.modal
           template: 'task'
           controller: 'TaskCtrl'
           data: 
             task: task
-            maintenance: scope.maintenance
+            contractors: scope.contractors.items.filter (contractor) ->
+              task._id or not scope.selectedContractors or not scope.selectedContractors.length or scope.selectedContractors.includes contractor._id
         .then (result) ->
           true
         , (err) ->
@@ -149,6 +169,11 @@ angular.module 'vs-maintenance-leads'
       else
         TaskPopup.cancelBubble = false
         #ev.stopPropagation()
+      
+      
+      
+      
+      
       
     #swiper stuff
     swiper = angular.element(elem[0])

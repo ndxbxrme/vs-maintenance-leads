@@ -15,11 +15,24 @@ angular.module 'vs-maintenance-leads', [
     size: 16
     "default": 'mm'
     rating: 'pg'
-.run ($rootScope) ->
+.run ($rootScope, TaskPopup) ->
   $rootScope.makeDownloadUrl = (document) ->
     if document
       '/api/download/' + btoa JSON.stringify({path:document.path,filename:document.originalFilename})
   $rootScope.medium = 'dd/MM/yyyy @ HH:mm'
+  $rootScope.bodyTap = (e) ->
+    $rootScope.mobileMenuOut = false
+    elm = e.target
+    isPopup = false
+    while elm and elm.tagName isnt 'BODY'
+      if elm.className is 'popup'
+        isPopup = true
+        break
+      elm = elm.parentNode
+    if not isPopup
+      if not TaskPopup.getHidden()
+        TaskPopup.hide()
+        TaskPopup.cancelBubble = true
 try
   angular.module 'ndx'
 catch e

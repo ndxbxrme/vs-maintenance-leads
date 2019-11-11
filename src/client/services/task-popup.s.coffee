@@ -18,7 +18,7 @@ angular.module 'vs-maintenance-leads'
   moveToElem = ->
     if elem
       offset = getOffset(elem)
-      offset.top += elem.clientHeight
+      offset.top += 19
       offset.left -= +$('.calendar-dir').width()
       elemLeft = offset.left
       popupWidth = $('.task-popup-dir').width()

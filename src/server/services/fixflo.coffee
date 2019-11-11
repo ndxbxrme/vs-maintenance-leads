@@ -20,14 +20,11 @@ module.exports = (ndx) ->
             resolve res.body if res.body 
             reject {} if not res.body
     fetchAllProps = (url) ->
-      console.log 'fetch all props'
       fetchProps = (url) ->
-        console.log 'fetch props', url
         index = await fetch url
         await sleep 200
         if index.Items and index.Items.length
           for item in index.Items
-            console.log 'fetching', item
             testprop = await ndx.database.selectOne 'issues', fixfloUrl: item
             if not testprop
               prop = await fetch item
@@ -55,9 +52,9 @@ module.exports = (ndx) ->
         await fetchProps index.NextURL if index.NextURL
       fetchProps url
     doFixflo = ->
+      date = new Date(new Date().setHours(new Date().getHours() - 48))
       if issuesUrl
-        date = new Date(new Date().setHours(new Date().getHours() - 48))
         await fetchAllProps issuesUrl + '?CreatedSince=' + date.toISOString()
         console.log 'made it back'
-        setTimeout doFixflo, 1 * 60 * 1000
+    setInterval doFixflo, 5 * 60 * 1000
     doFixflo()

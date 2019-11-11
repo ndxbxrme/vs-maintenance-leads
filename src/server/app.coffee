@@ -3,17 +3,20 @@ marked = require 'marked'
 require 'ndx-server'
 .config
   database: 'db'
-  tables: ['users', 'issues', 'contractors', 'emailtemplates', 'smstemplates', 'shorttoken']
+  tables: ['users', 'issues', 'tasks', 'contractors', 'emailtemplates', 'smstemplates', 'shorttoken']
   localStorage: './data'
   hasInvite: true
   hasForgot: true
   softDelete: true
 .use (ndx) ->
+  ndx.database.on 'ready', ->
+    #ndx.database.delete 'tasks'
   assignAddressAndNames = (args, cb) ->
     if args.table is 'issues'
       if args.obj.booked 
         contractor = await ndx.database.selectOne 'contractors', _id:args.obj.booked
         args.obj.contractor = contractor.name
+      args.oldObj = args.oldObj or {}
       args.obj.address = "#{args.obj.address1 or args.oldObj.address1}#{if (args.obj.address2 or args.oldObj.address2) then ', ' + (args.obj.address2 or args.oldObj.address2) else ''}, #{args.obj.postcode or args.oldObj.postcode}"
       args.obj.tenant = "#{if args.obj.tenantTitle or args.oldObj?.tenantTitle then (args.obj.tenantTitle or args.oldObj.tenantTitle) + ' ' else ''}#{args.obj.tenantFirstName or args.oldObj.tenantFirstName} #{args.obj.tenantLastName or args.oldObj.tenantLastName}"
       args.obj.search = (args.obj.address or '') + '|' + (args.obj.tenant or '') + '|' + (args.obj.contractor or '') + '|' + (args.obj.title or args.oldObj?.title or '') + '|' + (args.obj.cfpJobNumber or args.oldObj?.cfpJobNumber or '')
@@ -22,6 +25,9 @@ require 'ndx-server'
       args.obj.status = 'Booked' if args.obj.isBooked
       args.obj.status = 'Deleted' if args.obj.deleted
       args.obj.status = 'Completed' if args.obj.completed
+    if args.table is 'tasks'
+      contractor = await ndx.database.selectOne 'contractors', _id:args.obj.contractor
+      args.obj.contractorName = contractor.name
     cb true
   ndx.database.on 'preUpdate', assignAddressAndNames
   ndx.database.on 'preInsert', assignAddressAndNames

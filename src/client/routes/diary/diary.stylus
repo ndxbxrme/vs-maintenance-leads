@@ -1,0 +1,48 @@
+@import '../../variables'
+.diary-route
+  display flex
+  font-size 12px
+  .toolbar
+    background vs-grey
+    color white
+    display flex
+    flex-direction column
+    width 260px
+    min-width 260px
+    max-width 260px
+    flex-wrap wrap
+    padding-bottom .5rem
+    .issue
+      width 100%
+      padding-top .4rem
+      div
+        padding 0 .4rem .4rem .4rem
+    .dates
+      width 100%
+      .date-swiper-holder
+        position relative
+        display block
+        .day-names
+          color inherit
+          margin-top 1.6rem
+        .month
+          background #394a58
+        .controls
+          display none
+        .month-holder
+          height 2rem
+          position relative
+        .month-name
+          position absolute
+          top 0
+          left 0
+          width 100%
+          display block
+          pointer-events none
+        .is-selected
+          .date
+            background vs-orange
+    .contractors
+      width 100%
+      .input-holder
+        color #333

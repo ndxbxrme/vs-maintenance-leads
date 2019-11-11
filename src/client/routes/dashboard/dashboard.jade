@@ -8,7 +8,7 @@ mixin box(args)
         .address {{issue.address}}
         .issue-title {{issue.title}}
     pagination(ng-model=args.list + '.args.page', total=args.list + '.total', page-size=args.list + '.args.pageSize')
-.dashboard-route(ng-show='auth.getUser()')
+.dashboard-route.route(ng-show='auth.getUser()')
   h1 Dashboard
   .heading Overview of Maintenance Issues
   .boxes

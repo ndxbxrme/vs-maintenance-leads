@@ -40,6 +40,8 @@
     "ndx-alert": "^0.0.2",
     "humane-js": "^3.2.2",
     "ng-sumoselect": "^0.0.22",
-    "jade": "1.11.0"
+    "jade": "1.11.0",
+    "moment": "^2.24.0",
+    "underscore": "^1.9.1"
   }
 }

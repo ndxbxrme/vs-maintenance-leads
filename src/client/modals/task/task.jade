@@ -1,0 +1,38 @@
+.modal.task-modal
+  h1(ng-show='!task._id') Book a maintenance appointment
+  h1(ng-show='task._id') Edit maintenance appointment
+  form(name='forms.myForm', ng-submit='save()', novalidate)
+    .form-item.half
+      label.title Property:
+      p {{task.address}}
+    .form-item.half
+      label.title Title:
+      p {{task.title}}
+    .form-item.half
+      label.title Contractor
+      .input-holder
+        select(sumoselect="{placeholder:'Contractor', search:true}", ng-model='task.contractor', name='contractors')
+          option(ng-repeat='contractor in contractors', value="{{contractor._id}}") {{ contractor.name }}
+    .form-item.half
+      label.title Status:
+      select(sumoselect='options', ng-model='task.status')
+        option(ng-repeat='status in statuses', value='{{status.id}}') {{status.name}}
+
+    .form-item.half
+      label.title Date:
+      a.date(tap='setDate()') {{task.date | date:"mediumDate"}}
+    .form-item.quarter
+      label.title Time:
+      input(type='time', ng-model='task.date')
+    .form-item.quarter
+      label.title Duration:
+      input(type='time', ng-model='task.duration')
+    .form-item
+      label.title Created by:
+      span {{task.createdDate | date:'mediumDate'}}, {{task.createdDate | date:'shortTime'}} | &nbsp;
+        img(gravatar-src='task.createdBy.local.email')
+        span {{task.createdBy.displayName || task.createdBy.local.email}}
+    .controls.bottom
+      button.delete(type='button', tap='delete()', ng-show='task._id') Delete
+      input.submit(type='submit', value='Submit')
+  a.close-reveal-modal(ng-click='cancel()') &times;

@@ -1,2 +1,14 @@
-.diary-route
+.diary-route.route-full
+  .toolbar
+    .issue
+      .name {{issue.item.address}}
+      .title {{issue.item.title}}
+    .dates
+      date-swiper(config='{prefix:"toolbar", modifier:1.5, show:true}')
+    .contractors
+      label Contractors
+      .input-holder
+        select(sumoselect="{placeholder:'All contractors', search:true}", ng-model='selectedContractors', name='contractors', ng-change='filterTasks()', multiple=true)
+          option(ng-repeat='contractor in contractors.items', value="{{contractor._id}}") {{ contractor.name }}
   calendar
+    

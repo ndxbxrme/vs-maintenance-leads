@@ -9,6 +9,8 @@ angular.module 'vs-maintenance-leads'
   originalDate = new Date(new Date($scope.task.date).toDateString())
   $scope.task.duration = new Date(originalDate.valueOf() + $scope.task.duration)
   $scope.contractors = data.contractors
+  $scope.cfpJobNumber = data.cfpJobNumber or ''
+  $scope.needsJobNumber = data.needsJobNumber
   $scope.statuses = [
     {
       id: 'quote',
@@ -45,9 +47,17 @@ angular.module 'vs-maintenance-leads'
       #property = Property.getProperty $scope.task.property
       $scope.submitTask.duration = $scope.submitTask.duration.valueOf() - originalDate.valueOf()
       $scope.submitTask.dateVal = $scope.submitTask.date.valueOf()
+      $scope.submitTask.status = $scope.submitTask.status or booked: true
+      $scope.submitTask.cfpJobNumber = $scope.cfpJobNumber
       $http.post "/api/tasks/#{$scope.task._id or ''}", $scope.submitTask
       .then (response) ->
-        ndxModalInstance.dismiss()
+        if $scope.needsJobNumber
+          obj = 
+            cfpJobNumber:$scope.cfpJobNumber
+          $http.post "/api/issues/#{$scope.task.issue}", obj
+          .then ndxModalInstance.dismiss
+        else
+          ndxModalInstance.dismiss()
       , (err) ->
         false
   $scope.delete = ->

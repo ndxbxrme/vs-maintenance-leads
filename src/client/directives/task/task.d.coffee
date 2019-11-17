@@ -8,6 +8,7 @@ angular.module 'vs-maintenance-leads'
   link: (scope, elem, attrs) ->
     scope.openTask = (task, ev) ->
       TaskPopup.setTask task
+      TaskPopup.setContractors scope.contractors?.items
       TaskPopup.show elem
       ev.stopPropagation()
       ###

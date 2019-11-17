@@ -8,15 +8,11 @@
     .form-item.half
       label.title Title:
       p {{task.title}}
-    .form-item.half
+    .form-item
       label.title Contractor
       .input-holder
         select(sumoselect="{placeholder:'Contractor', search:true}", ng-model='task.contractor', name='contractors')
           option(ng-repeat='contractor in contractors', value="{{contractor._id}}") {{ contractor.name }}
-    .form-item.half
-      label.title Status:
-      select(sumoselect='options', ng-model='task.status')
-        option(ng-repeat='status in statuses', value='{{status.id}}') {{status.name}}
 
     .form-item.half
       label.title Date:
@@ -27,6 +23,9 @@
     .form-item.quarter
       label.title Duration:
       input(type='time', ng-model='task.duration')
+    .form-item.half(ng-if='needsJobNumber')
+      label.title CFP Job Number
+      input(type='text', ng-model='$parent.$parent.$parent.cfpJobNumber')
     .form-item
       label.title Created by:
       span {{task.createdDate | date:'mediumDate'}}, {{task.createdDate | date:'shortTime'}} | &nbsp;

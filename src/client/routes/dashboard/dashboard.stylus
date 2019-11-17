@@ -43,6 +43,18 @@
         svg 
           font-size 1rem
           margin-right 10px
+        .details
+          flex 1
+        .status
+          display flex
+          div
+            opacity .2
+      &.booked .booked
+        opacity 1
+      &.completed .completed
+        opacity 1
+      &.invoiced .invoiced
+        opacity 1
 @media screen and (max-width:992px)
   .dashboard-route .boxes 
     display block

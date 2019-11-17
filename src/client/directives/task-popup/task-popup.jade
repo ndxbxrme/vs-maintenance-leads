@@ -8,19 +8,47 @@
         label From
         span {{getTask().date | date:'shortTime'}} - {{getDateTo() | date:'shortTime'}}
       .details-item
-        label Cost
-        span &pound;{{getTask().cost}}
+        .buttons
+          button.button-alt(type='button', ng-click='chaseContractor("email", getTask())') 
+            i.fal.fa-at
+            | {{ m('issue-label-email') }}
+          button.button-grey(type='button', ng-click='chaseContractor("sms", getTask())') 
+            i.fal.fa-sms
+            | {{ m('issue-label-sms') }}
       .details-item
-        label Created by
-        span
-          img(gravatar-src='getTask().createdBy.local.email')
-          | {{getTask().createdBy.displayName}}
+        .buttons
+          button.button-alt(type='button', ng-click='informTenant("email", getTask())') 
+            i.fal.fa-at
+            | {{ m('issue-label-email-tenant') }}
+          button.button-grey(type='button', ng-click='informTenant("sms", getTask())') 
+            i.fal.fa-sms
+            | {{ m('issue-label-sms-tenant') }}
     .controls
       button.edit(ng-click='edit(getTask())') Edit
       .checkbox-item
-        label(for='paid') Paid(&pound;)
-        input#paid(type='checkbox', ng-model='getTask().paid', ng-change='save()')
+        label(for='completed') Job Completed
+        input#completed(type='checkbox', ng-model='getTask().status.completed', ng-change='save()')
       .checkbox-item
-        label(for='completed') Completed
-        input#completed(type='checkbox', ng-model='getTask().completed', ng-checked='getTask().status==="completed"', ng-change='complete()')
+        label(for='invoiced') Invoice Received
+        input#paid(type='checkbox', ng-model='getTask().status.invoiced', ng-change='save()')
+    .button-section(ng-show='issue.item.cfpJobNumber && issue.item.statusName==="Booked"')
+      .form-label {{ m('issue-heading-chase') }}
+      .form-controls
+        .buttons
+          button.button-alt(type='button', ng-click='chaseContractor("email", getTask())') 
+            i.fal.fa-at
+            | {{ m('issue-label-email') }}
+          button.button-grey(type='button', ng-click='chaseContractor("sms", getTask())') 
+            i.fal.fa-sms
+            | {{ m('issue-label-sms') }}
+    .button-section(ng-show='issue.item.cfpJobNumber && issue.item.statusName==="Booked"')
+      .form-label {{ m('issue-heading-inform') }}
+      .form-controls
+        .buttons
+          button.button-alt(type='button', ng-click='informTenant("email", getTask())') 
+            i.fal.fa-at
+            | {{ m('issue-label-email-tenant') }}
+          button.button-grey(type='button', ng-click='informTenant("sms", getTask())') 
+            i.fal.fa-sms
+            | {{ m('issue-label-sms-tenant') }}
   .pointer

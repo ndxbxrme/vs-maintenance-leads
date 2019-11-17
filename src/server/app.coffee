@@ -1,4 +1,4 @@
-'use strict'
+'use strict' 
 marked = require 'marked'
 require 'ndx-server'
 .config
@@ -9,9 +9,9 @@ require 'ndx-server'
   hasForgot: true
   softDelete: true
 .use (ndx) ->
-  ndx.database.on 'ready', ->
-    #ndx.database.delete 'tasks'
   assignAddressAndNames = (args, cb) ->
+    if args.changes?.deleted
+      return cb true
     if args.table is 'issues'
       if args.obj.booked 
         contractor = await ndx.database.selectOne 'contractors', _id:args.obj.booked
@@ -20,27 +20,146 @@ require 'ndx-server'
       args.obj.address = "#{args.obj.address1 or args.oldObj.address1}#{if (args.obj.address2 or args.oldObj.address2) then ', ' + (args.obj.address2 or args.oldObj.address2) else ''}, #{args.obj.postcode or args.oldObj.postcode}"
       args.obj.tenant = "#{if args.obj.tenantTitle or args.oldObj?.tenantTitle then (args.obj.tenantTitle or args.oldObj.tenantTitle) + ' ' else ''}#{args.obj.tenantFirstName or args.oldObj.tenantFirstName} #{args.obj.tenantLastName or args.oldObj.tenantLastName}"
       args.obj.search = (args.obj.address or '') + '|' + (args.obj.tenant or '') + '|' + (args.obj.contractor or '') + '|' + (args.obj.title or args.oldObj?.title or '') + '|' + (args.obj.cfpJobNumber or args.oldObj?.cfpJobNumber or '')
-      args.obj.status = 'Reported'
-      args.obj.status = args.obj.fixfloStatus if args.obj.fixfloStatus
-      args.obj.status = 'Booked' if args.obj.isBooked
-      args.obj.status = 'Deleted' if args.obj.deleted
-      args.obj.status = 'Completed' if args.obj.completed
+      args.obj.status = args.obj.status or
+        booked: false
+        completed: false
+        invoiced: false
+      if typeof(args.obj.status) is 'string'
+        args.obj.status = switch args.obj.status
+          when 'Reported' then {booked:false,completed:false,invoiced:false}
+          when 'Booked' then {booked:true,completed:false,invoiced:false}
+          when 'Completed' then {booked:true,completed:true,invoiced:false}
+          else {booked:false,completed:false,invoiced:false}
+      args.obj.statusName = 'Reported'
+      args.obj.statusName = 'Booked' if args.obj.status.booked
+      args.obj.statusName = 'Completed' if args.obj.status.completed
     if args.table is 'tasks'
       contractor = await ndx.database.selectOne 'contractors', _id:args.obj.contractor
       args.obj.contractorName = contractor.name
     cb true
+  updateStatus = (args, cb) ->
+    if args.table is 'tasks'
+      issue = await ndx.database.selectOne 'issues', _id: args.obj.issue
+      tasks = await ndx.database.select 'tasks', 
+        where:
+          issue: args.obj.issue
+        sort: 'dateVal'
+        sortDir: 'ASC'
+      status = 
+        booked: false
+        completed: false
+        invoiced: false
+      if tasks and tasks.length
+        status =
+          booked: true
+          completed: true
+          invoiced: true
+        for task in tasks
+          status.booked = if status.booked and task.status.booked then true else false
+          status.completed = if status.completed and task.status.completed then true else false
+          status.invoiced = if status.invoiced and task.status.invoiced then true else false
+      #check status change and email
+      issue.status = status
+      ndx.database.upsert 'issues', issue
+      testissue = await ndx.database.selectOne 'issues', _id:issue._id
+    cb true
+  sendMessage = (issue, contractor, method, name, mailOrNo) ->
+    template = await ndx.database.selectOne method + 'templates', name: name
+    if issue and template
+      if contractor and mailOrNo
+        issue.contractor = contractor.name
+        if method is 'email'
+          template.to = mailOrNo.trim()
+          template.subject = template.subject
+          Object.assign template, issue
+          ndx.email.send template
+        else if method is 'sms'
+          ndx.sms.send
+            originator: 'VitalSpace'
+            numbers: [mailOrNo.trim()]
+            body: template.body
+          , template
+  sendMessages = (args, cb) ->
+    if args.table is 'tasks'
+      if args.op is 'insert'
+        issue = await ndx.database.selectOne 'issues', _id:args.obj.issue
+        contractor = await ndx.database.selectOne 'contractors', _id:args.obj.contractor
+        sendMessage issue, contractor, 'email', 'TenantBooked', issue.tenantEmail
+        sendMessage issue, contractor, 'sms', 'TenantBooked', issue.tenantPhone
+        sendMessage issue, contractor, 'email', 'ContractorBooked', contractor.email
+        sendMessage issue, contractor, 'sms', 'ContractorBooked', contractor.phone
+        if args.user
+          issue.notes = issue.notes or []
+          issue.notes.push
+            date: new Date().valueOf()
+            text: 'Booked - ' + contractor.name
+            item: 'Note'
+            side: ''
+            user: args.user
+          ndx.database.upsert 'issues', issue
+      else if args.changes
+        issue = await ndx.database.selectOne 'issues', _id:args.obj.issue
+        contractor = await ndx.database.selectOne 'contractors', _id:args.obj.contractor
+        if args.changes['status.completed']?.to
+          sendMessage issue, contractor, 'email', 'TenantCompleted', issue.tenantEmail
+          sendMessage issue, contractor, 'sms', 'TenantCompleted', issue.tenantPhone
+          sendMessage issue, contractor, 'email', 'ContractorCompleted', contractor.email
+          sendMessage issue, contractor, 'sms', 'ContractorCompleted', contractor.phone
+          if args.user
+            issue.notes = issue.notes or []
+            issue.notes.push
+              date: new Date().valueOf()
+              text: 'Completed - ' + contractor.name
+              item: 'Note'
+              side: ''
+              user: args.user
+            ndx.database.upsert 'issues', issue
+        if args.changes['status.invoiced']?.to
+          sendMessage issue, contractor, 'email', 'TenantInvoiced', issue.tenantEmail
+          sendMessage issue, contractor, 'sms', 'TenantInvoiced', issue.tenantPhone
+          sendMessage issue, contractor, 'email', 'ContractorInvoiced', contractor.email
+          sendMessage issue, contractor, 'sms', 'ContractorInvoiced', contractor.phone
+          if args.user
+            issue.notes = issue.notes or []
+            issue.notes.push
+              date: new Date().valueOf()
+              text: 'Invoice Received - ' + contractor.name
+              item: 'Note'
+              side: ''
+              user: args.user
+            ndx.database.upsert 'issues', issue
+    cb true
+  sendSockets = (args, cb) ->
+    if args.table is 'issues'
+      ndx.socket.emitToAll 'newIssue', args.obj
+    cb true
   ndx.database.on 'preUpdate', assignAddressAndNames
   ndx.database.on 'preInsert', assignAddressAndNames
+  ndx.database.on 'update', updateStatus
+  ndx.database.on 'insert', updateStatus
+  ndx.database.on 'update', sendMessages
+  ndx.database.on 'insert', sendMessages
+  ndx.database.on 'insert', sendSockets
 .use (ndx) ->
+  ndx.app.get '/api/emit', (req, res, next) ->
+    issue = await ndx.database.selectOne 'issues'
+    ndx.socket.emitToAll 'newIssue', issue
+    res.end 'OK'
+  ndx.app.get '/api/update-statuses', ndx.authenticate(), (req, res, next) ->
+    issues = await ndx.database.select 'issues'
+    for issue in issues
+      ndx.database.upsert 'issues', issue
+    res.end 'OK'
   ndx.app.post '/api/notes/:issueId', ndx.authenticate(), (req, res, next) ->
     ndx.database.update 'issues',
       notes: req.body.notes
     ,
       _id: req.params.issueId
     res.end 'OK'
-  ndx.app.get '/api/chase/:method/:issueId', ndx.authenticate(), (req, res, next) ->
+  ndx.app.get '/api/chase/:method/:taskId', ndx.authenticate(), (req, res, next) ->
     template = await ndx.database.selectOne req.params.method + 'templates', name: 'Chase'
-    issue = await ndx.database.selectOne 'issues', _id:req.params.issueId
+    task = await ndx.database.selectOne 'tasks', _id:req.params.taskId
+    issue = await ndx.database.selectOne 'issues', _id:task.issue
     if template and issue and issue.isBooked
       contractor = await ndx.database.selectOne 'contractors', _id:issue.booked
       if contractor
@@ -56,10 +175,20 @@ require 'ndx-server'
             numbers: [contractor.phone.trim()]
             body: template.body
           , template
+        issue.item.notes = issue.item.notes or []
+        issue.item.notes.push
+          date: new Date().valueOf()
+          text: 'Contractor - ' + contractor.name + ' chased by ' + req.params.method
+          item: 'Note'
+          side: ''
+          user: user
+        ndx.database.upsert 'issues', issue
     res.end 'OK'
-  ndx.app.get '/api/inform/:method/:issueId', ndx.authenticate(), (req, res, next) ->
+  ndx.app.get '/api/inform/:method/:taskId', ndx.authenticate(), (req, res, next) ->
     template = await ndx.database.selectOne req.params.method + 'templates', name: 'Inform'
-    issue = await ndx.database.selectOne 'issues', _id:req.params.issueId
+    task = await ndx.database.selectOne 'tasks', _id:req.params.taskId
+    issue = await ndx.database.selectOne 'issues', _id:task.issue
+    user = ndx.user
     if template and issue and issue.isBooked
       contractor = await ndx.database.selectOne 'contractors', _id:issue.booked
       if contractor
@@ -75,9 +204,16 @@ require 'ndx-server'
             numbers: [issue.tenantPhone.trim()]
             body: template.body
           , template
+        issue.item.notes = issue.item.notes or []
+        issue.item.notes.push
+          date: new Date().valueOf()
+          text: 'Tenant informed by ' + req.params.method
+          item: 'Note'
+          side: ''
+          user: user
+        ndx.database.upsert 'issues', issue
     res.end 'OK'
   ndx.app.get '/api/complete/:issueId', ndx.authenticate(), (req, res, next) ->
-    console.log 'completing'
     ndx.database.update 'issues',
       completed:
         by: ndx.user
@@ -86,12 +222,9 @@ require 'ndx-server'
       _id: req.params.issueId
     issue = await ndx.database.selectOne 'issues', _id: req.params.issueId
     if issue
-      console.log 'got issue'
       sendMessage = (method, mailOrNo) ->
-        console.log 'send message', method, mailOrNo
         template = await ndx.database.selectOne method + 'templates', name: 'Complete'
         if issue and template
-          console.log 'got template'
           contractor = await ndx.database.selectOne 'contractors', _id:issue.booked
           if contractor and mailOrNo
             issue.contractor = contractor.name

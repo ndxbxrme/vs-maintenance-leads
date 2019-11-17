@@ -64,6 +64,13 @@
     margin-top 20px
     input, button
       width 49%
+  .tasks
+    .task
+      display flex
+      align-items baseline
+      .contractor
+        margin 0 1rem
+        flex 1
   .case-notes
     border-top 1px solid vs-lightgrey
     margin 50px 0 30px 0
@@ -100,6 +107,63 @@
       border vs-orange
       &:hover
         background vs-grey
+  .documents
+    display flex
+    flex-direction column
+    justify-content center
+    align-items center
+    padding 1rem
+    background #fdfdfd
+    margin-top 1rem
+    box-shadow inset 0 0 6px rgba(0,0,0,0.2)
+    .drop-box
+      border 3px dashed #ccc
+      border-radius 1rem
+      background #f1f1f1
+      width 100%
+      text-align center
+      padding-bottom 1rem
+      &.dragover
+        h3
+          color vs-orange
+    .document-list
+      width 100%
+      display flex
+      justify-content flex-start
+      flex-wrap wrap
+      .document
+        width calc(25% - 2rem)
+        display flex
+        flex-direction column
+        justify-content center
+        box-sizing border-box
+        border 2px solid vs-lightgrey
+        padding 1rem
+        margin 1rem
+        font-size 1.2rem
+        .document-link
+          flex 1
+        .filename
+          margin-top 0.5rem
+          display flex
+          input
+            flex 1
+            margin-left 1rem
+        .controls
+          display flex
+          justify-content space-between
+          a
+            color vs-orange
+        img
+          max-width 100%
+          display block
+          margin 10px auto
+        @media screen and (max-width: 1080px)
+          width calc(33% - 2rem)
+        @media screen and (max-width: 800px)
+          width calc(50% - 2rem)
+        @media screen and (max-width: 590px)
+          width calc(100%)
 @media screen and (max-width:992px)
   .issue-route 
     .issue-details .form-controls .form-label

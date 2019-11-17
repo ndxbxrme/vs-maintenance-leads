@@ -15,24 +15,3 @@
               .desktop {{hour | date:'ha'}}
               .mobile {{hour | date:'ha'}}
           task(ng-repeat='task in day.tasks | filter:$root.selectedUser | byStatus:filters', style='top:{{task.top + (task.offset * .3)}}rem; height:calc({{task.height}}rem + 1px)', ng-click='openTask(task, $event)', class='{{task.status}}')
-        .income {{income = calculateDailyIncome(day.day); ''}}
-          .desktop
-            .income-item
-              label Income
-              span {{income.amount | currency:'£'}}
-            .income-item
-              label Target
-              span {{income.target | currency:'£'}}
-            .income-item
-              label +/-
-              span.total(ng-class='{loss:income.profitloss<0}') {{income.profitloss | currency:'£'}}
-          .mobile
-            .income-item
-              label Income
-              span {{income.amount | currency:'£':0}}
-            .income-item
-              label Target
-              span {{income.target | currency:'£':0}}
-            .income-item
-              label +/-
-              span.total(ng-class='{loss:income.profitloss<0}') {{income.profitloss | currency:'£':0}}

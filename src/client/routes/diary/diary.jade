@@ -1,7 +1,9 @@
 .diary-route.route-full
   .toolbar
     .issue
-      .name {{issue.item.address}}
+      .name 
+        input#onlyThisIssue(type='checkbox', ng-model='onlyThisIssue', ng-change='filterTasks()')
+        label(for='onlyThisIssue') {{issue.item.address}}
       .title {{issue.item.title}}
     .dates
       date-swiper(config='{prefix:"toolbar", modifier:1.5, show:true}')

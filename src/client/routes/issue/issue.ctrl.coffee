@@ -1,10 +1,12 @@
 'use strict'
 
 angular.module 'vs-maintenance-leads'
-.controller 'IssueCtrl', ($scope, $stateParams, $state, $http, Auth, alert) ->
+.controller 'IssueCtrl', ($scope, $stateParams, $state, $http, Auth, Upload, alert) ->
   $scope.fetched = false
   $scope.submitted = false
   $scope.sources = [
+    name: 'FixFlo', _id: 'fixflo'
+  ,
     name: 'Telephone', _id: 'telephone'
   ,
     name: 'Walk in', _id: 'walkin'
@@ -27,8 +29,12 @@ angular.module 'vs-maintenance-leads'
     issue.item.source = 'telephone' if not issue.item.source
     $scope.fetched = true
   $scope.contractors = $scope.list 'contractors'
+  $scope.tasks = $scope.list 'tasks',
+    where:
+      issue: myParams._id
+    sort: 'date'
+    sortDir: 'DESC'
   $scope.addNote = ->
-    console.log 'add note', $scope.note
     if $scope.note
       if $scope.note.date
         for mynote in $scope.issue.item.notes or []
@@ -57,9 +63,7 @@ angular.module 'vs-maintenance-leads'
     $scope.note = JSON.parse JSON.stringify note
     $('.add-note')[0].scrollIntoView true 
   $scope.deleteNote = (note) ->
-    console.log 'delete', $scope.issue.item.notes
     for mynote in $scope.issue.item.notes or []
-      console.log mynote
       if mynote.date is note.date and mynote.user?._id is note.user?._id
         $scope.issue.item.notes.remove mynote
         alert.log 'Note deleted'
@@ -78,7 +82,6 @@ angular.module 'vs-maintenance-leads'
     , (err) ->
       console.log 'err', err
   $scope.showLightbox = (media) ->
-    console.log 'show lightbox'
     $scope.modal
       template: 'lightbox'
       controller: 'LightboxCtrl'
@@ -125,6 +128,38 @@ angular.module 'vs-maintenance-leads'
           side: ''
           user: Auth.getUser()
         $scope.issue.save()
+  $scope.uploadFiles = (files, errFiles) ->
+    myissue = $scope.issue
+    if files
+      Upload.upload
+        url: '/api/upload'
+        data:
+          file: files
+          user: Auth.getUser()
+      .then (response) ->
+        if response.data
+          $scope.uploadProgress = 0
+          if not myissue.item.documents
+            myissue.item.documents = []
+          for document in response.data
+            myissue.item.documents.push document
+          alert.log 'Document uploaded'
+          myissue.save()
+      , (err) ->
+        false
+      , (progress) ->
+        $scope.uploadProgress = Math.min 100, parseInt(100.0 * progress.loaded / progress.total)
+  $scope.makeDownloadUrl = (document) ->
+    '/api/download/' + btoa "#{JSON.stringify({path:document.path,filename:document.originalFilename})}"
+  $scope.saveDocument = (document) ->
+    document.editing = false
+    alert.log 'Document updated'
+    $scope.issue.save()
+  $scope.deleteDocument = (document) ->
+    if $window.confirm 'Are you sure you want to delete this document?'
+      $scope.issue.item.documents.splice $scope.issue.item.documents.indexOf(document), 1
+      alert.log 'Document deleted'
+      $scope.issue.save()
   $scope.saveFn = (cb) ->
     if $scope.issue.item.date && !$scope.editing
       $scope.modal
@@ -137,7 +172,6 @@ angular.module 'vs-maintenance-leads'
         alert.log 'Issue Booked'
         cb true
       , (err) ->
-        console.log 'err', err
         cb false
     else
       $scope.issue.item.date = new Date().valueOf()

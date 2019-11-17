@@ -15,12 +15,17 @@ angular.module 'vs-maintenance-leads', [
     size: 16
     "default": 'mm'
     rating: 'pg'
-.run ($rootScope, TaskPopup) ->
+.run ($rootScope, $transitions, TaskPopup, alert, socket, $http) ->
   $rootScope.makeDownloadUrl = (document) ->
     if document
       '/api/download/' + btoa JSON.stringify({path:document.path,filename:document.originalFilename})
   $rootScope.medium = 'dd/MM/yyyy @ HH:mm'
+  $transitions.onBefore {}, (trans) ->
+    if not TaskPopup.getHidden()
+      TaskPopup.hide()
+      TaskPopup.cancelBubble = true
   $rootScope.bodyTap = (e) ->
+    $http.get '/api/emit' if e.target.className is 'logo'
     $rootScope.mobileMenuOut = false
     elm = e.target
     isPopup = false
@@ -32,7 +37,10 @@ angular.module 'vs-maintenance-leads', [
     if not isPopup
       if not TaskPopup.getHidden()
         TaskPopup.hide()
-        TaskPopup.cancelBubble = true
+        TaskPopup.cancelBubble = true    
+  if socket
+    socket.on 'newIssue', (issue) ->
+      alert.log '<h3>' + issue.address + '</h3><p>' + issue.title + '</p>'
 try
   angular.module 'ndx'
 catch e

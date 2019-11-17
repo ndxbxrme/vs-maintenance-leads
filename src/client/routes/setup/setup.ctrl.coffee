@@ -34,4 +34,10 @@ angular.module 'vs-maintenance-leads'
     $('.invite-url input').select()
     alert.log 'Copied to clipboard'
     document.execCommand 'copy'
+  $scope.updateStatuses = ->
+    $http.get '/api/update-statuses'
+    .then (res) ->
+      alert.log 'Updating'
+    , (err) ->
+      console.log err
  

@@ -1,11 +1,26 @@
 @import '../../variables'
-.restore
-  button
-    svg 
-      transition all 0.4s ease-in-out
-    &:hover
+.historic-route
+  td
+    border none!important
+  tr
+    border-bottom 1px solid #ccc
+  .restore
+    button
       svg 
-        transform rotate(-360deg)
+        transition all 0.4s ease-in-out
+      &:hover
+        svg 
+          transform rotate(-360deg)
+  .status
+    display flex
+    div
+      opacity 0.2
+    &.booked .booked
+      opacity 1
+    &.completed .completed
+      opacity 1
+    &.invoiced .invoiced
+      opacity 1
 @media screen and (max-width:992px)
   .historic-route table tr td
     &:nth-of-type(1):before

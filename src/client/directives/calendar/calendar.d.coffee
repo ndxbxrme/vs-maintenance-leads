@@ -75,7 +75,10 @@ angular.module 'vs-maintenance-leads'
       scope.filterTasks()
     scope.filterTasks = ->
       scope.tasks.items = scope.allTasks.items.filter (task) ->
-        not scope.selectedContractors or not scope.selectedContractors.length or scope.selectedContractors.includes task.contractor
+        if scope.onlyThisIssue
+          (scope.onlyThisIssue and scope.issue.item._id is task.issue) and (not scope.selectedContractors or not scope.selectedContractors.length or scope.selectedContractors.includes task.contractor)
+        else
+          (not scope.selectedContractors or not scope.selectedContractors.length or scope.selectedContractors.includes task.contractor)
       mapTasksToDays()
     getTasks = (date, time) ->
       date = new Date date.getFullYear(), date.getMonth(), date.getDate(), 9
@@ -147,7 +150,7 @@ angular.module 'vs-maintenance-leads'
         task = task or {}
         task.duration = task.duration or 3600000
         task.assignedTo = task.assignedTo or scope.selectedUser
-        task.status = task.status or 'quote'
+        task.status = task.status or booked:true
         task.createdDate = task.createdDate or new Date().valueOf()
         task.createdBy = task.createdBy or scope.auth.getUser()
         task.issue = task.issue or scope.issue.item._id
@@ -160,6 +163,8 @@ angular.module 'vs-maintenance-leads'
           controller: 'TaskCtrl'
           data: 
             task: task
+            cfpJobNumber: scope.issue.item.cfpJobNumber
+            needsJobNumber: !scope.issue.item.cfpJobNumber
             contractors: scope.contractors.items.filter (contractor) ->
               task._id or not scope.selectedContractors or not scope.selectedContractors.length or scope.selectedContractors.includes contractor._id
         .then (result) ->

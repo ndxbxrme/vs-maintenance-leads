@@ -15,12 +15,9 @@ angular.module 'vs-maintenance-leads'
       .then (response) ->
         $scope.codeRequested = true
   $scope.submitPass = ->
-    console.log 'submit', $scope.repeatPassword, $scope.newUser.local.password, $scope.myForm.$valid
     $scope.submitted = true
     if $scope.myForm.$valid
-      console.log 'valid'
       if $scope.repeatPassword is $scope.newUser.local.password
-        console.log 'passwords match'
         $http.post "/forgot-update/#{$scope.token}",
           password: $scope.newUser.local.password
         .then (response) ->

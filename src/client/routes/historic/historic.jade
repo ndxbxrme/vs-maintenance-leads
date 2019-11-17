@@ -24,8 +24,11 @@ include ../../mixins/form.jade
           i.fad.fa-camera-retro(ng-show='issue.media.length')
         td.tenant {{ issue.tenant }}
         td.contractor {{ dbItem.get('contractors', issue.booked) }}
-        td.status {{ issue.status }}
-        td.view
+        td.status(ng-class='issue.status')
+          .booked B
+          .completed C
+          .invoiced I
+        td.view-button
           button.button-alt(type='button', ui-sref='issue({_id:issue._id})') 
             .fal.fa-eye
             | View Issue

@@ -12,6 +12,16 @@ angular.module 'vs-maintenance-leads'
       task = TaskPopup.getTask()
       if task
         new Date(task.date.valueOf() + task.duration.valueOf())
+    scope.chaseContractor = (method, task) ->
+      $http.get '/api/chase/' + method + '/' + scope.getTask()._id
+      .then (res) ->
+        if res.data is 'OK'
+          alert.log 'Contractor chased' 
+    scope.informTenant = (method, task) ->
+      $http.get '/api/inform/' + method + '/' + scope.getTask()._id
+      .then (res) ->
+        if res.data is 'OK'
+          alert.log 'Tenant informed' 
     scope.save = ->
       $http.post "/api/tasks/#{scope.getTask()._id or ''}", scope.getTask()
       .then (response) ->
@@ -29,6 +39,7 @@ angular.module 'vs-maintenance-leads'
         data: 
           task: task
           maintenance: scope.maintenance
+          contractors: TaskPopup.getContractors()
       .then (response) ->
         true
       , (err) ->

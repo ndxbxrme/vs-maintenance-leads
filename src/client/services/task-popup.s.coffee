@@ -6,6 +6,7 @@ angular.module 'vs-maintenance-leads'
   elem = null
   hidden = true
   cancelBubble = false
+  contractors = []
   getOffset = (elm) ->
     offset =
       left: 0
@@ -52,8 +53,11 @@ angular.module 'vs-maintenance-leads'
     task = _task
   getTask: ->
     task
+  setContractors: (_contractors) ->
+    contractors = _contractors
+  getContractors: ->
+    contractors
   show: (_elem) ->
-    console.log 'showing'
     hidden = false
     elem = _elem[0]
     $timeout ->

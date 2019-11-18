@@ -35,6 +35,7 @@ module.exports = (grunt) ->
       client:
         files: [{
           expand: true
+          flatten: true
           cwd: 'src'
           src: ['client/**/*.coffee']
           dest: 'build'

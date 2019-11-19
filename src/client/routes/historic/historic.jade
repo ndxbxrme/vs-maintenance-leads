@@ -25,9 +25,12 @@ include ../../mixins/form.jade
         td.tenant {{ issue.tenant }}
         td.contractor {{ dbItem.get('contractors', issue.booked) }}
         td.status(ng-class='issue.status')
-          .booked B
-          .completed C
-          .invoiced I
+          .booked 
+            .fad.fa-file-medical
+          .completed
+            .fad.fa-file-check
+          .invoiced
+            .fad.fa-thumbs-up
         td.view-button
           button.button-alt(type='button', ui-sref='issue({_id:issue._id})') 
             .fal.fa-eye

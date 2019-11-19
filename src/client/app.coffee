@@ -40,7 +40,7 @@ angular.module 'vs-maintenance-leads', [
         TaskPopup.cancelBubble = true    
   if socket
     socket.on 'newIssue', (issue) ->
-      alert.log '<h3>' + issue.address + '</h3><p>' + issue.title + '</p>'
+      alert.log '<i class="fad fa-house-damage"></i><h3>' + issue.address + '</h3><p>' + issue.title + '</p>'
 try
   angular.module 'ndx'
 catch e

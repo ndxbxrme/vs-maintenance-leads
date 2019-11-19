@@ -108,12 +108,16 @@ include ../../mixins/form.jade
     .tasks(ng-show='tasks.total')
       h2 Tasks
       .task(ng-repeat='task in tasks.items')
-        .date {{task.date| date:medium}}
+        .date 
+          span {{task.date| date:medium}}
         .contractor {{task.contractorName}}
         .status(ng-class='task.status')
-          .booked
+          .booked 
+            .fad.fa-file-medical
           .completed
+            .fad.fa-file-check
           .invoiced
+            .fad.fa-thumbs-up
     h2 Documents
       sup(ng-show='issue.item.documents.length') {{issue.item.documents.length}}
     button.view-documents(ng-click='showDocuments = !showDocuments') {{showDocuments?'Hide':'View'}} Documents

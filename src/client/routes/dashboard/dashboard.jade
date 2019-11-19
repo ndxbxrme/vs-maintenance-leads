@@ -8,9 +8,12 @@ mixin box(args)
         .address {{issue.address}}
         .issue-title {{issue.title}}
       .status
-        .booked B
-        .completed C
-        .invoiced I
+        .booked 
+          .fad.fa-file-medical
+        .completed
+          .fad.fa-file-check
+        .invoiced
+          .fad.fa-thumbs-up
     pagination(ng-model=args.list + '.args.page', total=args.list + '.total', page-size=args.list + '.args.pageSize')
 .dashboard-route.route(ng-show='auth.getUser()')
   h1 Dashboard

@@ -11,7 +11,7 @@
     .form-item
       label.title Contractor
       .input-holder
-        select(sumoselect="{placeholder:'Contractor', search:true}", ng-model='task.contractor', name='contractors')
+        select(sumoselect="{placeholder:'Contractor', search:true}", ng-model='task.contractor', name='contractors', required)
           option(ng-repeat='contractor in contractors', value="{{contractor._id}}") {{ contractor.name }}
 
     .form-item.half
@@ -19,13 +19,13 @@
       a.date(tap='setDate()') {{task.date | date:"mediumDate"}}
     .form-item.quarter
       label.title Time:
-      input(type='time', ng-model='task.date')
+      input(type='time', ng-model='task.date', required)
     .form-item.quarter
       label.title Duration:
-      input(type='time', ng-model='task.duration')
+      input(type='time', ng-model='task.duration', required)
     .form-item.half(ng-if='needsJobNumber')
       label.title CFP Job Number
-      input(type='text', ng-model='$parent.$parent.$parent.cfpJobNumber')
+      input(type='text', ng-model='$parent.$parent.$parent.cfpJobNumber', required)
     .form-item
       label.title Created by:
       span {{task.createdDate | date:'mediumDate'}}, {{task.createdDate | date:'shortTime'}} | &nbsp;

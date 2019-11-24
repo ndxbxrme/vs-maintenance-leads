@@ -20,6 +20,7 @@ require 'ndx-server'
       args.obj.address = "#{args.obj.address1 or args.oldObj.address1}#{if (args.obj.address2 or args.oldObj.address2) then ', ' + (args.obj.address2 or args.oldObj.address2) else ''}, #{args.obj.postcode or args.oldObj.postcode}"
       args.obj.tenant = "#{if args.obj.tenantTitle or args.oldObj?.tenantTitle then (args.obj.tenantTitle or args.oldObj.tenantTitle) + ' ' else ''}#{args.obj.tenantFirstName or args.oldObj.tenantFirstName} #{args.obj.tenantLastName or args.oldObj.tenantLastName}"
       args.obj.search = (args.obj.address or '') + '|' + (args.obj.tenant or '') + '|' + (args.obj.contractor or '') + '|' + (args.obj.title or args.oldObj?.title or '') + '|' + (args.obj.cfpJobNumber or args.oldObj?.cfpJobNumber or '')
+      ###
       args.obj.status = args.obj.status or
         booked: false
         completed: false
@@ -33,6 +34,7 @@ require 'ndx-server'
       args.obj.statusName = 'Reported'
       args.obj.statusName = 'Booked' if args.obj.status.booked
       args.obj.statusName = 'Completed' if args.obj.status.completed
+      ###
     if args.table is 'tasks'
       contractor = await ndx.database.selectOne 'contractors', _id:args.obj.contractor
       args.obj.contractorName = contractor.name
@@ -40,28 +42,16 @@ require 'ndx-server'
   updateStatus = (args, cb) ->
     if args.table is 'tasks'
       issue = await ndx.database.selectOne 'issues', _id: args.obj.issue
-      tasks = await ndx.database.select 'tasks', 
-        where:
-          issue: args.obj.issue
-        sort: 'dateVal'
-        sortDir: 'ASC'
-      status = 
-        booked: false
-        completed: false
-        invoiced: false
-      if tasks and tasks.length
-        status =
-          booked: true
-          completed: true
-          invoiced: true
-        for task in tasks
-          status.booked = if status.booked and task.status.booked then true else false
-          status.completed = if status.completed and task.status.completed then true else false
-          status.invoiced = if status.invoiced and task.status.invoiced then true else false
-      #check status change and email
-      issue.status = status
+      if args.op is 'insert'
+        issue.status = {booked:true,completed:false,invoiced:false}
+        issue.statusName = 'Booked'
+        issue.cpfJobNumber = args.obj.cpfJobNumber
+      else
+        issue.cpfJobNumber = args.obj.cpfJobNumber or args.oldObj?.cpfJobNumber
       ndx.database.upsert 'issues', issue
-      testissue = await ndx.database.selectOne 'issues', _id:issue._id
+    else if args.table is 'issues'
+      if args.op is 'insert'
+        args.obj.statusName = 'Reported'
     cb true
   sendMessage = (issue, contractor, method, name, mailOrNo) ->
     template = await ndx.database.selectOne method + 'templates', name: name
@@ -80,54 +70,30 @@ require 'ndx-server'
             body: template.body
           , template
   sendMessages = (args, cb) ->
-    if args.table is 'tasks'
-      if args.op is 'insert'
-        issue = await ndx.database.selectOne 'issues', _id:args.obj.issue
-        contractor = await ndx.database.selectOne 'contractors', _id:args.obj.contractor
-        sendMessage issue, contractor, 'email', 'TenantBooked', issue.tenantEmail
-        sendMessage issue, contractor, 'sms', 'TenantBooked', issue.tenantPhone
-        sendMessage issue, contractor, 'email', 'ContractorBooked', contractor.email
-        sendMessage issue, contractor, 'sms', 'ContractorBooked', contractor.phone
+    if args.table is 'issues'
+      if args.changes?.statusName?.to
+        issue = Object.assign args.oldObj, args.obj
+        task = await ndx.database.selectOne 'tasks', issue:issue._id
+        contractor = await ndx.database.selectOne 'contractors', _id:task.contractor
+        switch args.changes.statusName?.to
+          when 'Booked'
+            sendMessage issue, contractor, 'email', 'TenantBooked', issue.tenantEmail
+            sendMessage issue, contractor, 'sms', 'TenantBooked', issue.tenantPhone
+            sendMessage issue, contractor, 'email', 'ContractorBooked', contractor.email
+            sendMessage issue, contractor, 'sms', 'ContractorBooked', contractor.phone
+          when 'Completed'
+            sendMessage issue, contractor, 'email', 'TenantCompleted', issue.tenantEmail
+            sendMessage issue, contractor, 'sms', 'TenantCompleted', issue.tenantPhone
+            sendMessage issue, contractor, 'email', 'ContractorCompleted', contractor.email
+            sendMessage issue, contractor, 'sms', 'ContractorCompleted', contractor.phone
+        args.obj.notes = args.obj.notes or args.oldObj.notes or []
         if args.user
-          issue.notes = issue.notes or []
-          issue.notes.push
+          args.obj.notes.push
             date: new Date().valueOf()
-            text: 'Booked - ' + contractor.name
+            text: args.changes.statusName?.to + ' - ' + contractor.name
             item: 'Note'
             side: ''
             user: args.user
-          ndx.database.upsert 'issues', issue
-      else if args.changes
-        issue = await ndx.database.selectOne 'issues', _id:args.obj.issue
-        contractor = await ndx.database.selectOne 'contractors', _id:args.obj.contractor
-        if args.changes['status.completed']?.to
-          sendMessage issue, contractor, 'email', 'TenantCompleted', issue.tenantEmail
-          sendMessage issue, contractor, 'sms', 'TenantCompleted', issue.tenantPhone
-          sendMessage issue, contractor, 'email', 'ContractorCompleted', contractor.email
-          sendMessage issue, contractor, 'sms', 'ContractorCompleted', contractor.phone
-          if args.user
-            issue.notes = issue.notes or []
-            issue.notes.push
-              date: new Date().valueOf()
-              text: 'Completed - ' + contractor.name
-              item: 'Note'
-              side: ''
-              user: args.user
-            ndx.database.upsert 'issues', issue
-        if args.changes['status.invoiced']?.to
-          sendMessage issue, contractor, 'email', 'TenantInvoiced', issue.tenantEmail
-          sendMessage issue, contractor, 'sms', 'TenantInvoiced', issue.tenantPhone
-          sendMessage issue, contractor, 'email', 'ContractorInvoiced', contractor.email
-          sendMessage issue, contractor, 'sms', 'ContractorInvoiced', contractor.phone
-          if args.user
-            issue.notes = issue.notes or []
-            issue.notes.push
-              date: new Date().valueOf()
-              text: 'Invoice Received - ' + contractor.name
-              item: 'Note'
-              side: ''
-              user: args.user
-            ndx.database.upsert 'issues', issue
     cb true
   sendSockets = (args, cb) ->
     if args.table is 'issues'
@@ -137,8 +103,8 @@ require 'ndx-server'
   ndx.database.on 'preInsert', assignAddressAndNames
   ndx.database.on 'update', updateStatus
   ndx.database.on 'insert', updateStatus
-  ndx.database.on 'update', sendMessages
-  ndx.database.on 'insert', sendMessages
+  ndx.database.on 'preUpdate', sendMessages
+  ndx.database.on 'preInsert', sendMessages
   ndx.database.on 'insert', sendSockets
 .use (ndx) ->
   ndx.app.get '/api/emit', (req, res, next) ->
@@ -215,9 +181,7 @@ require 'ndx-server'
     res.end 'OK'
   ndx.app.get '/api/complete/:issueId', ndx.authenticate(), (req, res, next) ->
     ndx.database.update 'issues',
-      completed:
-        by: ndx.user
-        at: new Date().valueOf()
+      statusName: 'Completed'
     ,
       _id: req.params.issueId
     issue = await ndx.database.selectOne 'issues', _id: req.params.issueId

@@ -142,7 +142,7 @@ angular.module 'vs-maintenance-leads'
     output = ''
     for key, val of messages
       output += '\n    "' + key + '": "' + val + '"'
-    console.log output
+    #console.log output
     ''
   m: m
 .run ($rootScope, message) ->

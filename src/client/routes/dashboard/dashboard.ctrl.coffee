@@ -10,9 +10,7 @@ angular.module 'vs-maintenance-leads'
     where:
       date:
         $gt: yesterday.valueOf()
-      status:
-        booked: false
-        completed: false
+      statusName: 'Reported'
     sort: 'date'
     sortDir: 'DESC'
   $scope.maintenanceToday.sort = Sorter.create $scope.maintenanceToday.args
@@ -22,9 +20,7 @@ angular.module 'vs-maintenance-leads'
     where:
       date:
         $lte: yesterday.valueOf()
-      status:
-        booked: false
-        completed: false
+      statusName: 'Reported'
     sort: 'date'
     sortDir: 'DESC'
   $scope.maintenanceOutstanding.sort = Sorter.create $scope.maintenanceOutstanding.args
@@ -32,9 +28,7 @@ angular.module 'vs-maintenance-leads'
     page: 1
     pageSize: 20
     where:
-      status:
-        booked: true
-        completed: false
+      statusName: 'Booked'
     sort: 'date'
     sortDir: 'DESC'
   $scope.worksOutstanding.sort = Sorter.create $scope.worksOutstanding.args

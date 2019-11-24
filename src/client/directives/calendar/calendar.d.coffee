@@ -147,6 +147,11 @@ angular.module 'vs-maintenance-leads'
       false
     scope.openTask = (task, ev) ->
       if TaskPopup.getHidden()
+        notasks = scope.tasks.items.filter (task) ->
+          task.issue is scope.issue.item._id
+        .length
+        if notasks > 0 and not task._id
+          return
         task = task or {}
         task.duration = task.duration or 3600000
         task.assignedTo = task.assignedTo or scope.selectedUser

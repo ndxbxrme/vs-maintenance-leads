@@ -55,7 +55,7 @@ angular.module 'vs-maintenance-leads'
         alert.log 'Note added'
       $http.post '/api/notes/' + $scope.issue.item._id, notes: $scope.issue.item.notes
       .then (res) ->
-        console.log res.data
+        #console.log res.data
       , (err) ->
         console.log 'error saving notes'
       $scope.note = null
@@ -89,8 +89,8 @@ angular.module 'vs-maintenance-leads'
       data: media
     .then ->
       #just be happy
-  $scope.chaseContractor = (method, issue) ->
-    $http.get '/api/chase/' + method + '/' + issue.item._id
+  $scope.chaseContractor = (method, task) ->
+    $http.get '/api/chase/' + method + '/' + task._id
     .then (res) ->
       if res.data is 'OK'
         alert.log 'Contractor chased' 
@@ -102,8 +102,8 @@ angular.module 'vs-maintenance-leads'
           side: ''
           user: Auth.getUser()
         $scope.issue.save()
-  $scope.informTenant = (method, issue) ->
-    $http.get '/api/inform/' + method + '/' + issue.item._id
+  $scope.informTenant = (method, task) ->
+    $http.get '/api/inform/' + method + '/' + task._id
     .then (res) ->
       if res.data is 'OK'
         alert.log 'Tenant informed' 
@@ -120,14 +120,6 @@ angular.module 'vs-maintenance-leads'
     .then (res) ->
       if res.data is 'OK'
         alert.log 'Issue Completed' 
-        $scope.issue.item.notes = $scope.issue.item.notes or []
-        $scope.issue.item.notes.push
-          date: new Date().valueOf()
-          text: 'Issue completed'
-          item: 'Note'
-          side: ''
-          user: Auth.getUser()
-        $scope.issue.save()
   $scope.uploadFiles = (files, errFiles) ->
     myissue = $scope.issue
     if files
@@ -174,5 +166,5 @@ angular.module 'vs-maintenance-leads'
       , (err) ->
         cb false
     else
-      $scope.issue.item.date = new Date().valueOf()
+      $scope.issue.item.date = $scope.issue.item.date or new Date().valueOf()
       cb true

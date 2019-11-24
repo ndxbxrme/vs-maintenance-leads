@@ -47,8 +47,19 @@
       .issue-controls
         justify-content flex-end
         margin-top 20px
+      .left
+        flex 1
+        margin-right 1rem
       .right
-        flex-direction row
+        .edit-icons
+          display flex
+          flex-direction row
+          justify-content flex-end
+        .status-checkboxes
+          .status-checkbox
+            display flex
+            align-items center
+            justify-content flex-end
         svg
           background-size cover
           width 1.5rem
@@ -60,6 +71,10 @@
           pointer-events none
       select
         width 100% 
+    .diary-controls
+      justify-content flex-start
+      input
+        margin-left 1rem
   .delete-book
     margin-top 20px
     input, button

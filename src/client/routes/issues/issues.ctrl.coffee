@@ -16,7 +16,6 @@ angular.module 'vs-maintenance-leads'
     sort: 'date'
     sortDir: 'DESC'
     where:
-      isBooked: null
-      completed: null
+      statusName: 'Reported'
       search: $scope.mysearch
   $scope.sort = Sorter.create $scope.issues.args

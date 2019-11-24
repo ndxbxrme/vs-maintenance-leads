@@ -22,6 +22,7 @@
       .date-swiper-holder
         position relative
         display block
+        z-index 1
         .day-names
           color inherit
           margin-top 1.6rem

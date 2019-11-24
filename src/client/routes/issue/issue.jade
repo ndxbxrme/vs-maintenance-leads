@@ -52,60 +52,97 @@ include ../../mixins/form.jade
         .form-label.half
           .source
             .source-icon(class='{{issue.item.source}}') {{ issue.item.source }}
-        .form-controls.space-between.issue-controls
-          .right
-            span(ng-click='$parent.showLightbox(issue.item.media)')
-              i.fad.fa-camera-retro(ng-show='issue.item.media.length')
-            span(ng-click='$parent.editing=true', ng-hide='editing', ng-class='{disabled:issue.item.statusName==="Completed"}')
-              i.fad.fa-edit
       .form-section
         .form-label 
           strong {{ m('issue-heading-tenant-contact') }}
           p {{ issue.item.tenantFirstName }} {{ issue.item.tenantLastName }}
           a(href='mailto:{{issue.item.tenantEmail}}') {{ issue.item.tenantEmail }}
           p {{ issue.item.tenantPhone }}
-        .form-controls
-          .title
-            strong {{ m('issue-heading-issue-title') }}
-            span &nbsp;- {{ issue.item.title }}
-          .details
-            strong {{ m('issue-heading-fault-detail') }}
-            span &nbsp;- {{ issue.item.details }}
+        .form-controls.space-between
+          .left
+            .title
+              strong {{ m('issue-heading-issue-title') }}
+              span &nbsp;- {{ issue.item.title }}
+            .details
+              strong {{ m('issue-heading-fault-detail') }}
+              span &nbsp;- {{ issue.item.details }}
+          .right
+            .edit-icons
+              span(ng-click='$parent.showLightbox(issue.item.media)')
+                i.fad.fa-camera-retro(ng-show='issue.item.media.length')
+              span(ng-click='$parent.editing=true', ng-hide='editing', ng-class='{disabled:issue.item.statusName==="Completed"}')
+                i.fad.fa-edit
+            .status-checkboxes(ng-hide='issue.item.statusName==="Reported"')
+              .status-checkbox
+                input#sc-booked(type='checkbox', ng-model='issue.item.status.booked', ng-change='issue.save()')
+                label(for='sc-booked') Booked
+                  i.fad.fa-file-medical
+              .status-checkbox
+                input#sc-completed(type='checkbox', ng-model='issue.item.status.completed', ng-change='issue.save()')
+                label(for='sc-completed') Job Completed
+                  i.fad.fa-file-check
+              .status-checkbox
+                input#sc-invoiced(type='checkbox', ng-model='issue.item.status.invoiced', ng-change='issue.save()')
+                label(for='sc-invoiced') Invoice Received
+                  i.fad.fa-thumbs-up
       .form-section
         .form-label {{ m('issue-heading-action-taken') }}
         .form-controls
           .third
-            +select({name:'repliedToTenant', list:'yesno', disabled:'issue.item.statusName==="Completed"', errors:{required:true}}) 
+            +select({name:'repliedToTenant', list:'yesno', disabled:'issue.item.statusName==="Completed"', change:'issue.save()', errors:{required:true}}) 
           .third
-            +select({name:'landlordInformed', list:'yesno', disabled:'issue.item.statusName==="Completed"',errors:{required:true}})
+            +select({name:'landlordInformed', list:'yesno', disabled:'issue.item.statusName==="Completed"', change:'issue.save()',errors:{required:true}})
           .third
-            +select({name:'contractorArranged', list:'yesno', disabled:'issue.item.statusName==="Completed"',errors:{required:true}})
-      //.form-section(ng-show='!issue.item.statusName==="Completed"')
+            +select({name:'contractorArranged', list:'yesno', disabled:'issue.item.statusName==="Completed"', change:'issue.save()',errors:{required:true}})
+      .form-section(ng-show='issue.item.statusName!=="Completed"')
         .form-label {{ m('issue-heading-contractor-assigned') }}
         .form-controls
           .two-thirds
-            +select({name:'booked', list:'contractors.items', errors:{required:true}})
+            +select({name:'booked', list:'contractors.items', model:'tasks.items[0].contractor', disabled:'true'})
           .third.delete-book
             button.button-alt(type='button', ng-click='deleteIssue(issue)') 
               i.fal.fa-trash-alt
               | {{ m('forms-delete') }}
-            button.button-green(type='submit', value='{{ m("forms-book") }}', ng-hide='issue.item.contractor || issue.item.statusName==="Completed"')
+            //button.button-green(type='submit', value='{{ m("forms-book") }}', ng-hide='issue.item.contractor || issue.item.statusName==="Completed"')
               i.fal.fa-ballot-check
               | Book
-      .form-section(ng-hide='issue.item.cfpJobNumber && issue.item.isBooked')
+      .form-section
         .form-label {{ m('issue-heading-diary') }}
-        .form-controls
+        .form-controls.diary-controls
           button.button-grey(type='button', ui-sref='diary({_id:issue.item._id})')
             i.fal.fa-calendar
             | {{ m('issue-diary-label') }}
-      //.form-section(ng-show='issue.item.cfpJobNumber && issue.item.statusName==="Booked"')
+          input.task-time(type='text', value='{{tasks.items[0].date | date:"HH:mm"}}', disabled, ng-hide='issue.item.statusName==="Reported"')
+          input.task-date(type='text', value='{{tasks.items[0].date | date:"dd/MM/yyyy"}}', disabled, ng-hide='issue.item.statusName==="Reported"')
+      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.statusName==="Booked" && tasks.total')
+        .form-label {{ m('issue-heading-chase') }}
+        .form-controls
+          .buttons
+            button.button-alt(type='button', ng-click='chaseContractor("email", tasks.items[0])') 
+              i.fal.fa-at
+              | {{ m('issue-label-email') }}
+            button.button-grey(type='button', ng-click='chaseContractor("sms", tasks.items[0])') 
+              i.fal.fa-sms
+              | {{ m('issue-label-sms') }}
+      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.statusName==="Booked" && tasks.total')
+        .form-label {{ m('issue-heading-inform') }}
+        .form-controls
+          .buttons
+            button.button-alt(type='button', ng-click='informTenant("email", tasks.items[0])') 
+              i.fal.fa-at
+              | {{ m('issue-label-email-tenant') }}
+            button.button-grey(type='button', ng-click='informTenant("sms", tasks.items[0])') 
+              i.fal.fa-sms
+              | {{ m('issue-label-sms-tenant') }}
+
+      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.statusName==="Booked"')
         .form-label {{ m('issue-heading-complete') }}
         .form-controls
           .buttons
             button.button-green(type='button', ng-click='completeIssue(issue)') 
               i.fal.fa-check
               | {{ m('issue-label-complete') }}
-    .tasks(ng-show='tasks.total')
+    //.tasks(ng-show='tasks.total')
       h2 Tasks
       .task(ng-repeat='task in tasks.items')
         .date 

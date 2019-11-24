@@ -5,6 +5,7 @@ change directories in the docker run statement to suit
 git clone https://github.com/ndxbxrme/vs-maintenance-leads.git
 cd vs-maintenance-leads
 mkdir data
+mkdir uploads
 export ENCRYPTION_KEY=[encryption key]
 docker build --build-arg KEY=$ENCRYPTION_KEY -t maintenance-leads -f DockerfileDev .
 docker run -v /c/Users/lewis/DEV/vs-maintenance-leads/src:/src -v /c/Users/lewis/DEV/vs-maintenance-leads/data:/data -p 4014:4014 -p 4015:4015 --name maintenance-leads maintenance-leads

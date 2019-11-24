@@ -23,11 +23,12 @@ angular.module 'vs-maintenance-leads'
         if res.data is 'OK'
           alert.log 'Tenant informed' 
     scope.save = ->
-      $http.post "/api/tasks/#{scope.getTask()._id or ''}", scope.getTask()
-      .then (response) ->
-        alert.log 'Task updated'
-      , (err) ->
-        false
+      if not TaskPopup.getHidden() and scope.getTask()
+        $http.post "/api/tasks/#{scope.getTask()._id or ''}", scope.getTask()
+        .then (response) ->
+          alert.log 'Task updated'
+        , (err) ->
+          false
     scope.complete = ->
       scope.getTask().status = 'completed'
       scope.save()

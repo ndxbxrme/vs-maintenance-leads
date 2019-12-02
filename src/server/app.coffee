@@ -99,6 +99,20 @@ require 'ndx-server'
     if args.table is 'issues'
       ndx.socket.emitToAll 'newIssue', args.obj
     cb true
+  checkDeleted = (args, cb) ->
+    if args.changes.deleted?.to
+      if args.table is 'issues'
+        args.obj.status = {}
+        args.obj.statusName = 'Reported'
+        ndx.database.update 'tasks',
+          deleted: true
+        ,
+          issue: args.id
+      if args.table is 'tasks'
+        ndx.databse.update 'issues',
+          status: {}
+          statusName: 'Reported'
+    cb true
   ndx.database.on 'preUpdate', assignAddressAndNames
   ndx.database.on 'preInsert', assignAddressAndNames
   ndx.database.on 'update', updateStatus
@@ -106,6 +120,7 @@ require 'ndx-server'
   ndx.database.on 'preUpdate', sendMessages
   ndx.database.on 'preInsert', sendMessages
   ndx.database.on 'insert', sendSockets
+  ndx.database.on 'preUpdate', checkDeleted
 .use (ndx) ->
   ndx.app.get '/api/emit', (req, res, next) ->
     issue = await ndx.database.selectOne 'issues'

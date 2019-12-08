@@ -142,8 +142,8 @@ require 'ndx-server'
         issue.statusName = 'Reported'
         issue.statusName = 'Booked' if issue.booked
         issue.statusName = 'Completed' if issue.completed
-      if issue.contractor and not issue.contractorName
-        contractor = await ndx.database.selectOne 'contractors', _id:issue.contractor
+      if issue.booked and not issue.contractorName
+        contractor = await ndx.database.selectOne 'contractors', _id:issue.booked
         if contractor
           issue.contractorName = contractor.name
       ndx.database.upsert 'issues', issue

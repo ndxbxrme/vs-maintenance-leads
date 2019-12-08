@@ -142,7 +142,11 @@ require 'ndx-server'
         issue.statusName = 'Reported'
         issue.statusName = 'Booked' if issue.booked
         issue.statusName = 'Completed' if issue.completed
-        ndx.database.upsert 'issues', issue
+      if issue.contractor and not issue.contractorName
+        contractor = await ndx.database.selectOne 'contractors', _id:issue.contractor
+        if contractor
+          issue.contractorName = contractor.name
+      ndx.database.upsert 'issues', issue
     res.end 'OK'
   ndx.app.post '/api/notes/:issueId', ndx.authenticate(), (req, res, next) ->
     ndx.database.update 'issues',

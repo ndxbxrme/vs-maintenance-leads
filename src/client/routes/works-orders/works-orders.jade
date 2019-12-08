@@ -13,7 +13,7 @@ include ../../mixins/form.jade
         th(width='15%', ng-click='sort.set("date")', ng-class='sort.class("date")') {{ m('works-heading-date') }}
         th(width='25%', ng-click='sort.set("address")', ng-class='sort.class("address")') {{ m('works-heading-address') }}
         th(width='25%', ng-click='sort.set("tenant")', ng-class='sort.class("tenant")') {{ m('works-heading-tenant') }}
-        th(width='20%', ng-click='sort.set("contractor")', ng-class='sort.class("contractor")') {{ m('works-heading-contractor') }}
+        th(width='20%', ng-click='sort.set("contractorName")', ng-class='sort.class("contractorName")') {{ m('works-heading-contractor') }}
         th(width='10%', ng-click='sort.set("status")', ng-class='sort.class("status")') {{ m('works-heading-status') }}
         th(width='5%') {{ m('works-heading-options') }}
     tbody(ng-repeat='issue in issues.items')
@@ -22,7 +22,7 @@ include ../../mixins/form.jade
         td.address {{ issue.address }}
           i.fad.fa-camera-retro(ng-show='issue.media.length')
         td.tenant {{ issue.tenant }}
-        td.contractor {{ dbItem.get('contractors', issue.booked) }}
+        td.contractor {{ issue.contractorName }}
         td.status(ng-class='issue.status')
           .booked 
             .fad.fa-file-medical

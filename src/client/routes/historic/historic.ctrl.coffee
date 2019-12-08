@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module 'vs-maintenance-leads'
-.controller 'HistoricCtrl', ($scope, Sorter, DbItem, alert) ->
+.controller 'HistoricCtrl', ($scope, $http, Sorter, DbItem, alert) ->
   $scope.dbItem = DbItem
   $scope.page = 1
   $scope.limit = 15
@@ -30,19 +30,10 @@ angular.module 'vs-maintenance-leads'
       controller: 'IssueDeleteCtrl'
       size: 'small'
     .then ->
-      issue.history = issue.history or []
-      issue.history.push
-        deleted: issue.deleted
-        completed: issue.completed
-        booked: issue.booked
-        cfpJobNumber: issue.cfpJobNumber
-      issue.deleted = null
-      issue.completed = null
-      issue.isBooked = null
-      issue.booked = null
-      issue.contractor = null
-      issue.cfpJobNumber = null
-      $scope.historic.save issue
-      alert.log 'Issue restored'
+      $http.get 'api/restore/' + issue._id
+      .then ->
+        alert.log 'Issue restored'      
+      , (err) ->
+        console.log err
     , (err) ->
       console.log 'err', err

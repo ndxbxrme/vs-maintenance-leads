@@ -111,9 +111,10 @@ require 'ndx-server'
         ,
           issue: args.id
       if args.table is 'tasks'
-        ndx.databse.update 'issues',
+        ndx.database.update 'issues',
           status: {}
           statusName: 'Reported'
+        , args.obj.issue
     cb true
   ndx.database.on 'preUpdate', assignAddressAndNames
   ndx.database.on 'preInsert', assignAddressAndNames
@@ -226,5 +227,18 @@ require 'ndx-server'
               , template
       sendMessage 'email', issue.tenantEmail
       sendMessage 'sms', issue.tenantPhone
+    res.end 'OK'
+  ndx.app.get '/api/restore/:issueId', ndx.authenticate(), (req, res, next) ->
+    issue = await ndx.database.selectOne 'issues', _id: req.params.issueId
+    if issue
+      issue.status = {}
+      issue.statusName = 'Reported'
+      issue.deleted = null
+      issue.cpfJobNumber = null
+      ndx.database.update 'tasks',
+        deleted: true
+      ,
+        issue: issue._id
+      ndx.database.upsert 'issues', issue
     res.end 'OK'
 .start()

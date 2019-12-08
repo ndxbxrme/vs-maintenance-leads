@@ -74,26 +74,28 @@ require 'ndx-server'
       if args.changes?.statusName?.to
         issue = Object.assign args.oldObj, args.obj
         task = await ndx.database.selectOne 'tasks', issue:issue._id
-        contractor = await ndx.database.selectOne 'contractors', _id:task.contractor
-        switch args.changes.statusName?.to
-          when 'Booked'
-            sendMessage issue, contractor, 'email', 'TenantBooked', issue.tenantEmail
-            sendMessage issue, contractor, 'sms', 'TenantBooked', issue.tenantPhone
-            sendMessage issue, contractor, 'email', 'ContractorBooked', contractor.email
-            sendMessage issue, contractor, 'sms', 'ContractorBooked', contractor.phone
-          when 'Completed'
-            sendMessage issue, contractor, 'email', 'TenantCompleted', issue.tenantEmail
-            sendMessage issue, contractor, 'sms', 'TenantCompleted', issue.tenantPhone
-            sendMessage issue, contractor, 'email', 'ContractorCompleted', contractor.email
-            sendMessage issue, contractor, 'sms', 'ContractorCompleted', contractor.phone
-        args.obj.notes = args.obj.notes or args.oldObj.notes or []
-        if args.user
-          args.obj.notes.push
-            date: new Date().valueOf()
-            text: args.changes.statusName?.to + ' - ' + contractor.name
-            item: 'Note'
-            side: ''
-            user: args.user
+        if task
+          contractor = await ndx.database.selectOne 'contractors', _id:task.contractor
+          if issue and contractor
+            switch args.changes.statusName?.to
+              when 'Booked'
+                #sendMessage issue, contractor, 'email', 'TenantBooked', issue.tenantEmail
+                #sendMessage issue, contractor, 'sms', 'TenantBooked', issue.tenantPhone
+                sendMessage issue, contractor, 'email', 'Booked', contractor.email
+                sendMessage issue, contractor, 'sms', 'Booked', contractor.phone
+              when 'Completed'
+                sendMessage issue, contractor, 'email', 'Completed', issue.tenantEmail
+                sendMessage issue, contractor, 'sms', 'Completed', issue.tenantPhone
+                #sendMessage issue, contractor, 'email', 'ContractorCompleted', contractor.email
+                #sendMessage issue, contractor, 'sms', 'ContractorCompleted', contractor.phone
+            args.obj.notes = args.obj.notes or args.oldObj.notes or []
+            if args.user
+              args.obj.notes.push
+                date: new Date().valueOf()
+                text: args.changes.statusName?.to + ' - ' + contractor.name
+                item: 'Note'
+                side: ''
+                user: args.user
     cb true
   sendSockets = (args, cb) ->
     if args.table is 'issues'
@@ -129,7 +131,11 @@ require 'ndx-server'
   ndx.app.get '/api/update-statuses', ndx.authenticate(), (req, res, next) ->
     issues = await ndx.database.select 'issues'
     for issue in issues
-      ndx.database.upsert 'issues', issue
+      if not issue.statusName
+        issue.statusName = 'Reported'
+        issue.statusName = 'Booked' if issue.booked
+        issue.statusName = 'Completed' if issue.completed
+        ndx.database.upsert 'issues', issue
     res.end 'OK'
   ndx.app.post '/api/notes/:issueId', ndx.authenticate(), (req, res, next) ->
     ndx.database.update 'issues',

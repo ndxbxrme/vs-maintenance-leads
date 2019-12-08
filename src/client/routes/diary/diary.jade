@@ -1,7 +1,9 @@
 .diary-route.route-full
   .toolbar
     .back
-      a(ui-sref='issue({_id:issue.item._id})') Back
+      a(ui-sref='issue({_id:issue.item._id})') 
+        .fal.fa-arrow-alt-left
+        | Back
     .issue
       .name 
         input#onlyThisIssue(type='checkbox', ng-model='onlyThisIssue', ng-change='filterTasks()')

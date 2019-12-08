@@ -48,6 +48,19 @@ include ../../mixins/form.jade
           .label {{ m('issue-heading-cfp') }} -
           .number {{ issue.item.cfpJobNumber }}
     +form({data:'issue'}).form-controls
+      .status-checkboxes.right(ng-hide='issue.item.statusName==="Reported"')
+        .status-checkbox
+          input#sc-booked(type='checkbox', ng-model='issue.item.status.booked', ng-change='issue.save()')
+          label(for='sc-booked') Booked
+            i.fad.fa-file-medical
+        .status-checkbox
+          input#sc-completed(type='checkbox', ng-model='issue.item.status.completed', ng-change='issue.save()')
+          label(for='sc-completed') Job Completed
+            i.fad.fa-file-check
+        .status-checkbox
+          input#sc-invoiced(type='checkbox', ng-model='issue.item.status.invoiced', ng-change='issue.save()')
+          label(for='sc-invoiced') Invoice Received
+              i.fad.fa-thumbs-up
       .form-section
         .form-label.half
           .source
@@ -72,19 +85,6 @@ include ../../mixins/form.jade
                 i.fad.fa-camera-retro(ng-show='issue.item.media.length')
               span(ng-click='$parent.editing=true', ng-hide='editing', ng-class='{disabled:issue.item.statusName==="Completed"}')
                 i.fad.fa-edit
-            .status-checkboxes(ng-hide='issue.item.statusName==="Reported"')
-              .status-checkbox
-                input#sc-booked(type='checkbox', ng-model='issue.item.status.booked', ng-change='issue.save()')
-                label(for='sc-booked') Booked
-                  i.fad.fa-file-medical
-              .status-checkbox
-                input#sc-completed(type='checkbox', ng-model='issue.item.status.completed', ng-change='issue.save()')
-                label(for='sc-completed') Job Completed
-                  i.fad.fa-file-check
-              .status-checkbox
-                input#sc-invoiced(type='checkbox', ng-model='issue.item.status.invoiced', ng-change='issue.save()')
-                label(for='sc-invoiced') Invoice Received
-                  i.fad.fa-thumbs-up
       .form-section
         .form-label {{ m('issue-heading-action-taken') }}
         .form-controls

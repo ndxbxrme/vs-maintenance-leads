@@ -46,7 +46,7 @@
         .details
           flex 1
         .status
-          display flex
+          display none
           div
             opacity .1
         &.booked .booked
@@ -55,6 +55,9 @@
           opacity 1
         &.invoiced .invoiced
           opacity 1
+    &:last-child .status
+      display flex
+
 @media screen and (max-width:992px)
   .dashboard-route .boxes 
     display block

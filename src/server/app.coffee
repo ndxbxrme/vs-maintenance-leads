@@ -38,6 +38,9 @@ require 'ndx-server'
     if args.table is 'tasks'
       contractor = await ndx.database.selectOne 'contractors', _id:args.obj.contractor or args.oldObj.contractor
       args.obj.contractorName = contractor.name
+      ndx.database.update 'issues',
+        contractorName: contractor.name
+      , _id:args.obj.issue or args.oldObj.issue
     cb true
   updateStatus = (args, cb) ->
     if args.table is 'tasks'

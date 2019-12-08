@@ -25,7 +25,6 @@ angular.module 'vs-maintenance-leads', [
       TaskPopup.hide()
       TaskPopup.cancelBubble = true
   $rootScope.bodyTap = (e) ->
-    $http.get '/api/emit' if e.target.className is 'logo'
     $rootScope.mobileMenuOut = false
     elm = e.target
     isPopup = false

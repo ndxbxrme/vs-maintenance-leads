@@ -25,12 +25,13 @@
     padding 20px 10px 0 10px
     display flex
     justify-content space-between
-    font-size 1.3rem
+    font-size 1rem
     box-shadow 2px 2px 25px rgba(20,20,20,0.6)
     .details
       .details-item
         display flex
-        margin-bottom 2rem
+        margin-bottom 1rem
+        padding-right 1rem
         img
           border-radius 50%
           border 1px solid #ccc
@@ -39,11 +40,12 @@
           font-weight bold
           margin-right 1rem
           min-width 60px
+          color vs-orange
     .controls
       text-align right
       .checkbox-item
         white-space nowrap
         margin-bottom .5rem
       .edit
-        vs-button()
+        vs-button-alt()
         margin-bottom .5rem

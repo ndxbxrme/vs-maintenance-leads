@@ -12,9 +12,17 @@
     max-width 260px
     flex-wrap wrap
     padding-bottom .5rem
+    .contractors
+      label
+        color vs-orange
+        margin 0.5rem
+        font-size 1.2rem
+        display block
+        font-weight 700
     .issue
       width 100%
-      padding-top .4rem
+      padding .4rem .5rem
+      border-bottom 1px solid rgba(255,255,255,0.2)
       div
         padding 0 .4rem .4rem .4rem
     .dates
@@ -47,11 +55,13 @@
       width 100%
       .input-holder
         color #333
+        margin 1rem 0.5rem
   .back a
     vs-button-alt()
     color white
     text-align center
     margin 0.5rem
+    padding .65rem 1rem .65rem .65rem
     text-transform uppercase
     text-decoration none
     font-weight 600

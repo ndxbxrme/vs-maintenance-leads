@@ -1,5 +1,11 @@
 span.task-dir {{assigned = selectById(users.items,task.assignedTo); '' }}
-  .contractor {{task.contractorName}}
-  .title {{task.title}}
-  .address {{task.address}}
+  .contractor 
+    h2 Contractor
+    {{task.contractorName}}
+  .title 
+    h2 Task
+    {{task.title}}
+  .address 
+    h2 Address
+    {{task.address}}
     

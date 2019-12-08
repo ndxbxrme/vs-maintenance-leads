@@ -106,6 +106,12 @@
           cursor default
           color #f1f1f1
           font-size .9rem
+          div
+            margin-bottom 1rem
+          h2 
+            font-size 0.8rem
+            color vs-orange
+            margin 0.3rem 0
           p
             margin 4px 0 0 37px
             color white
@@ -121,7 +127,7 @@
             background vs-orange
             color #f1f1f1
           &:hover
-            background #ddd
+            background #cccccc
             z-index 200
         &:first-of-type
           .legend

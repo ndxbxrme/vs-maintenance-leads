@@ -55,8 +55,8 @@
           opacity 1
         &.invoiced .invoiced
           opacity 1
-    &:last-child .status
-      display flex
+      &:last-child .status
+        display flex
 
 @media screen and (max-width:992px)
   .dashboard-route .boxes 

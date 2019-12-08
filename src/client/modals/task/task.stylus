@@ -6,8 +6,9 @@
     margin 0 0 1rem 0
     padding 1rem
     font-size 2rem
+    font-weight 800
     text-align center
-    color vs-orange
+    color vs-grey
   form
     box-sizing border-box
     padding 0 1rem 0 0
@@ -24,22 +25,30 @@
       max-width 100%
       width 100%
       word-wrap break-word
+      p
+        margin 0 0 5px 0
       .input-holder
         width 100%
       label.title
         width 100px
         font-weight 700
-        color vs-grey
+        color vs-orange
       a.date
         padding .8rem 1rem
+        background #f5f5f5
         border 1px solid vs-grey
         border-radius 3px
         width 100%
       input[type='text'], textarea, input[type=time], input[type=number]
         flex 1
-        padding 1rem
+        font-family inherit
+        font-size 1.3rem
+        font-weight 600
+        margin-top 0
+        padding 0.3rem
         border 1px solid vs-grey
         border-radius 3px
+        background #f5f5f5
       textarea
         height 70px
       input[type=time], input[type=number]
@@ -67,7 +76,7 @@
       .delete
         vs-button()
       .submit
-        vs-button()
+        vs-button-green()
       &.bottom
         margin-bottom 50px
     .drop-box

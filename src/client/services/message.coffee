@@ -96,6 +96,7 @@ angular.module 'vs-maintenance-leads'
     "works-heading-address": "Property Address"
     "works-heading-tenant": "Tenant"
     "works-heading-contractor": "Contractor"
+    "works-heading-status": "Status"
     "works-heading-options": "Options"
     "issue-heading-cfp": "CFP Job Number"
     "issue-heading-tenant-contact": "Tenant Contact Details"

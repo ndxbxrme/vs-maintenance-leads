@@ -146,7 +146,7 @@ angular.module 'vs-maintenance-leads'
         return true
       false
     scope.openTask = (task, ev) ->
-      if TaskPopup.getHidden()
+      if TaskPopup.getHidden() and scope.issue.item._id
         notasks = scope.tasks.items.filter (task) ->
           task.issue is scope.issue.item._id
         .length

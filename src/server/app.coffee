@@ -48,7 +48,7 @@ require 'ndx-server'
       if args.op is 'insert'
         issue.status = {booked:true,completed:false,invoiced:false}
         issue.statusName = 'Booked'
-        issue.cpfJobNumber = args.obj.cpfJobNumber
+        issue.cfpJobNumber = args.obj.cfpJobNumber
         ndx.database.upsert 'issues', issue
       else
         if not args.changes.deleted

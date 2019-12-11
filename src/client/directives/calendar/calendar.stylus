@@ -129,6 +129,8 @@
           &:hover
             background #cccccc
             z-index 200
+            transform translateX(-1rem)
+            height auto
         &:first-of-type
           .legend
             display flex

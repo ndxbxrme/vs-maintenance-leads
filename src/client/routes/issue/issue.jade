@@ -134,6 +134,16 @@ include ../../mixins/form.jade
             button.button-grey(type='button', ng-click='informTenant("sms", tasks.items[0])') 
               i.fal.fa-sms
               | {{ m('issue-label-sms-tenant') }}
+      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.statusName==="Booked" && tasks.total')
+        .form-label {{ m('issue-heading-chase-invoice') }}
+        .form-controls
+          .buttons
+            button.button-alt(type='button', ng-click='chaseInvoice("email", tasks.items[0])') 
+              i.fal.fa-at
+              | {{ m('issue-label-email-invoice') }}
+            button.button-grey(type='button', ng-click='chaseInvoice("sms", tasks.items[0])') 
+              i.fal.fa-sms
+              | {{ m('issue-label-sms-invoice') }}
 
       .form-section(ng-show='issue.item.cfpJobNumber && issue.item.statusName==="Booked"')
         .form-label {{ m('issue-heading-complete') }}

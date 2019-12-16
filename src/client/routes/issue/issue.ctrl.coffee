@@ -94,27 +94,16 @@ angular.module 'vs-maintenance-leads'
     .then (res) ->
       if res.data is 'OK'
         alert.log 'Contractor chased' 
-        $scope.issue.item.notes = $scope.issue.item.notes or []
-        $scope.issue.item.notes.push
-          date: new Date().valueOf()
-          text: 'Contractor chased by ' + method
-          item: 'Note'
-          side: ''
-          user: Auth.getUser()
-        $scope.issue.save()
+  $scope.chaseInvoice = (method, task) ->
+    $http.get '/api/chase-invoice/' + method + '/' + task._id
+    .then (res) ->
+      if res.data is 'OK'
+        alert.log 'Invoice chased' 
   $scope.informTenant = (method, task) ->
     $http.get '/api/inform/' + method + '/' + task._id
     .then (res) ->
       if res.data is 'OK'
         alert.log 'Tenant informed' 
-        $scope.issue.item.notes = $scope.issue.item.notes or []
-        $scope.issue.item.notes.push
-          date: new Date().valueOf()
-          text: 'Tenant informed by ' + method
-          item: 'Note'
-          side: ''
-          user: Auth.getUser()
-        $scope.issue.save()
   $scope.completeIssue = (issue) ->
     $http.get '/api/complete/' + issue.item._id
     .then (res) ->

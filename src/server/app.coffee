@@ -173,10 +173,38 @@ require 'ndx-server'
             numbers: [contractor.phone.trim()]
             body: template.body
           , template
-        issue.item.notes = issue.item.notes or []
-        issue.item.notes.push
+        issue.notes = issue.notes or []
+        issue.notes.push
           date: new Date().valueOf()
           text: 'Contractor - ' + contractor.name + ' chased by ' + req.params.method
+          item: 'Note'
+          side: ''
+          user: user
+        ndx.database.upsert 'issues', issue
+    res.end 'OK'
+  ndx.app.get '/api/chase-invoice/:method/:taskId', ndx.authenticate(), (req, res, next) ->
+    template = await ndx.database.selectOne req.params.method + 'templates', name: 'ChaseInvoice'
+    task = await ndx.database.selectOne 'tasks', _id:req.params.taskId
+    issue = await ndx.database.selectOne 'issues', _id:task.issue
+    if template and issue and issue.isBooked
+      contractor = await ndx.database.selectOne 'contractors', _id:issue.booked
+      if contractor
+        issue.contractor = contractor.name
+        if req.params.method is 'email'
+          template.to = contractor.email.trim()
+          template.subject = template.subject
+          Object.assign template, issue
+          ndx.email.send template
+        else if req.params.method is 'sms'
+          ndx.sms.send
+            originator: 'VitalSpace'
+            numbers: [contractor.phone.trim()]
+            body: template.body
+          , template
+        issue.notes = issue.notes or []
+        issue.notes.push
+          date: new Date().valueOf()
+          text: 'Invoice for contractor - ' + contractor.name + ' chased by ' + req.params.method
           item: 'Note'
           side: ''
           user: user
@@ -202,8 +230,8 @@ require 'ndx-server'
             numbers: [issue.tenantPhone.trim()]
             body: template.body
           , template
-        issue.item.notes = issue.item.notes or []
-        issue.item.notes.push
+        issue.notes = issue.notes or []
+        issue.notes.push
           date: new Date().valueOf()
           text: 'Tenant informed by ' + req.params.method
           item: 'Note'

@@ -45,6 +45,7 @@ module.exports = (ndx) ->
                   fixfloId: prop.Id
                   fixfloUrl: item
                   fixfloStatus: prop.Status
+                  statusName: 'Reported'
                 await ndx.database.upsert 'issues', issue, fixfloId: issue.fixfloId
                 console.log 'fetched', issue.address1
             await sleep 200

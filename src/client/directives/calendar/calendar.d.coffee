@@ -7,13 +7,13 @@ angular.module 'vs-maintenance-leads'
   replace: true
   link: (scope, elem, attrs) ->
     dayOffset = 7
-    daysToShow = 5
+    daysToShow = 7
     if window.innerWidth < 820
       dayOffset = 1
       daysToShow = 1
     resize = ->
       dayOffset = 7
-      daysToShow = 5
+      daysToShow = 7
       if window.innerWidth < 820
         dayOffset = 1
         daysToShow = 1

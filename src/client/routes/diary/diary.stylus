@@ -67,3 +67,6 @@
     font-weight 600
     svg 
       margin-right 1rem
+  .SumoSelect > .optWrapper > .options li.opt label
+    font-size 0.8rem
+    color vs-grey

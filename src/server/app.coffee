@@ -158,8 +158,8 @@ require 'ndx-server'
     template = await ndx.database.selectOne req.params.method + 'templates', name: 'Chase'
     task = await ndx.database.selectOne 'tasks', _id:req.params.taskId
     issue = await ndx.database.selectOne 'issues', _id:task.issue
-    if template and issue and issue.isBooked
-      contractor = await ndx.database.selectOne 'contractors', _id:issue.booked
+    if template and issue and task
+      contractor = await ndx.database.selectOne 'contractors', _id:task.contractor
       if contractor
         issue.contractor = contractor.name
         if req.params.method is 'email'
@@ -186,8 +186,8 @@ require 'ndx-server'
     template = await ndx.database.selectOne req.params.method + 'templates', name: 'ChaseInvoice'
     task = await ndx.database.selectOne 'tasks', _id:req.params.taskId
     issue = await ndx.database.selectOne 'issues', _id:task.issue
-    if template and issue and issue.isBooked
-      contractor = await ndx.database.selectOne 'contractors', _id:issue.booked
+    if template and issue and task
+      contractor = await ndx.database.selectOne 'contractors', _id:task.contractor
       if contractor
         issue.contractor = contractor.name
         if req.params.method is 'email'
@@ -215,8 +215,8 @@ require 'ndx-server'
     task = await ndx.database.selectOne 'tasks', _id:req.params.taskId
     issue = await ndx.database.selectOne 'issues', _id:task.issue
     user = ndx.user
-    if template and issue and issue.isBooked
-      contractor = await ndx.database.selectOne 'contractors', _id:issue.booked
+    if template and issue and task
+      contractor = await ndx.database.selectOne 'contractors', _id:task.contractor
       if contractor
         issue.contractor = contractor.name
         if req.params.method is 'email'

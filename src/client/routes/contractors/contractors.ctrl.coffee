@@ -17,6 +17,7 @@ angular.module 'vs-maintenance-leads'
     for contractor in contractors.items
       contractor.issues = $scope.list 'issues',
         where:
+          statusName: 'Booked'
           booked: contractor._id
           deleted: null
           completed: null

@@ -20,10 +20,9 @@ angular.module 'vs-maintenance-leads'
           statusName: 'Booked'
           $or: [
             booked: contractor._id
+          ,
             contractorName: contractor.name
           ]
-          deleted: null
-          completed: null
   $scope.contractors.sort = Sorter.create $scope.contractors.args
   $scope.deleteContractor = (contractor) ->
     $scope.modal

@@ -51,13 +51,7 @@ angular.module 'vs-maintenance-leads'
       $scope.submitTask.cfpJobNumber = $scope.cfpJobNumber
       $http.post "/api/tasks/#{$scope.task._id or ''}", $scope.submitTask
       .then (response) ->
-        if $scope.needsJobNumber
-          obj = 
-            cfpJobNumber:$scope.cfpJobNumber
-          $http.post "/api/issues/#{$scope.task.issue}", obj
-          .then ndxModalInstance.dismiss
-        else
-          ndxModalInstance.dismiss()
+        ndxModalInstance.dismiss()
       , (err) ->
         false
   $scope.delete = ->
@@ -93,3 +87,21 @@ angular.module 'vs-maintenance-leads'
         $scope.uploadProgress = Math.min 100, parseInt(100.0 * progress.loaded / progress.total)
   $scope.makeDownloadUrl = (document) ->
     '/api/download/' + btoa "#{JSON.stringify({path:document.path,filename:document.originalFilename})}"
+  $scope.chaseContractor = (method, task) ->
+    $http.get '/api/chase/' + method + '/' + task._id
+    .then (res) ->
+      if res.data is 'OK'
+        $http.get '/api/inform/' + method + '/' + task._id
+        .then (res) ->
+          if res.data is 'OK'
+            alert.log method + ' sent' 
+  $scope.chaseInvoice = (method, task) ->
+    $http.get '/api/chase-invoice/' + method + '/' + task._id
+    .then (res) ->
+      if res.data is 'OK'
+        alert.log 'Invoice chased' 
+  $scope.informTenant = (method, task) ->
+    $http.get '/api/inform/' + method + '/' + task._id
+    .then (res) ->
+      if res.data is 'OK'
+        alert.log 'Tenant informed' 

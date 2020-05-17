@@ -23,7 +23,16 @@
     .form-item.quarter
       label.title Duration:
       input(type='time', ng-model='task.duration', required)
-    .form-item.half(ng-if='needsJobNumber')
+    .form-item
+      .buttons
+        button.button-alt(type='button', ng-click='chaseContractor("email", tasks.items[0])') 
+          i.fal.fa-at
+          | {{ m('issue-label-email') }}
+        button.button-grey(type='button', ng-click='chaseContractor("sms", tasks.items[0])') 
+          i.fal.fa-sms
+          | {{ m('issue-label-sms') }}
+      
+    //.form-item.half(ng-if='needsJobNumber')
       label.title CFP Job Number
       input(type='text', ng-model='$parent.$parent.$parent.cfpJobNumber', required)
     .form-item

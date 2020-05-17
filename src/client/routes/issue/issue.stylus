@@ -1,5 +1,7 @@
 @import '../../variables'
 .issue-route
+  .CodeMirror-scroll
+    cursor text
   .issue-header 
     border-bottom 1px solid vs-tablegrey
   .issue-details
@@ -39,6 +41,8 @@
         font-size 1.6rem
         color vs-orange
         padding-left .6rem
+    .pdf
+      padding-left 1em
     .form-controls
       .title, .details
         width 100%
@@ -64,7 +68,6 @@
         display flex
         justify-content flex-end
         margin 1rem 0
-        position absolute
         right 0
         top -10px
         .status-checkbox
@@ -120,6 +123,17 @@
           pointer-events none
       select
         width 100% 
+      .quotes
+        display flex
+        justify-content flex-end
+        align-items flex-end
+        .quote
+          display flex
+          flex-direction column
+          margin-right 1em
+          label
+            font-size .8em
+          
     .diary-controls
       justify-content flex-start
       input

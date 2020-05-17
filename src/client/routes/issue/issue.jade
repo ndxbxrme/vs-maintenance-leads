@@ -47,8 +47,11 @@ include ../../mixins/form.jade
         .cfpJobNumber(ng-show='issue.item.cfpJobNumber')
           .label {{ m('issue-heading-cfp') }} -
           .number {{ issue.item.cfpJobNumber }}
+        .pdf
+          a(href='/api/fixflo/pdf/{{issue.item.fixfloId}}', target='_blank')
+            i.fad.fa-file-alt
     +form({data:'issue'}).form-controls
-      .status-checkboxes.right(ng-hide='issue.item.statusName==="Reported"')
+      .status-checkboxes.right(ng-show='issue.item.statusName==="Reported"')
         .status-checkbox
           input#sc-booked(type='checkbox', ng-model='issue.item.status.booked', ng-change='issue.save()')
           label(for='sc-booked') Booked
@@ -61,6 +64,15 @@ include ../../mixins/form.jade
           input#sc-invoiced(type='checkbox', ng-model='issue.item.status.invoiced', ng-change='issue.save()')
           label(for='sc-invoiced') Invoice Received
               i.fad.fa-thumbs-up
+      .quotes.right(ng-show='issue.item.statusName==="Reported"')
+        .quote
+          label Contractor Quote
+          input(type='text', ng-model='issue.item.quoteContractor')
+        .quote
+          label VitalSpace Quote
+          input(type='text', ng-model='issue.item.quoteVitalSpace')
+        .quote-save
+          button.button-alt(ng-click='issue.save()') Save
       .form-section
         .form-label.half
           .source
@@ -114,7 +126,7 @@ include ../../mixins/form.jade
             | {{ m('issue-diary-label') }}
           input.task-time(type='text', value='{{tasks.items[0].date | date:"HH:mm"}}', disabled, ng-hide='issue.item.statusName==="Reported"')
           input.task-date(type='text', value='{{tasks.items[0].date | date:"dd/MM/yyyy"}}', disabled, ng-hide='issue.item.statusName==="Reported"')
-      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.statusName==="Booked" && tasks.total')
+      //.form-section(ng-show='issue.item.cfpJobNumber && issue.item.statusName==="Booked" && tasks.total')
         .form-label {{ m('issue-heading-chase') }}
         .form-controls
           .buttons
@@ -124,7 +136,7 @@ include ../../mixins/form.jade
             button.button-grey(type='button', ng-click='chaseContractor("sms", tasks.items[0])') 
               i.fal.fa-sms
               | {{ m('issue-label-sms') }}
-      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.statusName==="Booked" && tasks.total')
+      //.form-section(ng-show='issue.item.cfpJobNumber && issue.item.statusName==="Booked" && tasks.total')
         .form-label {{ m('issue-heading-inform') }}
         .form-controls
           .buttons

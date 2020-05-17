@@ -1,5 +1,6 @@
 'use strict' 
 marked = require 'marked'
+superagent = require 'superagent'
 require 'ndx-server'
 .config
   database: 'db'
@@ -38,9 +39,16 @@ require 'ndx-server'
     if args.table is 'tasks'
       contractor = await ndx.database.selectOne 'contractors', _id:args.obj.contractor or args.oldObj.contractor
       args.obj.contractorName = contractor.name
-      ndx.database.update 'issues',
-        contractorName: contractor.name
-      , _id:args.obj.issue or args.oldObj.issue
+      issue = await ndx.database.selectOne 'issues', _id: args.obj.issue
+      issue.contractorName = contractor.name
+      issue.notes = issue.notes or []
+      issue.notes.push
+        date: new Date().valueOf()
+        text: 'Task assigned to - ' + contractor.name
+        item: 'Note'
+        side: ''
+        user: args.user
+      ndx.database.upsert 'issues', issue
     cb true
   updateStatus = (args, cb) ->
     if args.table is 'tasks'
@@ -74,7 +82,7 @@ require 'ndx-server'
             numbers: [mailOrNo.trim()]
             body: template.body
           , template
-  sendMessages = (args, cb) ->
+  sendMessages = (args, cb) ->        
     if args.table is 'issues'
       if args.changes?.statusName?.to
         if args.changes.statusName.to isnt 'Reported'
@@ -155,6 +163,7 @@ require 'ndx-server'
       _id: req.params.issueId
     res.end 'OK'
   ndx.app.get '/api/chase/:method/:taskId', ndx.authenticate(), (req, res, next) ->
+    user = ndx.user
     template = await ndx.database.selectOne req.params.method + 'templates', name: 'Chase'
     task = await ndx.database.selectOne 'tasks', _id:req.params.taskId
     issue = await ndx.database.selectOne 'issues', _id:task.issue
@@ -183,6 +192,7 @@ require 'ndx-server'
         ndx.database.upsert 'issues', issue
     res.end 'OK'
   ndx.app.get '/api/chase-invoice/:method/:taskId', ndx.authenticate(), (req, res, next) ->
+    user = ndx.user
     template = await ndx.database.selectOne req.params.method + 'templates', name: 'ChaseInvoice'
     task = await ndx.database.selectOne 'tasks', _id:req.params.taskId
     issue = await ndx.database.selectOne 'issues', _id:task.issue
@@ -286,4 +296,10 @@ require 'ndx-server'
         issue: issue._id
       ndx.database.upsert 'issues', issue
     res.end 'OK'
+  ndx.app.get '/api/fixflo/pdf/:fixfloId', ndx.authenticate(), (req, res, next) ->
+    {body} = await superagent.get ndx.fixflo.issuesUrl.replace(/s$/, '') + '/' + req.params.fixfloId + '/report'
+    .set 'Authorization', 'Bearer ' + process.env.FIXFLO_KEY
+    .buffer true
+    res.setHeader 'Content-Type', 'application/pdf'
+    res.send body
 .start()

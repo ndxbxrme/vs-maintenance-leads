@@ -7,11 +7,11 @@ module.exports = (ndx) ->
     sleep = (time) ->
       new Promise (resolve) ->
         setTimeout resolve, time
-    fetch = (url) ->
+    fetch = (url, accept) ->
       new Promise (resolve, reject) ->
         superagent.get url
         .set 'Authorization', 'Bearer ' + process.env.FIXFLO_KEY
-        .set 'Accept', 'application/json'
+        .set 'Accept', (accept or 'application/json')
         .end (err, res) ->
           if err
             reject err
@@ -57,3 +57,6 @@ module.exports = (ndx) ->
         await fetchAllProps issuesUrl + '?CreatedSince=' + date.toISOString()
     setInterval doFixflo, 5 * 60 * 1000
     doFixflo()
+    ndx.fixflo =
+      fetch: fetch
+      issuesUrl: issuesUrl

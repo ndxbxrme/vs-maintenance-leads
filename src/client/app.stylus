@@ -207,6 +207,10 @@ table.issue-table
     &:last-child,
     &.selected
       color vs-orange
+.login-form
+  input
+    margin-bottom 5px
+    min-width 220px
 @media screen and (max-width:992px)
   h1 
     font-size 1.4rem

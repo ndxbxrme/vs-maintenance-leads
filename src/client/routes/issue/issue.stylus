@@ -41,9 +41,15 @@
         font-size 1.6rem
         color vs-orange
         padding-left .6rem
-    .pdf
-      padding-left 1em
     .form-controls
+      .control-group
+        display flex
+        justify-content space-between
+        align-items center
+        background vs-white
+        margin-bottom 20px
+        padding 5px 20px
+        border-bottom 1px solid vs-lightgrey
       .title, .details
         width 100%
         margin-bottom 1rem
@@ -61,12 +67,17 @@
           display flex
           flex-direction row
           justify-content flex-end
+          padding 10px 20px
+          background vs-white
+          border-bottom 1px solid vs-lightgrey
+          span.orange
+            color vs-orange
+            padding 5px 10px 0px 0px
           svg 
             font-size 1.4rem
-            margin 0.3rem
+            margin 0 10px
       .status-checkboxes
         display flex
-        justify-content flex-end
         margin 1rem 0
         right 0
         top -10px
@@ -74,8 +85,8 @@
           display flex
           align-items center
           justify-content flex-end
-          margin-left 1rem
           background #f1f1f1
+          margin-right 0.5rem
           padding 0.5rem 1rem 0.3rem
           input[type="checkbox"]
             opacity 0
@@ -132,7 +143,7 @@
           flex-direction column
           margin-right 1em
           label
-            font-size .8em
+            font-size 0.8rem
           
     .diary-controls
       justify-content flex-start

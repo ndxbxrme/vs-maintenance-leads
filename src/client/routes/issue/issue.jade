@@ -47,32 +47,30 @@ include ../../mixins/form.jade
         .cfpJobNumber(ng-show='issue.item.cfpJobNumber')
           .label {{ m('issue-heading-cfp') }} -
           .number {{ issue.item.cfpJobNumber }}
-        .pdf
-          a(href='/api/fixflo/pdf/{{issue.item.fixfloId}}', target='_blank')
-            i.fad.fa-file-alt
     +form({data:'issue'}).form-controls
-      .status-checkboxes.right(ng-show='issue.item.statusName==="Reported"')
-        .status-checkbox
-          input#sc-booked(type='checkbox', ng-model='issue.item.status.booked', ng-change='issue.save()')
-          label(for='sc-booked') Booked
-            i.fad.fa-file-medical
-        .status-checkbox
-          input#sc-completed(type='checkbox', ng-model='issue.item.status.completed', ng-change='issue.save()')
-          label(for='sc-completed') Job Completed
-            i.fad.fa-file-check
-        .status-checkbox
-          input#sc-invoiced(type='checkbox', ng-model='issue.item.status.invoiced', ng-change='issue.save()')
-          label(for='sc-invoiced') Invoice Received
-              i.fad.fa-thumbs-up
-      .quotes.right(ng-show='issue.item.statusName==="Reported"')
-        .quote
-          label Contractor Quote
-          input(type='text', ng-model='issue.item.quoteContractor')
-        .quote
-          label VitalSpace Quote
-          input(type='text', ng-model='issue.item.quoteVitalSpace')
-        .quote-save
-          button.button-alt(ng-click='issue.save()') Save
+      .control-group
+        .status-checkboxes(ng-show='issue.item.statusName==="Reported"')
+          .status-checkbox
+            input#sc-booked(type='checkbox', ng-model='issue.item.status.booked', ng-change='issue.save()')
+            label(for='sc-booked') Booked
+              i.fad.fa-file-medical
+          .status-checkbox
+            input#sc-completed(type='checkbox', ng-model='issue.item.status.completed', ng-change='issue.save()')
+            label(for='sc-completed') Job Completed
+              i.fad.fa-file-check
+          .status-checkbox
+            input#sc-invoiced(type='checkbox', ng-model='issue.item.status.invoiced', ng-change='issue.save()')
+            label(for='sc-invoiced') Invoice Received
+                i.fad.fa-thumbs-up
+        .quotes.right(ng-show='issue.item.statusName==="Reported"')
+          .quote
+            label Contractor Quote
+            input(type='text', ng-model='issue.item.quoteContractor', placeholder='Contractor Quote')
+          .quote
+            label VitalSpace Quote
+            input(type='text', ng-model='issue.item.quoteVitalSpace',placeholder='VitalSpace Quote')
+          .quote-save
+            button.button-alt(ng-click='issue.save()') Save
       .form-section
         .form-label.half
           .source
@@ -93,6 +91,10 @@ include ../../mixins/form.jade
               span &nbsp;- {{ issue.item.details }}
           .right
             .edit-icons
+              span.orange View/Edit
+              .pdf
+                a(href='/api/fixflo/pdf/{{issue.item.fixfloId}}', target='_blank')
+                  i.fad.fa-file-pdf
               span(ng-click='$parent.showLightbox(issue.item.media)')
                 i.fad.fa-camera-retro(ng-show='issue.item.media.length')
               span(ng-click='$parent.editing=true', ng-hide='editing', ng-class='{disabled:issue.item.statusName==="Completed"}')

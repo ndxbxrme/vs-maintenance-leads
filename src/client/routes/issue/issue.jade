@@ -48,8 +48,9 @@ include ../../mixins/form.jade
           .label {{ m('issue-heading-cfp') }} -
           .number {{ issue.item.cfpJobNumber }}
     +form({data:'issue'}).form-controls
+      // This should always be visible so I have removed this (ng-show='issue.item.statusName==="Reported" || issue.item.statusName==="Completed"'). Possibly need to show but disable edit when completed.
       .control-group
-        .status-checkboxes(ng-show='issue.item.statusName==="Reported"')
+        .status-checkboxes
           .status-checkbox
             input#sc-booked(type='checkbox', ng-model='issue.item.status.booked', ng-change='issue.save()')
             label(for='sc-booked') Booked
@@ -62,7 +63,7 @@ include ../../mixins/form.jade
             input#sc-invoiced(type='checkbox', ng-model='issue.item.status.invoiced', ng-change='issue.save()')
             label(for='sc-invoiced') Invoice Received
                 i.fad.fa-thumbs-up
-        .quotes.right(ng-show='issue.item.statusName==="Reported"')
+        .quotes.right
           .quote
             label Contractor Quote
             input(type='text', ng-model='issue.item.quoteContractor', placeholder='Contractor Quote')

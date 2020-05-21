@@ -158,8 +158,8 @@ include ../../mixins/form.jade
             button.button-grey(type='button', ng-click='chaseInvoice("sms", tasks.items[0])') 
               i.fal.fa-sms
               | {{ m('issue-label-sms-invoice') }}
-
-      .form-section(ng-show='issue.item.cfpJobNumber && issue.item.statusName==="Booked"')
+      //.form-section(ng-show='issue.item.cfpJobNumber && issue.item.statusName==="Booked"') Removed cfp part so the complete butotn shows
+      .form-section(ng-show='issue.item.statusName==="Booked"')
         .form-label {{ m('issue-heading-complete') }}
         .form-controls
           .buttons

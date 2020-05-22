@@ -23,12 +23,12 @@
     .form-item.quarter
       label.title Duration:
       input(type='time', ng-model='task.duration', required)
-    .form-item
+    .form-item(ng-show='task._id')
       .buttons
-        button.button-alt(type='button', ng-click='chaseContractor("email", tasks.items[0])') 
+        button.button-alt(type='button', ng-click='chaseContractor("email", task)') 
           i.fal.fa-at
           | {{ m('issue-label-email') }}
-        button.button-grey(type='button', ng-click='chaseContractor("sms", tasks.items[0])') 
+        button.button-grey(type='button', ng-click='chaseContractor("sms", task)') 
           i.fal.fa-sms
           | {{ m('issue-label-sms') }}
       

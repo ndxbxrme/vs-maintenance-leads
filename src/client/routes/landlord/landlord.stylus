@@ -1,0 +1,6 @@
+@import '../../variables'
+.landlord-route
+  .controls
+    margin-top 40px
+  .email
+    background none

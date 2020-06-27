@@ -305,5 +305,6 @@ require 'ndx-server'
   ndx.app.post '/mailin', (req, res, next) ->
     {From,To,subject} = req.body
     text = req.body['stripped-text']
-    console.log From, To, subject, text
+    console.log From
+    res.json {From:From}
 .start()

@@ -1,2 +1,15 @@
+include ../../mixins/form.jade
 .message-center
-  h1 Messages
+  +form({data:'outgoingEmail'})
+    .form-section
+      .form-controls
+        +select({name:'messageTo', list:'messageRecipients', errors:{required:true}})
+    .form-section
+      .form-controls
+        label {{ m('outgoingEmail-messageBody-label') }}
+        code-mirror(name='messageBody', ng-model='outgoingEmail.body', options='{lineWrapping:true}')
+    .form-section
+      .form-controls
+        button(type='button', name='send', ng-click='sendEmail()') {{ m('outgoingEmail-send-label') }}
+        button(type='button', name='attach', ng-click='attach()') {{ m('outgoingEmail-attach-label') }}
+    

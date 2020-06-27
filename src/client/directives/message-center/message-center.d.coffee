@@ -5,3 +5,4 @@ angular.module 'vs-maintenance-leads'
   restrict: 'EA'
   templateUrl: 'directives/message-center/message-center.html'
   link: (scope, elem, attrs) ->
+    console.log 'hiya'

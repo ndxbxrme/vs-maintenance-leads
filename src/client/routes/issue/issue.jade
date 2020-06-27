@@ -1,5 +1,5 @@
 include ../../mixins/form.jade
-.issue-route.route(ng-show='fetched')
+.issue-route.route(ng-show='fetched') {{pageMode="messages"}}
   .add-edit(ng-if='!issue.item._id || editing')
     h1(ng-show='!editing') {{ m('issue-heading-add') }}
     h1(ng-show='editing') {{ m('issue-heading-edit') }}
@@ -226,4 +226,4 @@ include ../../mixins/form.jade
           button(type='button', ng-click='addNote()') 
             .fal.fa-plus
             | {{note.date?'Update':'Add'}} Note
-    message-center(ng-show='pageMode==="messages')        
+    message-center(ng-show='pageMode==="messages"')         

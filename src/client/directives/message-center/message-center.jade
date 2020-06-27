@@ -1,5 +1,5 @@
 include ../../mixins/form.jade
-.message-center
+.message-center {{contractors.items.filter(function(item) { return item._id === tasks.items[0].contractor))}}
   +form({data:'outgoingEmail'})
     .form-section
       .form-controls

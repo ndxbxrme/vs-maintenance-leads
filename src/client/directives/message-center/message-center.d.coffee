@@ -5,4 +5,6 @@ angular.module 'vs-maintenance-leads'
   restrict: 'EA'
   templateUrl: 'directives/message-center/message-center.html'
   link: (scope, elem, attrs) ->
-    console.log 'hiya'
+    scope.messageRecipients = [
+      name: 'Tenant: ' + scope.issue.item.tenantFirstName + ' ' + scope.issue.item.tenantLastName + ' - ' + scope.issue.item.tenantEmail, _id: 'tenant'
+    ]

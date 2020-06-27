@@ -4,7 +4,7 @@ superagent = require 'superagent'
 require 'ndx-server'
 .config
   database: 'db'
-  tables: ['users', 'issues', 'tasks', 'contractors', 'landlords', 'emailtemplates', 'smstemplates', 'shorttoken']
+  tables: ['users', 'issues', 'tasks', 'emails', 'contractors', 'landlords', 'emailtemplates', 'smstemplates', 'shorttoken']
   localStorage: './data'
   hasInvite: true
   hasForgot: true
@@ -302,4 +302,8 @@ require 'ndx-server'
     .buffer true
     res.setHeader 'Content-Type', 'application/pdf'
     res.send body
+  ndx.app.post '/mailin', (req, res, next) ->
+    {From,To,subject} = req.body
+    text = req.body['stripped-text']
+    console.log From, To, subject, text
 .start()

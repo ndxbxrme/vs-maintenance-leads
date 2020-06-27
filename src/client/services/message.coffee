@@ -56,6 +56,7 @@ angular.module 'vs-maintenance-leads'
     "issues-button-new": "New issue"
     "issues-heading": "Maintenance Lead Management"
     "menu-contractors": "Contractors"
+    "menu-landlords": "Landlords"
     "menu-dashboard": "Dashboard"
     "menu-historic": "History"
     "menu-issue": "Add Issue"

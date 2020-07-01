@@ -305,6 +305,7 @@ require 'ndx-server'
     res.send body
   ndx.app.all '/api/mailin', (req, res, next) ->
     console.log req.body
+    console.log req.form
     res.status(200)
-    res.end()
+    res.end('Ok')
 .start()

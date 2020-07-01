@@ -139,6 +139,7 @@ require 'ndx-server'
   ndx.database.on 'insert', sendSockets
   ndx.database.on 'preUpdate', checkDeleted
 .use (ndx) ->
+  ndx.addPublicRoute '/api/mailin'
   ndx.app.get '/api/emit', (req, res, next) ->
     issue = await ndx.database.selectOne 'issues'
     ndx.socket.emitToAll 'newIssue', issue
@@ -302,7 +303,7 @@ require 'ndx-server'
     .buffer true
     res.setHeader 'Content-Type', 'application/pdf'
     res.send body
-  ndx.app.all '/mailin', (req, res, next) ->
+  ndx.app.all '/api/mailin', (req, res, next) ->
     console.log req.body
     res.end('OK')
 .start()

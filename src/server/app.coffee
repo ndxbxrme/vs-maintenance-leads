@@ -302,9 +302,7 @@ require 'ndx-server'
     .buffer true
     res.setHeader 'Content-Type', 'application/pdf'
     res.send body
-  ndx.app.post '/mailin', (req, res, next) ->
-    {From,To,subject} = req.body
-    text = req.body['stripped-text']
-    console.log From
-    res.json {From:From}
+  ndx.app.all '/mailin', (req, res, next) ->
+    console.log req.body
+    res.end('OK')
 .start()

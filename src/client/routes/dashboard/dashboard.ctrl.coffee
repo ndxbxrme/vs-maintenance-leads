@@ -6,7 +6,7 @@ angular.module 'vs-maintenance-leads'
   yesterday = new Date().setHours(now.getHours() - 24)
   $scope.maintenanceToday = $scope.list 'issues',
     page: 1
-    pageSize: 20
+    pageSize: 10
     where:
       date:
         $gt: yesterday.valueOf()
@@ -16,7 +16,7 @@ angular.module 'vs-maintenance-leads'
   $scope.maintenanceToday.sort = Sorter.create $scope.maintenanceToday.args
   $scope.maintenanceOutstanding = $scope.list 'issues',
     page: 1
-    pageSize: 20
+    pageSize: 10
     where:
       date:
         $lte: yesterday.valueOf()
@@ -26,10 +26,26 @@ angular.module 'vs-maintenance-leads'
   $scope.maintenanceOutstanding.sort = Sorter.create $scope.maintenanceOutstanding.args
   $scope.worksOutstanding = $scope.list 'issues',
     page: 1
-    pageSize: 20
+    pageSize: 10
     where:
       statusName: 'Booked'
+      status:
+        booked: true
+        completed: false
+        invoiced: false
     sort: 'date'
     sortDir: 'DESC'
   $scope.worksOutstanding.sort = Sorter.create $scope.worksOutstanding.args
+  $scope.invoiceOutstanding = $scope.list 'issues',
+    page: 1
+    pageSize: 10
+    where:
+      statusName: 'Booked'
+      status:
+        completed: true
+        booked: true
+        invoiced: false
+    sort: 'date'
+    sortDir: 'DESC'
+  $scope.invoiceOutstanding.sort = Sorter.create $scope.invoiceOutstanding.args
   true

@@ -9,10 +9,12 @@
     display flex
     justify-content space-between
     align-items flex-start
+    flex-wrap wrap
     .box
-      width calc(33% - 1rem)
+      width calc(50% - 1rem)
       border 1px solid vs-grey
       border-radius 2px;
+      margin-bottom 2rem
       .title
         padding 0.8rem
         background vs-grey
@@ -55,7 +57,8 @@
           opacity 1
         &.invoiced .invoiced
           opacity 1
-      &:last-child .status
+      &:last-child .status,
+      &:nth-child(3) .status
         display flex
 
 @media screen and (max-width:992px)

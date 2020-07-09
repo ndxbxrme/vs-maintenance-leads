@@ -318,11 +318,11 @@ require 'ndx-server'
             body: fields['body-plain'][0]
             attachments: []
           for key, file of files
-            newPath = file.path.replace('/tmp/', './uploads')
-            await fs.move file.path, newPath
+            newPath = file[0].path.replace('/tmp/', './uploads/')
+            await fs.move file[0].path, newPath
             obj.attachments.push
               path: newPath
-              originalFilename: file.originalFilename
+              originalFilename: file[0].originalFilename
           resolve obj
     myobj = null
     if not req.body.subject

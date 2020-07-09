@@ -2,7 +2,7 @@
 marked = require 'marked'
 superagent = require 'superagent'
 bodyParser = require 'body-parser'
-multiparty = require 'mulitparty'
+multiparty = require 'multiparty'
 fs = require 'fs-extra'
 require 'ndx-server'
 .config

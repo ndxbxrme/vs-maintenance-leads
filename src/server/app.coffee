@@ -1,6 +1,9 @@
 'use strict' 
 marked = require 'marked'
 superagent = require 'superagent'
+bodyParser = require 'body-parser'
+multiparty = require 'mulitparty'
+fs = require 'fs-extra'
 require 'ndx-server'
 .config
   database: 'db'
@@ -303,9 +306,35 @@ require 'ndx-server'
     .buffer true
     res.setHeader 'Content-Type', 'application/pdf'
     res.send body
-  ndx.app.all '/api/mailin', (req, res, next) ->
-    console.log req.body
-    console.log req.form
+  ndx.app.all '/api/mailin', bodyParser.urlencoded({extended:true}), (req, res, next) ->
+    parseForm = ->
+      new Promise (resolve, reject) ->
+        form = new multiparty.Form();
+        form.parse req, (err, fields, files) ->
+          obj = 
+            subject: fields.subject[0]
+            sender: fields.sender[0]
+            date: new Date(fields.Date[0])
+            body: fields['body-plain'][0]
+            attachments: []
+          for key, file of files
+            newPath = file.path.replace('/tmp/', './uploads')
+            await fs.move file.path, newPath
+            obj.attachments.push
+              path: newPath
+              originalFilename: file.originalFilename
+          resolve obj
+    myobj = null
+    if not req.body.subject
+      myobj = await parseForm()
+    else
+      myobj =
+        subject: req.body.subject
+        sender: req.body.sender
+        date: new Date(req.body.date)
+        body: req.body['body-plain']
+        attachments: []
+    console.log 'done it', myobj
     res.status(200)
     res.end('Ok')
 .start()

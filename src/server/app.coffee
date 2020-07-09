@@ -331,7 +331,7 @@ require 'ndx-server'
       myobj =
         subject: req.body.subject
         sender: req.body.sender
-        date: new Date(req.body.date)
+        date: new Date(req.body.Date)
         body: req.body['body-plain']
         attachments: []
     console.log 'done it', myobj

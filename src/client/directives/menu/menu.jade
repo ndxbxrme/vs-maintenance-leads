@@ -8,6 +8,8 @@
       a(ui-sref='worksorders', ng-class='{selected:state(["worksorders", "works-orders"])}') {{ m('menu-works-orders') }}
     li(ng-show='auth.isAuthorized("contractors")')
       a(ui-sref='contractors', ng-class='{selected:state(["contractors", "contractor"])}') {{ m('menu-contractors') }}
+    li(ng-show='auth.isAuthorized("landlords")')
+      a(ui-sref='landlords', ng-class='{selected:state(["landlords", "landlord"])}') {{ m('menu-landlords') }}
     li(ng-show='auth.isAuthorized("issue")')
       a(ui-sref='issue({_id:null})', ng-class='{selected:state(["issue", "issue"])}') {{ m('menu-issue') }}
     li(ng-show='auth.isAuthorized("historic")')

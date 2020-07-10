@@ -40,7 +40,7 @@ include ../../mixins/form.jade
   .issue-details(ng-if='issue.item._id && !editing')
     .space-between.issue-header
       .left
-        h1 {{ m('issue-heading-issue') }}
+        h1 {{ m('issue-heading-issue') }} hi
         h2 {{ issue.item.address }} 
           span {{ issue.item.date | date:medium }}
       .right

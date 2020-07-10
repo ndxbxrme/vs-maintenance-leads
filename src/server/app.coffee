@@ -7,7 +7,7 @@ fs = require 'fs-extra'
 require 'ndx-server'
 .config
   database: 'db'
-  tables: ['users', 'issues', 'tasks', 'contractors', 'emailtemplates', 'smstemplates', 'shorttoken']
+  tables: ['users', 'issues', 'tasks', 'contractors', 'landlords', 'messages', 'emailtemplates', 'smstemplates', 'shorttoken']
   localStorage: './data'
   hasInvite: true
   hasForgot: true

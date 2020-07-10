@@ -1,0 +1,35 @@
+include ../../mixins/form.jade
+.landlords-route.route
+  .space-between
+    .left
+      h1 {{ m('landlords-heading') }}
+      button.button-green(ui-sref='landlord({_id:""})') 
+        i.fas.fa-plus 
+        | {{ m('landlords-button-new') }}
+    .right  
+      .search
+        input(type='text', ng-model='search', placeholder='Search Cases', ng-change='page=1')
+      .showing Showing {{filterData.length}} of {{landlords.items.length}} landlord{{totalProps!==1?'s':''}}
+  .landlords
+    .landlord(ng-repeat='landlord in filterData =(landlords.items | filter:search | orderBy:sort) | limitTo:limit:limit*(page-1)') 
+      .landlord-heading(ui-sref='landlord({_id:landlord._id})', ng-class='{empty:!landlord.issues.total}')
+        .name {{ landlord.name }}
+        .no-issues
+          .label Issues
+          .number {{ landlord.issues.total }}
+      button.button-alt(type='button', ng-click='landlord.showList=!landlord.showList', ng-show='landlord.issues.total')
+        span(ng-show='landlord.showList') 
+          i.fal.fa-eye-slash
+          | Hide List
+        span(ng-hide='landlord.showList')
+          i.fal.fa-eye 
+          | View List
+      button.button-grey(type='button', ng-click='deletelandlord(landlord)', ng-if='auth.isAuthorized(["superadmin", "admin"])') 
+        i.fal.fa-trash-alt
+        | Delete
+      .issues(ng-show='landlord.showList')
+        .issue(ng-repeat='issue in landlord.issues.items', ui-sref='issue({_id:issue._id})')
+          .address {{ issue.address }}
+          .title {{ issue.title }}
+  .empty-table(ng-show='!filterData.length') {{ m('landlords-empty-table') }}
+  pagination(ng-model='landlords.args.page', total='landlords.total', page-size='landlords.args.pageSize')

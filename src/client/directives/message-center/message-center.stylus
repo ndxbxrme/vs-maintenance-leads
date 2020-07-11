@@ -1,0 +1,31 @@
+.message-center
+  .attachments, .messages
+    img
+      width 4em
+      height 4em
+      object-fit cover
+  .messages
+    .message
+      padding .5em
+      margin-right 4em
+      &.in
+        margin-left 4em
+        margin-right 0
+      .message-body
+        white-space pre
+      .message-subject
+        font-weight bold
+  .document-list
+    display flex
+    flex-wrap wrap
+    .document-link
+      display flex
+      align-items center
+      flex-direction column
+      margin .3em
+      padding .2em
+      .filename
+        font-size .8em
+        margin-top .3em
+      &.attached
+        background lightblue

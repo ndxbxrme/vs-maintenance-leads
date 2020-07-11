@@ -25,10 +25,12 @@ angular.module 'vs-maintenance-leads'
     ,
       deleted: null
     ]
+  $scope.messageRecipients = []
   $scope.issue = $scope.single 'issues', myParams, (issue) ->
     issue.item.source = 'telephone' if not issue.item.source
     $scope.fetched = true
   $scope.contractors = $scope.list 'contractors'
+  $scope.landlords = $scope.list 'landlords'
   $scope.tasks = $scope.list 'tasks',
     where:
       issue: myParams._id

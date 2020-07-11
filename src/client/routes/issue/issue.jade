@@ -1,5 +1,6 @@
 include ../../mixins/form.jade
 .issue-route.route(ng-show='fetched')
+  message-center(ng-if='issue.item && tasks.items')
   .add-edit(ng-if='!issue.item._id || editing')
     h1(ng-show='!editing') {{ m('issue-heading-add') }}
     h1(ng-show='editing') {{ m('issue-heading-edit') }}
@@ -19,6 +20,10 @@ include ../../mixins/form.jade
             +input({name:'tenantLastName', errors:{required:true}})
           +input({name:'tenantPhone', errors:{required:true}})
           +input({name:'tenantEmail', type:'email', errors:{required:true,email:true}})
+      .form-section
+        .form-label {{ m('issue-label-landlord') }}
+        .form-controls
+          +select({name:'landlordId', list:'landlords.items', nolabel:true})
       .form-section
         .form-label {{ m('issue-label-address') }}
         .form-controls
@@ -40,7 +45,7 @@ include ../../mixins/form.jade
   .issue-details(ng-if='issue.item._id && !editing')
     .space-between.issue-header
       .left
-        h1 {{ m('issue-heading-issue') }} hi
+        h1 {{ m('issue-heading-issue') }}
         h2 {{ issue.item.address }} 
           span {{ issue.item.date | date:medium }}
       .right
@@ -100,6 +105,10 @@ include ../../mixins/form.jade
                 i.fad.fa-camera-retro(ng-show='issue.item.media.length')
               span(ng-click='$parent.editing=true', ng-hide='editing', ng-class='{disabled:issue.item.statusName==="Completed"}')
                 i.fad.fa-edit
+      .form-section
+        .form-label {{ m('issue-heading-landlord') }}
+        .form-controls
+          +select({name:'landlordId', list:'landlords.items', change:'issue.save()', nolabel:true})
       .form-section
         .form-label {{ m('issue-heading-action-taken') }}
         .form-controls

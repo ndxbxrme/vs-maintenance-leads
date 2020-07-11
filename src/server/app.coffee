@@ -133,6 +133,66 @@ require 'ndx-server'
           statusName: 'Reported'
         , args.oldObj.issue
     cb true
+  assignProperties = (args, cb) ->  
+    addressesMatch = (add1, add2) ->
+      add1 = add1.toUpperCase().replace(/[, ]+/g, '')
+      add2 = add2.toUpperCase().replace(/[, ]+/g, '')
+      i = Math.min 30, Math.min add1.length, add2.length
+      good = true
+      while i-- > 0
+        good = good and (add1[i] is add2[i])
+      good
+    if args.table is 'landlords'
+      #removed addresses, do we care?
+      console.log args.changes
+      if args.obj.addresses
+        for address in args.obj.addresses
+          [postcode] = address.split(/, */g).reverse()
+          if postcode
+            issues = await ndx.database.select 'issues',
+              postcode: postcode
+            for issue in issues
+              if addressesMatch issue.address, address
+                await ndx.database.update 'issues',
+                  landlordId: args.obj._id
+                ,
+                  _id: issue._id
+    if args.table is 'issues'
+      #if landlord has changed, update landlord addresses
+      oldLandlord = args.changes?.landlordId?.from
+      newLandlord = args.changes?.landlordId?.to or args.obj.landlordId
+      if oldLandlord
+        #remove address from landlord
+        landlord = await ndx.database.selectOne 'landlords', _id: oldLandlord
+        landlord.addresses = landlord.addresses.filter (address) ->
+          [postcode] = address.split(/, */g).reverse()
+          return true if postcode isnt args.obj.postcode
+          return false if addressesMatch address, args.obj.address
+          return true
+        await ndx.database.update 'landlords', landlord, _id:landlord._id
+      if newLandlord
+        landlord = await ndx.database.selectOne 'landlords', _id: newLandlord
+        myaddress = landlord.addresses.find (address) ->
+          [postcode] = address.split(/, */g).reverse()
+          postcode is args.obj.postcode and addressesMatch address, args.obj.address
+        if not myaddress
+          landlord.addresses.push args.obj.address
+          await ndx.database.update 'landlords', landlord, _id:landlord._id
+        #add address to landlord if it isn't there already
+      console.log args.changes
+    cb? true
+  assignLandlord = (args, cb) ->
+    if args.table is 'issues'
+      if not args.obj.landlordId
+        landlords = await ndx.database.select 'landlords'
+        for landlord in landlords
+          if landlord.addresses
+            for address in landlord.addresses
+              [postcode] = address.split(/, */g).reverse()
+              if postcode is args.obj.postcode and addressesMatch address, args.obj.address
+                args.obj.landlordId = landlord._id
+                return cb? true
+    cb? true
   ndx.database.on 'preUpdate', assignAddressAndNames
   ndx.database.on 'preInsert', assignAddressAndNames
   ndx.database.on 'update', updateStatus
@@ -141,6 +201,9 @@ require 'ndx-server'
   ndx.database.on 'preInsert', sendMessages
   ndx.database.on 'insert', sendSockets
   ndx.database.on 'preUpdate', checkDeleted
+  ndx.database.on 'update', assignProperties
+  ndx.database.on 'insert', assignProperties
+  ndx.database.on 'preInsert', assignLandlord
 .use (ndx) ->
   ndx.addPublicRoute '/api/mailin'
   ndx.app.get '/api/emit', (req, res, next) ->
@@ -318,23 +381,77 @@ require 'ndx-server'
             body: fields['body-plain'][0]
             attachments: []
           for key, file of files
-            newPath = file[0].path.replace('/tmp/', './uploads/')
-            await fs.move file[0].path, newPath
-            obj.attachments.push
-              path: newPath
-              originalFilename: file[0].originalFilename
+            #save file to uploads
+            fileInfo = await ndx.fileTools.saveFile file[0]
+            console.log 'file', fileInfo
+            try
+              fs.unlinkSync file[0].path
+            #await fs.move file[0].path, newPath
+            obj.attachments.push fileInfo
           resolve obj
     myobj = null
     if not req.body.subject
       myobj = await parseForm()
     else
       myobj =
+        dir: 'in'
         subject: req.body.subject
         sender: req.body.sender
         date: new Date(req.body.Date)
         body: req.body['body-plain']
         attachments: []
+    [,issueId] = myobj.body.match(/:I(.*)?:/)
+    if issueId
+      issue = await ndx.database.selectOne 'issues', _id: issueId
+      if issue
+        issue.messages = issue.messages or []
+        issue.messages.push myobj
+        issue.documents = issue.documents or []
+        for attachment in myobj.attachments
+          issue.documents.push attachment
+        await ndx.database.update 'issues', issue, _id: issueId
+          
     console.log 'done it', myobj
     res.status(200)
     res.end('Ok')
+  
+  ndx.app.post '/api/message-center/send', ndx.authenticate(), (req, res, next) ->
+      #move attachments to temp folder ready for attaching, subfolders for each file?
+    attachments = []
+    if req.body.attachments and req.body.attachments.length
+      for attachment in req.body.attachments
+        filePath = await ndx.fileTools.moveToAttachments attachment
+        attachments.push filePath
+        console.log 'file path', filePath
+    apiKey = process.env.EMAIL_API_KEY
+    mgDomain = 'mg.vitalspace.co.uk'
+    mailgun = require('mailgun-js')
+      apiKey: apiKey
+      domain: mgDomain
+    data = 
+      from: 'Vitalspace Test <testing@mg.vitalspace.co.uk>'
+      to: 'lewis_the_cat@hotmail.com'
+      subject: 'Attachment test'
+      text: 'hiya \r\n________________________________\r\n:I' + req.body.issueId + ':'
+    if attachments.length
+      data.attachment = attachments
+    mailgun.messages().send data, (error, body) ->
+      for attachment in attachments
+        fs.unlinkSync attachment
+      issue = await ndx.database.selectOne 'issues', _id: req.body.issueId
+      if issue
+        issue.messages = issue.messages or []
+        issue.messages.push
+          dir: 'out'
+          subject: data.subject
+          to: data.to
+          date: new Date()
+          body: data.text
+          attachments: req.body.attachments
+        ndx.database.update 'issues', issue, _id: req.body.issueId
+        
+        #fs.rmdirSync attachment.replace(/\/[^\/]*$/, '')
+      console.log error, body
+      
+    res.end 'OK'
 .start()

@@ -1,0 +1,37 @@
+include ../../mixins/form.jade
+.message-center 
+  h1 message center
+  .messages
+    .message(ng-repeat='message in issue.item.messages', ng-class='{in:message.dir==="in"}') 
+      .message-subject {{message.subject}}
+      .message-body {{message.body}}
+      .document-list(ng-show='message.attachments.length')
+        .document(ng-repeat='document in message.attachments')
+          .document-link(ng-click='document.$attached=!document.$attached', ng-class='{attached:document.$attached}')
+            img(ng-src='{{makeDownloadUrl(document)}}', ng-if='document.basetype==="image"')
+            img.logo(src="public/img/icons/vs-document.png", ng-hide='document.basetype==="image"', class='{{document.basetype}}')
+            .filename 
+              span(ng-show='!document.editing') {{document.name || document.originalFilename}}
+  +form({data:'outgoingEmail'})
+    .form-section
+      .form-controls
+        +select({name:'messageTo', list:'messageRecipients', errors:{required:true}})
+    .attachments
+      .drop-box(ngf-drop='uploadFiles($files)', ngf-drag-over-class="'dragover'", ngf-multiple='true')
+        h3 Drop files here to upload
+        button.file-upload(type='file', ngf-select='uploadFiles($file, $invalidFiles)') Or click here to choose
+      .document-list(ng-show='issue.item.documents.length')
+        .document(ng-repeat='document in issue.item.documents')
+          .document-link(ng-click='document.$attached=!document.$attached', ng-class='{attached:document.$attached}')
+            img(ng-src='{{makeDownloadUrl(document)}}', ng-if='document.basetype==="image"')
+            img.logo(src="public/img/icons/vs-document.png", ng-hide='document.basetype==="image"', class='{{document.basetype}}')
+            .filename 
+              span(ng-show='!document.editing') {{document.name || document.originalFilename}}
+    .form-section
+      .form-controls
+        label {{ m('outgoingEmail-messageBody-label') }}
+        code-mirror(name='messageBody', ng-model='outgoingEmail.body', options='{lineWrapping:true}')
+    .form-section
+      .form-controls
+        button(type='button', name='send', ng-click='sendEmail()') {{ m('outgoingEmail-send-label') }}
+        button(type='button', name='attach', ng-click='attach()') {{ m('outgoingEmail-attach-label') }}

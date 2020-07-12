@@ -40,6 +40,8 @@ angular.module 'vs-maintenance-leads', [
   if socket
     socket.on 'newIssue', (issue) ->
       alert.log '<i class="fad fa-house-damage"></i><h3>' + issue.address + '</h3><p>' + issue.title + '</p>'
+    socket.on 'newMessage', (message) ->
+      alert.log '<i class="fad fa-house-damage"></i><h3>' + message.address + '</h3><h4>' + message.from + '</h4><p>' + message.subject + '</p>'
 try
   angular.module 'ndx'
 catch e

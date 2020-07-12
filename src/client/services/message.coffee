@@ -140,6 +140,17 @@ angular.module 'vs-maintenance-leads'
     "issue-label-complete": "Complete Issue"
     "issue-heading-diary": "Diary"
     "issue-diary-label": "View Diary"
+    "outgoingEmail-messageTo-label": "Recipient"
+    "outgoingEmail-send-label": "Send"
+    "outgoingEmail-cancel-label": "Cancel"
+    "outgoingEmail-attach-label": "Attach"
+    "outgoingEmail-subject-label": "Subject"
+    "outgoingEmail-messageBody-label": "Body"
+    "outgoingEmail-documentsShow-label": "Show documents"
+    "outgoingEmail-documentsHide-label": "Hide documents"
+    "outgoingEmail-messageCenter-heading": "Message Center"
+    "issue-messageCenterShow-label": "Message center{{newMessages?' (' + newMessages + ' new)':''}}"
+    "issue-messageCenterHide-label": "Issue details"
     
   fillTemplate = (template, data) -> 
     template.replace /\{\{(.+?)\}\}/g, (all, match) ->

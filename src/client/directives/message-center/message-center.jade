@@ -1,37 +1,56 @@
 include ../../mixins/form.jade
 .message-center 
-  h1 message center
-  .messages
-    .message(ng-repeat='message in issue.item.messages', ng-class='{in:message.dir==="in"}') 
-      .message-subject {{message.subject}}
-      .message-body {{message.body}}
-      .document-list(ng-show='message.attachments.length')
-        .document(ng-repeat='document in message.attachments')
-          .document-link(ng-click='document.$attached=!document.$attached', ng-class='{attached:document.$attached}')
-            img(ng-src='{{makeDownloadUrl(document)}}', ng-if='document.basetype==="image"')
-            img.logo(src="public/img/icons/vs-document.png", ng-hide='document.basetype==="image"', class='{{document.basetype}}')
-            .filename 
-              span(ng-show='!document.editing') {{document.name || document.originalFilename}}
-  +form({data:'outgoingEmail'})
+  .message-center-heading
+    h1 {{ m('outgoingEmail-messageCenter-heading')}}
+    button(type='button', ng-click='(composingMessage=true) && (outgoingEmail={})') New message
+  
+  +form({data:'outgoingEmail', ignore:true})(ng-show='composingMessage')
+    .form-section
+      +select({name:'messageTo', list:'messageRecipients', errors:{required:true}})
     .form-section
       .form-controls
-        +select({name:'messageTo', list:'messageRecipients', errors:{required:true}})
-    .attachments
-      .drop-box(ngf-drop='uploadFiles($files)', ngf-drag-over-class="'dragover'", ngf-multiple='true')
-        h3 Drop files here to upload
-        button.file-upload(type='file', ngf-select='uploadFiles($file, $invalidFiles)') Or click here to choose
-      .document-list(ng-show='issue.item.documents.length')
-        .document(ng-repeat='document in issue.item.documents')
-          .document-link(ng-click='document.$attached=!document.$attached', ng-class='{attached:document.$attached}')
-            img(ng-src='{{makeDownloadUrl(document)}}', ng-if='document.basetype==="image"')
-            img.logo(src="public/img/icons/vs-document.png", ng-hide='document.basetype==="image"', class='{{document.basetype}}')
-            .filename 
-              span(ng-show='!document.editing') {{document.name || document.originalFilename}}
+        +input({name:'subject'})
     .form-section
-      .form-controls
+      .form-item
+        label.space-between Attachments {{noAttachments()}}
+          button(type='button', ng-click='outgoingEmail.showAttachments = !outgoingEmail.showAttachments') {{ outgoingEmail.showAttachments? m('outgoingEmail-documentsHide-label') : m('outgoingEmail-documentsShow-label') }}
+        .attachments(ng-show='outgoingEmail.showAttachments')
+          .drop-box(ngf-drop='uploadFiles($files)', ngf-drag-over-class="'dragover'", ngf-multiple='true')
+            h3 Drop files here to upload
+            button.file-upload(type='file', ngf-select='uploadFiles($file, $invalidFiles)') Or click here to choose
+          .document-list(ng-show='issue.item.documents.length')
+            .document(ng-repeat='document in issue.item.documents')
+              .document-link(ng-click='document.$attached=!document.$attached', ng-class='{attached:document.$attached}')
+                img(ng-src='{{makeDownloadUrl(document)}}', ng-if='document.basetype==="image"')
+                img.logo(src="public/img/icons/vs-document.png", ng-hide='document.basetype==="image"', class='{{document.basetype}}')
+                .filename 
+                  span(ng-show='!document.editing') {{document.name || document.originalFilename}}
+    .form-section
+      .form-item
         label {{ m('outgoingEmail-messageBody-label') }}
         code-mirror(name='messageBody', ng-model='outgoingEmail.body', options='{lineWrapping:true}')
     .form-section
       .form-controls
         button(type='button', name='send', ng-click='sendEmail()') {{ m('outgoingEmail-send-label') }}
-        button(type='button', name='attach', ng-click='attach()') {{ m('outgoingEmail-attach-label') }}
+        button(type='button', name='cancel', ng-click='(outgoingEmail={}) && (composingMessage=false)') {{ m('outgoingEmail-cancel-label') }}
+  .messages
+    .message(ng-repeat='message in issue.item.messages', ng-class='{in:message.dir==="in"}') 
+      .message-entity(class='{{message.from || "vitalspace"}}') {{message.from.substr(0,1) || 'VS'}}
+      .message-holder
+        .message-subject {{message.subject}}
+        .message-content
+          .message-details
+            .left
+              .message-to(ng-show='message.dir==="out"') To {{message.toName}}, {{message.toEntity}}
+              .message-from(ng-show='message.dir==="in"') From {{message.fromName}}, {{message.from}}
+              .message-date {{message.date | date:medium }}
+            .right
+              button(type='button', ng-click='reply(message)', ng-show='message.from') Reply
+          .document-list(ng-show='message.attachments.length')
+            .document(ng-repeat='document in message.attachments')
+              a.document-link(ng-href='{{makeDownloadUrl(document)}}', target='_self')
+                img(ng-src='{{makeDownloadUrl(document)}}', ng-if='document.basetype==="image"')
+                img.logo(src="public/img/icons/vs-document.png", ng-hide='document.basetype==="image"', class='{{document.basetype}}')
+                .filename 
+                  span(ng-show='!document.editing') {{document.name || document.originalFilename}}
+          .message-body {{message.text}}

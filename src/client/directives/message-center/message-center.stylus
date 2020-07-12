@@ -1,18 +1,57 @@
+@import '../../variables'
 .message-center
+  .CodeMirror
+    border 1px solid #ccc
+    padding .5em
+  .message-center-heading
+    display flex
+    justify-content space-between
   .attachments, .messages
     img
       width 4em
       height 4em
       object-fit cover
   .messages
+    background #fafafa
     .message
+      display flex
       padding .5em
       margin-right 4em
       &.in
         margin-left 4em
         margin-right 0
+      .message-entity
+        display flex
+        justify-content center
+        align-items center
+        border-radius 50%
+        width 2em
+        height 2em
+        background vs-orange
+        color white
+        font-weight bold
+        font-size 2em
+        margin-right 1em
+        &.Landlord
+          background #9025f1
+        &.Tenant
+          background #25b9f1
+        &.Contractor
+          background #f1e125
+      .message-holder
+        flex 1
+      .message-content
+        background white
+        padding 1em
+        margin-top .6em
+      .message-details
+        display flex
+        justify-content space-between
+      .message-date
+        opacity 0.5
+        margin-bottom .6em
       .message-body
-        white-space pre
+        white-space pre-wrap
       .message-subject
         font-weight bold
   .document-list

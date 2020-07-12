@@ -379,6 +379,7 @@ require 'ndx-server'
             sender: fields.sender[0]
             date: new Date(fields.Date[0])
             body: fields['body-plain'][0]
+            text: fields['stripped-text'][0]
             attachments: []
           for key, file of files
             #save file to uploads
@@ -394,22 +395,41 @@ require 'ndx-server'
       myobj = await parseForm()
     else
       myobj =
-        dir: 'in'
         subject: req.body.subject
         sender: req.body.sender
         date: new Date(req.body.Date)
         body: req.body['body-plain']
+        text: req.body['stripped-text']
         attachments: []
+    myobj.dir = 'in'
     [,issueId] = myobj.body.match(/:I(.*)?:/)
     if issueId
+      [issueId, replyId] = issueId.split '+'
+      myobj.replyId = replyId
       issue = await ndx.database.selectOne 'issues', _id: issueId
       if issue
+        if myobj.sender is issue.tenantEmail
+          myobj.from = 'Tenant'
+          myobj.fromName = issue.tenant
+        else
+          landlord = await ndx.database.selectOne 'landlords', _id: issue.landlordId
+          if landlord and landlord.email is myobj.sender
+            myobj.from = 'Landlord'
+            myobj.fromName = landlord.name
+          else
+            myobj.from = 'Contractor'
+            myobj.fromName = issue.contractor
         issue.messages = issue.messages or []
         issue.messages.push myobj
         issue.documents = issue.documents or []
         for attachment in myobj.attachments
           issue.documents.push attachment
+        issue.newMessages = (issue.newMessages or 0) + 1
         await ndx.database.update 'issues', issue, _id: issueId
+        ndx.socket.emitToAll 'newMessage',
+          address: issue.address
+          subject: myobj.subject
+          from: myobj.from
           
     console.log 'done it', myobj
     res.status(200)
@@ -417,7 +437,9 @@ require 'ndx-server'
   
   ndx.app.post '/api/message-center/send', ndx.authenticate(), (req, res, next) ->
       #move attachments to temp folder ready for attaching, subfolders for each file?
+    [toEntity,toName,toEmail] = req.body.item.messageTo.split '::'
     attachments = []
+    replyId = req.body.replyId or new Date().getTime().toString(23)
     if req.body.attachments and req.body.attachments.length
       for attachment in req.body.attachments
         filePath = await ndx.fileTools.moveToAttachments attachment
@@ -428,11 +450,14 @@ require 'ndx-server'
     mailgun = require('mailgun-js')
       apiKey: apiKey
       domain: mgDomain
+    outBody = req.body.body
+    if not req.body.body.includes ':I' + req.body.issueId + '+' + replyId + ':'
+      outBody += '\r\n\r\n________________________________\r\n:I' + req.body.issueId + '+' + replyId + ':'
     data = 
       from: 'Vitalspace Test <testing@mg.vitalspace.co.uk>'
-      to: 'lewis_the_cat@hotmail.com'
-      subject: 'Attachment test'
-      text: 'hiya \r\n________________________________\r\n:I' + req.body.issueId + ':'
+      to: process.env.EMAIL_OVERRIDE or toEmail
+      subject: req.body.item?.subject
+      text: outBody
     if attachments.length
       data.attachment = attachments
     mailgun.messages().send data, (error, body) ->
@@ -440,13 +465,19 @@ require 'ndx-server'
         fs.unlinkSync attachment
       issue = await ndx.database.selectOne 'issues', _id: req.body.issueId
       if issue
+        if req.body.prevBody
+          req.body.body = req.body.body.replace req.prevBody, ''
         issue.messages = issue.messages or []
         issue.messages.push
           dir: 'out'
           subject: data.subject
           to: data.to
+          toEntity: toEntity
+          toName: toName
           date: new Date()
           body: data.text
+          text: req.body.body
+          replyId: replyId
           attachments: req.body.attachments
         ndx.database.update 'issues', issue, _id: req.body.issueId
         

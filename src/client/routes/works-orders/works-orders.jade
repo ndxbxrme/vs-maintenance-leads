@@ -22,6 +22,7 @@ include ../../mixins/form.jade
         td.address {{ issue.address }}
           i.fad.fa-camera-retro(ng-show='issue.media.length')
         td.tenant {{ issue.tenant }}
+          .messages(ng-class='{newmessage:issue.newMessages > 0}') {{issue.newMessages}}
         td.contractor {{ issue.contractorName }}
         td.status(ng-class='issue.status')
           .booked 

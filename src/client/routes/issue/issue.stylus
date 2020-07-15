@@ -1,16 +1,5 @@
 @import '../../variables'
 .issue-route
-  .notes-and-messages
-    display flex
-    flex-wrap wrap
-    .case-notes
-      flex 1
-      min-width 30em
-    .spacer
-      width 2em
-    message-center
-      flex 1
-      min-width 30em
   .CodeMirror-scroll
     cursor text
   .issue-header 
@@ -214,6 +203,19 @@
         margin 0 0 0px 0
       img
         margin-right 5px
+  .notes-and-messages
+    display flex
+    flex-wrap wrap
+    .case-notes
+      flex 1
+      min-width 30em
+    message-center
+      flex 1
+      min-width 30em
+      border-top 1px solid vs-lightgrey
+      margin 50px 0 30px 0
+      padding 20px
+      background #f1f1f1
   .add-note
     .CodeMirror
       border 1px solid vs-lightgrey

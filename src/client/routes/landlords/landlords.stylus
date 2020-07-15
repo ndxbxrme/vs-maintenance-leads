@@ -32,6 +32,14 @@
           padding-right .5rem
         .number
           font-weight bold
+      .addresses 
+        margin-top 3px
+        .address
+          font-size 1em
+          background vs-tablegrey
+          margin-bottom 3px
+          padding 0.5em
+          border-radius 3px
       .issues
         margin-top 1.2rem
         .issue

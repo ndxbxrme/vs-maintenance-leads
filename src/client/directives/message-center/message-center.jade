@@ -1,8 +1,10 @@
 include ../../mixins/form.jade
 .message-center 
   .message-center-heading
-    h1 {{ m('outgoingEmail-messageCenter-heading')}}
-    button(type='button', ng-click='(composingMessage=true) && (outgoingEmail={})') New message
+    h2.orange {{ m('outgoingEmail-messageCenter-heading')}}
+    button(class='small-orange-button', type='button', ng-click='(composingMessage=true) && (outgoingEmail={})') 
+      i.fal.fa-feather
+      | New message
   
   +form({data:'outgoingEmail', ignore:true})(ng-show='composingMessage')
     .form-section
@@ -13,7 +15,7 @@ include ../../mixins/form.jade
     .form-section
       .form-item
         label.space-between Attachments {{noAttachments()}}
-          button(type='button', ng-click='outgoingEmail.showAttachments = !outgoingEmail.showAttachments') {{ outgoingEmail.showAttachments? m('outgoingEmail-documentsHide-label') : m('outgoingEmail-documentsShow-label') }}
+          button(class='small-black-button', type='button', ng-click='outgoingEmail.showAttachments = !outgoingEmail.showAttachments'){{ outgoingEmail.showAttachments? m('outgoingEmail-documentsHide-label') : m('outgoingEmail-documentsShow-label') }}
         .attachments(ng-show='outgoingEmail.showAttachments')
           .drop-box(ngf-drop='uploadFiles($files)', ngf-drag-over-class="'dragover'", ngf-multiple='true')
             h3 Drop files here to upload
@@ -31,21 +33,36 @@ include ../../mixins/form.jade
         code-mirror(name='messageBody', ng-model='outgoingEmail.body', options='{lineWrapping:true}')
     .form-section
       .form-controls
-        button(type='button', name='send', ng-click='sendEmail()') {{ m('outgoingEmail-send-label') }}
-        button(type='button', name='cancel', ng-click='(outgoingEmail={}) && (composingMessage=false)') {{ m('outgoingEmail-cancel-label') }}
+        button(class='small-orange-button', type='button', name='send', ng-click='sendEmail()') 
+          .fal.fa-paper-plane
+          | {{ m('outgoingEmail-send-label') }}
+        button(class='small-black-button', type='button', name='cancel', ng-click='(outgoingEmail={}) && (composingMessage=false)') 
+          .fal.fa-window-close
+          {{ m('outgoingEmail-cancel-label') }}
   .messages
+    .message-filters 
+      .filter
+        .fas.fa-filter
+        | Landlord | Contractor | Tenant
+      .sort
+        .fas.fa-sort-alt
+        | Newest First
     .message(ng-repeat='message in issue.item.messages', ng-class='{in:message.dir==="in"}') 
       .message-entity(class='{{message.from || "vitalspace"}}') {{message.from.substr(0,1) || 'VS'}}
       .message-holder
-        .message-subject {{message.subject}}
+        .message-subject 
+          .left 
+            .subject {{message.subject}}
+          .right
+            .message-date {{message.date | date:medium }}
+        .message-details
+          .left
+            .message-to(ng-show='message.dir==="out"') To {{message.toName}}, {{message.toEntity}}
+            .message-from(ng-show='message.dir==="in"') From {{message.fromName}}, {{message.from}}
+          button(class='small-black-button', type='button', ng-click='reply(message)', ng-show='message.from') 
+            .fal.fa-reply
+            | Reply
         .message-content
-          .message-details
-            .left
-              .message-to(ng-show='message.dir==="out"') To {{message.toName}}, {{message.toEntity}}
-              .message-from(ng-show='message.dir==="in"') From {{message.fromName}}, {{message.from}}
-              .message-date {{message.date | date:medium }}
-            .right
-              button(type='button', ng-click='reply(message)', ng-show='message.from') Reply
           .document-list(ng-show='message.attachments.length')
             .document(ng-repeat='document in message.attachments')
               a.document-link(ng-href='{{makeDownloadUrl(document)}}', target='_self')

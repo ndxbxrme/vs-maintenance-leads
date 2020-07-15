@@ -14,6 +14,8 @@ mixin box(args)
           .fad.fa-file-check
         .invoiced
           .fad.fa-thumbs-up
+      .messages(ng-class='{newmessage:issue.newMessages > 0}') {{issue.newMessages}}
+
     pagination(ng-model=args.list + '.args.page', total=args.list + '.total', page-size=args.list + '.args.pageSize')
 .dashboard-route.route(ng-show='auth.getUser()')
   h1 Dashboard

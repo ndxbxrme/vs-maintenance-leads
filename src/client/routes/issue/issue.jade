@@ -47,11 +47,11 @@ include ../../mixins/form.jade
         h1 {{ m('issue-heading-issue') }}
         h2 {{ issue.item.address }} 
           span {{ issue.item.date | date:medium }}
-      .right
-        button(type='button', ng-click='messageCenter=!messageCenter') {{ messageCenter? m('issue-messageCenterHide-label') : m('issue-messageCenterShow-label',{newMessages:issue.item.newMessages}) }}
-        .cfpJobNumber(ng-show='issue.item.cfpJobNumber')
-          .label {{ m('issue-heading-cfp') }} -
-          .number {{ issue.item.cfpJobNumber }} hello
+      //- .right
+      //-   button(type='button', ng-click='messageCenter=!messageCenter') {{ messageCenter? m('issue-messageCenterHide-label') : m('issue-messageCenterShow-label',{newMessages:issue.item.newMessages}) }}
+      //-   .cfpJobNumber(ng-show='issue.item.cfpJobNumber')
+      //-     .label {{ m('issue-heading-cfp') }} -
+      //-     .number {{ issue.item.cfpJobNumber }} hello
     
     
     +form({data:'issue'}).form-controls
@@ -231,11 +231,12 @@ include ../../mixins/form.jade
             .details
               span(ng-show='note.side') - {{note.side}}
               .note-body(ng-bind-html='note.text | markdown:true')
-      .spacer
+        pagination.pagination-sm.pagination(total='notesData.length', ng-model='notesPage', page-size='notesLimit')
+        .add-note
+          code-mirror(ng-model='$parent.note.text', options='{mode:markdown, lineWrapping:true}')
+          button(type='button', ng-click='addNote()') 
+            .fal.fa-plus
+            | {{note.date?'Update':'Add'}} Note
       message-center(ng-if='issue.item && tasks.items')
-    pagination.pagination-sm.pagination(total='notesData.length', ng-model='notesPage', page-size='notesLimit')
-    .add-note
-        code-mirror(ng-model='$parent.note.text', options='{mode:markdown, lineWrapping:true}')
-        button(type='button', ng-click='addNote()') 
-          .fal.fa-plus
-          | {{note.date?'Update':'Add'}} Note
+    
+        

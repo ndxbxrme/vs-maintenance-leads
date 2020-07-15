@@ -1,5 +1,16 @@
 @import '../../variables'
 .issue-route
+  .notes-and-messages
+    display flex
+    flex-wrap wrap
+    .case-notes
+      flex 1
+      min-width 30em
+    .spacer
+      width 2em
+    message-center
+      flex 1
+      min-width 30em
   .CodeMirror-scroll
     cursor text
   .issue-header 

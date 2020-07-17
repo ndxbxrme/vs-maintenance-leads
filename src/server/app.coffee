@@ -453,10 +453,12 @@ require 'ndx-server'
     outBody = req.body.body
     if not req.body.body.includes ':I' + req.body.issueId + '+' + replyId + ':'
       outBody += '\r\n\r\n________________________________\r\n:I' + req.body.issueId + '+' + replyId + ':'
+    template = await ndx.database.selectOne 'emailtemplates', name: 'MessageCenter'
+    template.body = template.body.replace(/#\{ *body *\}/, outBody)
     data = 
-      from: 'Vitalspace Test <testing@mg.vitalspace.co.uk>'
+      from: template.from or 'Vitalspace Test <testing@mg.vitalspace.co.uk>'
       to: process.env.EMAIL_OVERRIDE or toEmail
-      subject: req.body.item?.subject
+      subject: req.body.item?.subject or template.subject
       text: outBody
     if attachments.length
       data.attachment = attachments

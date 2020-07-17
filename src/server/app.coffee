@@ -459,7 +459,7 @@ require 'ndx-server'
       from: template.from or 'Vitalspace Test <testing@mg.vitalspace.co.uk>'
       to: process.env.EMAIL_OVERRIDE or toEmail
       subject: req.body.item?.subject or template.subject
-      html: outBody
+      html: template.body
     if attachments.length
       data.attachment = attachments
     user = ndx.user

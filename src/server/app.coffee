@@ -455,7 +455,7 @@ require 'ndx-server'
     if not req.body.body.includes ':I' + req.body.issueId + '+' + replyId + ':'
       outBody += '\r\n\r\n________________________________\r\n:I' + req.body.issueId + '+' + replyId + ':'
     template = await ndx.database.selectOne 'emailtemplates', name: 'MessageCenter'
-    template.body = jade.render(template.body).replace(/\{\{ *body *\}\}/, outBody)
+    template.body = jade.render(template.body, body: outBody)
     data = 
       from: template.from or 'Vitalspace Test <testing@mg.vitalspace.co.uk>'
       to: process.env.EMAIL_OVERRIDE or toEmail

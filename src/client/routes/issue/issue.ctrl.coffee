@@ -27,6 +27,8 @@ angular.module 'vs-maintenance-leads'
     ]
   $scope.messageRecipients = []
   $scope.issue = $scope.single 'issues', myParams, (issue) ->
+    if scope.issue.item.messages
+      message.entity = message.from or message.toEntity for message in scope.issue.item.messages
     issue.item.source = 'telephone' if not issue.item.source
     $scope.fetched = true
   $scope.contractors = $scope.list 'contractors'

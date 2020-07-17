@@ -13,8 +13,6 @@ angular.module 'vs-maintenance-leads'
     if scope.issue.item.newMessages
       scope.issue.item.newMessages = 0
       scope.issue.save()
-    if scope.issue.item.messages
-      message.entity = message.from or message.toEntity for message in scope.issue.item.messages
       #scope.issue.item.messages = scope.issue.item.messages.sort (a, b) -> if a.replyId > b.replyId then 1 else -1
     scope.single 'landlords', _id:scope.issue.item.landlordId or 'noone', (landlord) ->
       scope.messageRecipients = [

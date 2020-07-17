@@ -10,7 +10,7 @@
   .message-center-heading
     display flex
     justify-content space-between
-  .attachments, .messages
+  .attachments, .messages .message-holder
     img
       width 4em
       height 4em

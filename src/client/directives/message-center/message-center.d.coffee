@@ -5,11 +5,16 @@ angular.module 'vs-maintenance-leads'
   restrict: 'EA'
   templateUrl: 'directives/message-center/message-center.html'
   link: (scope, elem, attrs) ->
+    scope.messageSort = '-date'
+    scope.messageFilter = ''
+    scope.setMessageFilter = (entity) ->
+      return scope.messageFilter = "" if entity is scope.messageFilter
+      scope.messageFilter = entity
     if scope.issue.item.newMessages
       scope.issue.item.newMessages = 0
       scope.issue.save()
     if scope.issue.item.messages
-      scope.issue.item.messages = scope.issue.item.messages.sort (a, b) -> if a.date < b.date then 1 else -1
+      message.entity = message.from or message.toEntity for message in scope.issue.item.messages
       #scope.issue.item.messages = scope.issue.item.messages.sort (a, b) -> if a.replyId > b.replyId then 1 else -1
     scope.single 'landlords', _id:scope.issue.item.landlordId or 'noone', (landlord) ->
       scope.messageRecipients = [

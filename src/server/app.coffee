@@ -460,6 +460,7 @@ require 'ndx-server'
       text: outBody
     if attachments.length
       data.attachment = attachments
+    user = ndx.user
     mailgun.messages().send data, (error, body) ->
       for attachment in attachments
         fs.unlinkSync attachment
@@ -478,6 +479,7 @@ require 'ndx-server'
           body: data.text
           text: req.body.body
           replyId: replyId
+          user: user
           attachments: req.body.attachments
         ndx.database.update 'issues', issue, _id: req.body.issueId
         

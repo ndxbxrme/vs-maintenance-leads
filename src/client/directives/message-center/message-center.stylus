@@ -26,6 +26,11 @@
       svg
        margin-right 0.5em
        color vs-orange
+      a
+        color vs-grey
+        &.selected
+          color white
+          text-decoration underline
     .message
       display flex
       padding .5em 0

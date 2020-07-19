@@ -44,9 +44,9 @@ include ../../mixins/form.jade
       .filter
         .fas.fa-filter
         a(ng-click='setMessageFilter("Landlord")', ng-class="{selected:messageFilter=='Landlord'}") Landlord
-        | | 
+        |  | 
         a(ng-click='setMessageFilter("Contractor")', ng-class="{selected:messageFilter=='Contractor'}") Contractor
-        | | 
+        |  | 
         a(ng-click='setMessageFilter("Tenant")', ng-class="{selected:messageFilter=='Tenant'}") Tenant
       a.sort(ng-click='messageSort=(messageSort=="date"?"-date":"date")')
         .fas.fa-sort-alt

@@ -72,13 +72,19 @@ angular.module 'vs-maintenance-leads'
     scope.tasks = 
       items: []
     scope.allTasks = scope.list 'tasks', null, ->
-      scope.filterTasks()
+      scope.issues = scope.list 'issues',
+        where:
+          statusName: 'Reported'
+      , ->
+        scope.filterTasks()
     scope.filterTasks = ->
       scope.tasks.items = scope.allTasks.items.filter (task) ->
         if scope.onlyThisIssue
           (scope.onlyThisIssue and scope.issue.item._id is task.issue) and (not scope.selectedContractors or not scope.selectedContractors.length or scope.selectedContractors.includes task.contractor)
         else
           (not scope.selectedContractors or not scope.selectedContractors.length or scope.selectedContractors.includes task.contractor)
+      for task in scope.tasks.items
+        [task.currentIssue] = scope.issues.filter (issue) -> issue._id is task.issue
       mapTasksToDays()
     getTasks = (date, time) ->
       date = new Date date.getFullYear(), date.getMonth(), date.getDate(), 9

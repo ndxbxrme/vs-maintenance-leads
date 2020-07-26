@@ -14,4 +14,4 @@
             .legend 
               .desktop {{hour | date:'ha'}}
               .mobile {{hour | date:'ha'}}
-          task(ng-repeat='task in day.tasks | filter:$root.selectedUser | byStatus:filters', style='top:{{task.top + (task.offset * .3)}}rem; height:calc({{task.height}}rem + 1px)', ng-click='openTask(task, $event)', class='{{task.status}}')
+          task(ng-repeat='task in day.tasks | filter:$root.selectedUser | byStatus:filters', style='top:{{task.top + (task.offset * .3)}}rem; height:calc({{task.height}}rem + 1px)', ng-click='openTask(task, $event)', class='{{task.status}} {{task.currentIssue?"current":""}}')

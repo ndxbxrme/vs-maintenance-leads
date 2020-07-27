@@ -138,6 +138,7 @@ require 'ndx-server'
     addressesMatch = (add1, add2) ->
       add1 = add1.toUpperCase().replace(/[, ]+/g, '')
       add2 = add2.toUpperCase().replace(/[, ]+/g, '')
+      return false if not add1 or not add2
       i = Math.min 30, Math.min add1.length, add2.length
       good = true
       while i-- > 0

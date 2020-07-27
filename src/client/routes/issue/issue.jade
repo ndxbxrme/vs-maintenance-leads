@@ -78,7 +78,7 @@ include ../../mixins/form.jade
             label VitalSpace Quote
             input(type='text', ng-model='issue.item.quoteVitalSpace',placeholder='VitalSpace Quote')
           .quote-save
-            button.button-alt(ng-click='issue.save()') Save
+            button.button-alt(type='button', ng-click='issue.save()') Save
       .form-section
         .form-label.half
           .source

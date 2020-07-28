@@ -74,7 +74,7 @@ angular.module 'vs-maintenance-leads'
     scope.allTasks = scope.list 'tasks', null, ->
       scope.issues = scope.list 'issues',
         where:
-          statusName: 'Reported'
+          statusName: 'Booked'
       , ->
         scope.filterTasks()
     scope.filterTasks = ->

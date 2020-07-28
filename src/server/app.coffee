@@ -134,16 +134,16 @@ require 'ndx-server'
           statusName: 'Reported'
         , args.oldObj.issue
     cb true
+  addressesMatch = (add1, add2) ->
+    add1 = add1.toUpperCase().replace(/[, ]+/g, '')
+    add2 = add2.toUpperCase().replace(/[, ]+/g, '')
+    return false if not add1 or not add2
+    i = Math.min 30, Math.min add1.length, add2.length
+    good = true
+    while i-- > 0
+      good = good and (add1[i] is add2[i])
+    good
   assignProperties = (args, cb) ->  
-    addressesMatch = (add1, add2) ->
-      add1 = add1.toUpperCase().replace(/[, ]+/g, '')
-      add2 = add2.toUpperCase().replace(/[, ]+/g, '')
-      return false if not add1 or not add2
-      i = Math.min 30, Math.min add1.length, add2.length
-      good = true
-      while i-- > 0
-        good = good and (add1[i] is add2[i])
-      good
     if args.table is 'landlords'
       #removed addresses, do we care?
       console.log args.changes

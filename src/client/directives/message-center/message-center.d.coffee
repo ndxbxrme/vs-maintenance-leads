@@ -19,7 +19,6 @@ angular.module 'vs-maintenance-leads'
         name: 'Tenant: ' + scope.issue.item.tenant + ' - ' + scope.issue.item.tenantEmail, _id: 'Tenant::' + scope.issue.item.tenant + '::' + scope.issue.item.tenantEmail        
       ]
       if landlord and landlord.item and Object.keys(landlord.item).length
-        console.log 'landlordi tem', landlord.item
         scope.messageRecipients.push name: 'Landlord: ' + landlord.item.name + ' - ' + landlord.item.email, _id: 'Landlord::' + landlord.item.name + '::' + landlord.item.email
       if scope.tasks.items[0]
         scope.single 'contractors', _id: scope.tasks.items[0].contractor, (contractor) ->

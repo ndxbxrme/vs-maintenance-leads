@@ -84,7 +84,7 @@ angular.module 'vs-maintenance-leads'
         else
           (not scope.selectedContractors or not scope.selectedContractors.length or scope.selectedContractors.includes task.contractor)
       for task in scope.tasks.items
-        [task.currentIssue] = scope.issues.filter (issue) -> issue._id is task.issue
+        [task.currentIssue] = scope.issues?.items?.filter (issue) -> issue._id is task.issue
       mapTasksToDays()
     getTasks = (date, time) ->
       date = new Date date.getFullYear(), date.getMonth(), date.getDate(), 9

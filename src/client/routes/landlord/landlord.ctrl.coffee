@@ -5,7 +5,6 @@ angular.module 'vs-maintenance-leads'
   $scope.landlord = $scope.single 'landlords', $stateParams      
   
   addressesMatch = (add1, add2) ->
-    console.log 'add1', add1, add2
     add1 = add1.toUpperCase().replace(/[, ]+/g, '')
     add2 = add2.toUpperCase().replace(/[, ]+/g, '')
     return false if not add1 or not add2
@@ -39,4 +38,3 @@ angular.module 'vs-maintenance-leads'
     $scope.addresses = $scope.addresses.map (address) ->
       _id: address
       name: address
-    console.log 'issues', $scope.addresses

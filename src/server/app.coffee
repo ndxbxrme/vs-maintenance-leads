@@ -52,7 +52,7 @@ require 'ndx-server'
         item: 'Note'
         side: ''
         user: args.user
-      ndx.database.upsert 'issues', issue
+      ndx.database.upsert 'issues', issue, null, null, true
     cb true
   updateStatus = (args, cb) ->
     if args.table is 'tasks'
@@ -61,11 +61,11 @@ require 'ndx-server'
         issue.status = {booked:true,completed:false,invoiced:false}
         issue.statusName = 'Booked'
         issue.cfpJobNumber = args.obj.cfpJobNumber
-        ndx.database.upsert 'issues', issue
+        ndx.database.upsert 'issues', issue, null, null, true
       else
         if not args.changes.deleted
           issue.cfpJobNumber = args.obj.cfpJobNumber or args.oldObj?.cfpJobNumber
-          ndx.database.upsert 'issues', issue
+          ndx.database.upsert 'issues', issue, null, null, true
     else if args.table is 'issues'
       if args.op is 'insert'
         args.obj.statusName = 'Reported'
@@ -128,11 +128,12 @@ require 'ndx-server'
           deleted: true
         ,
           issue: args.id
+        , null, true
       if args.table is 'tasks'
         ndx.database.update 'issues',
           status: {}
           statusName: 'Reported'
-        , args.oldObj.issue
+        , args.oldObj.issue, null, true
     cb true
   addressesMatch = (add1, add2) ->
     add1 = add1.toUpperCase().replace(/[, ]+/g, '')
@@ -159,6 +160,7 @@ require 'ndx-server'
                   landlordId: args.obj._id
                 ,
                   _id: issue._id
+                , null, true
     if args.table is 'issues'
       #if landlord has changed, update landlord addresses
       oldLandlord = args.changes?.landlordId?.from
@@ -171,7 +173,7 @@ require 'ndx-server'
           return true if postcode isnt args.obj.postcode
           return false if addressesMatch address, args.obj.address
           return true
-        await ndx.database.update 'landlords', landlord, _id:landlord._id
+        await ndx.database.update 'landlords', landlord, _id:landlord._id, null, true
       if newLandlord
         landlord = await ndx.database.selectOne 'landlords', _id: newLandlord
         myaddress = landlord.addresses.find (address) ->
@@ -179,7 +181,7 @@ require 'ndx-server'
           postcode is args.obj.postcode and addressesMatch address, args.obj.address
         if not myaddress
           landlord.addresses.push args.obj.address
-          await ndx.database.update 'landlords', landlord, _id:landlord._id
+          await ndx.database.update 'landlords', landlord, _id:landlord._id, null, true
         #add address to landlord if it isn't there already
       console.log args.changes
     cb? true

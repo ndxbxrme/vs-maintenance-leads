@@ -29,10 +29,12 @@ angular.module 'vs-maintenance-leads'
     pageSize: 10
     where:
       statusName: 'Booked'
+      ###
       status:
         booked: true
         completed: false
         invoiced: false
+      ###
     sort: 'date'
     sortDir: 'DESC'
   $scope.worksOutstanding.sort = Sorter.create $scope.worksOutstanding.args

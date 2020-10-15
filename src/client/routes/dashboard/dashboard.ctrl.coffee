@@ -10,6 +10,7 @@ angular.module 'vs-maintenance-leads'
     where:
       date:
         $gt: yesterday.valueOf()
+      search: $like: ''
       statusName: 'Reported'
     sort: 'date'
     sortDir: 'DESC'
@@ -20,6 +21,7 @@ angular.module 'vs-maintenance-leads'
     where:
       date:
         $lte: yesterday.valueOf()
+      search: $like: ''
       statusName: 'Reported'
     sort: 'date'
     sortDir: 'DESC'
@@ -29,6 +31,7 @@ angular.module 'vs-maintenance-leads'
     pageSize: 10
     where:
       statusName: 'Booked'
+      search: $like: ''
       ###
       status:
         booked: true
@@ -43,6 +46,7 @@ angular.module 'vs-maintenance-leads'
     pageSize: 10
     where:
       statusName: 'Booked'
+      search: $like: ''
       status:
         completed: true
         booked: true

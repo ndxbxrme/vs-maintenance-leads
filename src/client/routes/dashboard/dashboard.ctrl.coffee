@@ -32,12 +32,10 @@ angular.module 'vs-maintenance-leads'
     where:
       statusName: 'Booked'
       search: $like: ''
-      ###
       status:
         booked: true
         completed: false
         invoiced: false
-      ###
     sort: 'date'
     sortDir: 'DESC'
   $scope.worksOutstanding.sort = Sorter.create $scope.worksOutstanding.args

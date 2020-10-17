@@ -19,4 +19,8 @@ angular.module 'vs-maintenance-leads'
     where:
       statusName: 'Booked'
       search: $scope.mysearch
+      status:
+        booked: true
+        completed: false
+        invoiced: false
   $scope.sort = Sorter.create $scope.issues.args

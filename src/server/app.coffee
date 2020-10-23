@@ -44,15 +44,16 @@ require 'ndx-server'
       contractor = await ndx.database.selectOne 'contractors', _id:args.obj.contractor or args.oldObj.contractor
       args.obj.contractorName = contractor.name
       issue = await ndx.database.selectOne 'issues', _id: args.obj.issue
-      issue.contractorName = contractor.name
-      issue.notes = issue.notes or []
-      issue.notes.push
-        date: new Date().valueOf()
-        text: 'Task assigned to - ' + contractor.name
-        item: 'Note'
-        side: ''
-        user: args.user
-      ndx.database.upsert 'issues', issue
+      if issue
+        issue.contractorName = contractor.name
+        issue.notes = issue.notes or []
+        issue.notes.push
+          date: new Date().valueOf()
+          text: 'Task assigned to - ' + contractor.name
+          item: 'Note'
+          side: ''
+          user: args.user
+        ndx.database.upsert 'issues', issue
     cb true
   updateStatus = (args, cb) ->
     if args.table is 'tasks'

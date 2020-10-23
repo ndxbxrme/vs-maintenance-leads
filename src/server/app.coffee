@@ -52,7 +52,7 @@ require 'ndx-server'
         item: 'Note'
         side: ''
         user: args.user
-      ndx.database.upsert 'issues', issue, null, null, true
+      ndx.database.upsert 'issues', issue
     cb true
   updateStatus = (args, cb) ->
     if args.table is 'tasks'
@@ -61,11 +61,11 @@ require 'ndx-server'
         issue.status = {booked:true,completed:false,invoiced:false}
         issue.statusName = 'Booked'
         issue.cfpJobNumber = args.obj.cfpJobNumber
-        ndx.database.upsert 'issues', issue, null, null, true
+        ndx.database.upsert 'issues', issue
       else
         if not args.changes.deleted
           issue.cfpJobNumber = args.obj.cfpJobNumber or args.oldObj?.cfpJobNumber
-          ndx.database.upsert 'issues', issue, null, null, true
+          ndx.database.upsert 'issues', issue
     else if args.table is 'issues'
       if args.op is 'insert'
         args.obj.statusName = 'Reported'

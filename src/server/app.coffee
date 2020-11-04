@@ -177,13 +177,15 @@ require 'ndx-server'
         await ndx.database.update 'landlords', landlord, _id:landlord._id, null, true
       if newLandlord
         landlord = await ndx.database.selectOne 'landlords', _id: newLandlord
-        myaddress = landlord.addresses.find (address) ->
-          [postcode] = address.split(/, */g).reverse()
-          postcode is args.obj.postcode and addressesMatch address, args.obj.address
-        if not myaddress
-          landlord.addresses.push args.obj.address
-          await ndx.database.update 'landlords', landlord, _id:landlord._id, null, true
-        #add address to landlord if it isn't there already
+        if landlord
+          landlord.addresses = landlord.addresses or []
+          myaddress = landlord.addresses.find (address) ->
+            [postcode] = address.split(/, */g).reverse()
+            postcode is args.obj.postcode and addressesMatch address, args.obj.address
+          if not myaddress
+            landlord.addresses.push args.obj.address
+            await ndx.database.update 'landlords', landlord, _id:landlord._id, null, true
+          #add address to landlord if it isn't there already
       console.log args.changes
     cb? true
   assignLandlord = (args, cb) ->

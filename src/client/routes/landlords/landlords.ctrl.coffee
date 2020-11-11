@@ -16,7 +16,7 @@ angular.module 'vs-maintenance-leads'
     sort: 'name'
     sortDir: 'ASC'
     where:
-      search: $scope.mysearch
+      name: $scope.mysearch
   , (landlords) ->
     for landlord in landlords.items
       landlord.issues = $scope.list 'issues',

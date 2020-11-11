@@ -4,6 +4,8 @@ angular.module 'vs-maintenance-leads'
 .controller 'landlordsCtrl', ($scope, Sorter, alert) ->
   $scope.page = 1
   $scope.limit = 15
+  $scope.mysearch =
+    $like: ''
   $scope.pageChange = ->
     $('html, body').animate
       scrollTop: 0

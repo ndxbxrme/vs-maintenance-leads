@@ -13,6 +13,8 @@ angular.module 'vs-maintenance-leads'
     pageSize: $scope.limit
     sort: 'name'
     sortDir: 'ASC'
+    where:
+      search: $scope.mysearch
   , (landlords) ->
     for landlord in landlords.items
       landlord.issues = $scope.list 'issues',

@@ -409,7 +409,11 @@ require 'ndx-server'
         text: req.body['stripped-text']
         attachments: []
     myobj.dir = 'in'
-    [,issueId] = myobj.body.match(/:I(.*)?:/)
+    try
+      [,issueId] = myobj.body.match(/:I(.*)?:/)
+    catch e
+      console.log 'EMAIL ERROR'
+      console.log myobj
     if issueId
       [issueId, replyId] = issueId.split '+'
       if replyId.includes '/'

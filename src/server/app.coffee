@@ -412,20 +412,36 @@ require 'ndx-server'
     [,issueId] = myobj.body.match(/:I(.*)?:/)
     if issueId
       [issueId, replyId] = issueId.split '+'
+      if replyId.includes '/'
+        [replyId, toEntity] = replyId.split '/'
       myobj.replyId = replyId
       issue = await ndx.database.selectOne 'issues', _id: issueId
       if issue
-        if myobj.sender is issue.tenantEmail
-          myobj.from = 'Tenant'
-          myobj.fromName = issue.tenant
-        else
-          landlord = await ndx.database.selectOne 'landlords', _id: issue.landlordId
-          if landlord and landlord.email is myobj.sender
-            myobj.from = 'Landlord'
-            myobj.fromName = landlord.name
-          else
+        if toEntity
+          if toEntity is 'T'
+            myobj.from = 'Tenant'
+            myobj.fromName = issue.tenant
+          else if toEntity is 'L'
+            landlord = await ndx.database.selectOne 'landlords', _id: issue.landlordId
+            if landlord
+              myobj.from = 'Landlord'
+              myobj.fromName = landlord.name
+          else if toEntity is 'C'
             myobj.from = 'Contractor'
             myobj.fromName = issue.contractor
+            
+        else
+          if myobj.sender is issue.tenantEmail
+            myobj.from = 'Tenant'
+            myobj.fromName = issue.tenant
+          else
+            landlord = await ndx.database.selectOne 'landlords', _id: issue.landlordId
+            if landlord and landlord.email is myobj.sender
+              myobj.from = 'Landlord'
+              myobj.fromName = landlord.name
+            else
+              myobj.from = 'Contractor'
+              myobj.fromName = issue.contractor
         issue.messages = issue.messages or []
         issue.messages.push myobj
         issue.documents = issue.documents or []
@@ -447,6 +463,7 @@ require 'ndx-server'
     [toEntity,toName,toEmail] = req.body.item.messageTo.split '::'
     attachments = []
     replyId = req.body.replyId or new Date().getTime().toString(23)
+    replyId += '/' + toEntity[0]
     if req.body.attachments and req.body.attachments.length
       for attachment in req.body.attachments
         filePath = await ndx.fileTools.moveToAttachments attachment
@@ -458,8 +475,8 @@ require 'ndx-server'
       apiKey: apiKey
       domain: mgDomain
     outBody = req.body.body
-    if not req.body.body.includes ':I' + req.body.issueId + '+' + replyId + ':'
-      outBody += '\r\n\r\n________________________________\r\n:I' + req.body.issueId + '+' + replyId + ':'
+    outBody = outBody.replace(/[\r\n]+________________________________[\r\n]+:I.+?\+.+:/g, '')
+    outBody += '\r\n\r\n________________________________\r\n:I' + req.body.issueId + '+' + replyId + ':'
     template = await ndx.database.selectOne 'emailtemplates', name: 'MessageCenter'
     template.body = jade.render(template.body, body: outBody)
     data = 

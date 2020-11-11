@@ -8,8 +8,8 @@ include ../../mixins/form.jade
         | {{ m('landlords-button-new') }}
     .right  
       .search
-        input(type='text', ng-model='search', placeholder='Search Cases', ng-change='page=1')
-      .showing Showing {{filterData.length}} of {{landlords.items.length}} landlord{{totalProps!==1?'s':''}}
+        input(type='text', ng-model='mysearch.$like', placeholder='Search Cases', ng-change='page=1')
+      .showing Showing {{filterData.length}} of {{landlords.total}} landlord{{totalProps!==1?'s':''}}
   .landlords
     .landlord(ng-repeat='landlord in filterData =(landlords.items | orderBy:sort) | limitTo:limit:limit*(page-1)') 
       .landlord-heading(ui-sref='landlord({_id:landlord._id})', ng-class='{empty:!landlord.addresses.length}')

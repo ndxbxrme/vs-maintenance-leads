@@ -36,6 +36,7 @@
     "load-grunt-tasks": "^5.1.0"
   },
   "dependencies": {
+    "async": "^3.2.4",
     "fs-extra": "^9.0.1",
     "glob": "^8.1.0",
     "mailgun-js": "^0.22.0",

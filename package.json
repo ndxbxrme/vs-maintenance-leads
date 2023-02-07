@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "fs-extra": "^9.0.1",
+    "glob": "^8.1.0",
     "mailgun-js": "^0.22.0",
     "marked": "^0.7.0",
     "multiparty": "^4.2.1",

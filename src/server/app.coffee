@@ -5,6 +5,7 @@ bodyParser = require 'body-parser'
 multiparty = require 'multiparty'
 jade = require 'jade'
 fs = require 'fs-extra'
+request = require 'request'
 require 'ndx-server'
 .config
   database: 'db'
@@ -470,7 +471,7 @@ require 'ndx-server'
     replyId += '/' + toEntity[0]
     if req.body.attachments and req.body.attachments.length
       for attachment in req.body.attachments
-        attachments.push attachment
+        attachments.push request attachment
     apiKey = process.env.EMAIL_API_KEY
     mgDomain = 'mg.vitalspace.co.uk'
     mailgun = require('mailgun-js')
@@ -490,8 +491,6 @@ require 'ndx-server'
       data.attachment = attachments
     user = ndx.user
     mailgun.messages().send data, (error, body) ->
-      for attachment in attachments
-        fs.unlinkSync attachment
       issue = await ndx.database.selectOne 'issues', _id: req.body.issueId
       if issue
         if req.body.prevBody

@@ -60,6 +60,7 @@
     "ndx-superadmin": "^0.1.6",
     "ndx-user-roles": "^0.4.0",
     "objtrans": "0.0.15",
+    "request": "^2.88.2",
     "superagent": "^5.1.0"
   }
 }

@@ -5,7 +5,6 @@ bodyParser = require 'body-parser'
 multiparty = require 'multiparty'
 jade = require 'jade'
 fs = require 'fs-extra'
-superagent = require 'superagent'
 require 'ndx-server'
 .config
   database: 'db'
@@ -471,7 +470,7 @@ require 'ndx-server'
     replyId += '/' + toEntity[0]
     if req.body.attachments and req.body.attachments.length
       for attachment in req.body.attachments
-        response = await superagent.get attachmentUrl
+        response = await superagent.get attachment.url
         .responseType 'arraybuffer'
         attachments.push new mailgun.attachment
           data: response.body

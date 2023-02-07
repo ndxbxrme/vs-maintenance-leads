@@ -508,6 +508,7 @@ require 'ndx-server'
           replyId: replyId
           user: user
           attachments: req.body.attachments
+          error: error
         ndx.database.update 'issues', issue, _id: req.body.issueId
         
         #fs.rmdirSync attachment.replace(/\/[^\/]*$/, '')

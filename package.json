@@ -37,7 +37,6 @@
   },
   "dependencies": {
     "async": "^3.2.4",
-    "axios": "^1.3.2",
     "fs-extra": "^9.0.1",
     "glob": "^8.1.0",
     "mailgun-js": "^0.22.0",
@@ -61,6 +60,6 @@
     "ndx-superadmin": "^0.1.6",
     "ndx-user-roles": "^0.4.0",
     "objtrans": "0.0.15",
-    "superagent": "^5.1.0"
+    "superagent": "^5.3.1"
   }
 }

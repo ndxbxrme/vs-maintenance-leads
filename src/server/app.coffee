@@ -5,7 +5,7 @@ bodyParser = require 'body-parser'
 multiparty = require 'multiparty'
 jade = require 'jade'
 fs = require 'fs-extra'
-axios = require 'axios'
+superagent = require 'superagent'
 require 'ndx-server'
 .config
   database: 'db'
@@ -471,9 +471,10 @@ require 'ndx-server'
     replyId += '/' + toEntity[0]
     if req.body.attachments and req.body.attachments.length
       for attachment in req.body.attachments
-        response = await axios.get attachmentUrl, responseType: 'arraybuffer'
+        response = await superagent.get attachmentUrl
+        .responseType 'arraybuffer'
         attachments.push new mailgun.attachment
-          data: response.data
+          data: response.body
           filename: attachment.originalFilename
     apiKey = process.env.EMAIL_API_KEY
     mgDomain = 'mg.vitalspace.co.uk'

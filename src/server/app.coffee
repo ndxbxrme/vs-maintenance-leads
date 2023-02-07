@@ -470,9 +470,7 @@ require 'ndx-server'
     replyId += '/' + toEntity[0]
     if req.body.attachments and req.body.attachments.length
       for attachment in req.body.attachments
-        filePath = await ndx.fileTools.moveToAttachments attachment
-        attachments.push filePath
-        console.log 'file path', filePath
+        attachments.push attachment
     apiKey = process.env.EMAIL_API_KEY
     mgDomain = 'mg.vitalspace.co.uk'
     mailgun = require('mailgun-js')

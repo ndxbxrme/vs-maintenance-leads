@@ -5,6 +5,11 @@ bodyParser = require 'body-parser'
 multiparty = require 'multiparty'
 jade = require 'jade'
 fs = require 'fs-extra'
+apiKey = process.env.EMAIL_API_KEY
+mgDomain = 'mg.vitalspace.co.uk'
+mailgun = require('mailgun-js')
+  apiKey: apiKey
+  domain: mgDomain
 require 'ndx-server'
 .config
   database: 'db'
@@ -476,11 +481,6 @@ require 'ndx-server'
           attachments.push new mailgun.Attachment
             data: response.body
             filename: attachment.originalFilename
-      apiKey = process.env.EMAIL_API_KEY
-      mgDomain = 'mg.vitalspace.co.uk'
-      mailgun = require('mailgun-js')
-        apiKey: apiKey
-        domain: mgDomain
       outBody = req.body.body
       outBody = outBody.replace(/[\r\n]+________________________________[\r\n]+:I.+?\+.+:/g, '')
       outBody += '\r\n\r\n________________________________\r\n:I' + req.body.issueId + '+' + replyId + ':'

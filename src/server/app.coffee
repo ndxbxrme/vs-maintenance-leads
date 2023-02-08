@@ -464,58 +464,61 @@ require 'ndx-server'
   
   ndx.app.post '/api/message-center/send', ndx.authenticate(), (req, res, next) ->
       #move attachments to temp folder ready for attaching, subfolders for each file?
-    [toEntity,toName,toEmail] = req.body.item.messageTo.split '::'
-    attachments = []
-    replyId = req.body.replyId or new Date().getTime().toString(23)
-    replyId += '/' + toEntity[0]
-    if req.body.attachments and req.body.attachments.length
-      for attachment in req.body.attachments
-        response = await superagent.get attachment.url
-        .responseType 'arraybuffer'
-        attachments.push new mailgun.Attachment
-          data: response.body
-          filename: attachment.originalFilename
-    apiKey = process.env.EMAIL_API_KEY
-    mgDomain = 'mg.vitalspace.co.uk'
-    mailgun = require('mailgun-js')
-      apiKey: apiKey
-      domain: mgDomain
-    outBody = req.body.body
-    outBody = outBody.replace(/[\r\n]+________________________________[\r\n]+:I.+?\+.+:/g, '')
-    outBody += '\r\n\r\n________________________________\r\n:I' + req.body.issueId + '+' + replyId + ':'
-    template = await ndx.database.selectOne 'emailtemplates', name: 'MessageCenter'
-    template.body = jade.render(template.body, body: outBody)
-    data = 
-      from: template.from or 'Vitalspace Test <testing@mg.vitalspace.co.uk>'
-      to: process.env.EMAIL_OVERRIDE or toEmail
-      subject: req.body.item?.subject or template.subject
-      html: template.body
-    if attachments.length
-      data.attachment = attachments
-    user = ndx.user
-    mailgun.messages().send data, (error, body) ->
-      issue = await ndx.database.selectOne 'issues', _id: req.body.issueId
-      if issue
-        if req.body.prevBody
-          req.body.body = req.body.body.replace req.prevBody, ''
-        issue.messages = issue.messages or []
-        issue.messages.push
-          dir: 'out'
-          subject: data.subject
-          to: data.to
-          toEntity: toEntity
-          toName: toName
-          date: new Date()
-          body: data.text
-          text: req.body.body
-          replyId: replyId
-          user: user
-          attachments: req.body.attachments
-          error: error
-        ndx.database.update 'issues', issue, _id: req.body.issueId
+    try
+      [toEntity,toName,toEmail] = req.body.item.messageTo.split '::'
+      attachments = []
+      replyId = req.body.replyId or new Date().getTime().toString(23)
+      replyId += '/' + toEntity[0]
+      if req.body.attachments and req.body.attachments.length
+        for attachment in req.body.attachments
+          response = await superagent.get attachment.url
+          .responseType 'arraybuffer'
+          attachments.push new mailgun.Attachment
+            data: response.body
+            filename: attachment.originalFilename
+      apiKey = process.env.EMAIL_API_KEY
+      mgDomain = 'mg.vitalspace.co.uk'
+      mailgun = require('mailgun-js')
+        apiKey: apiKey
+        domain: mgDomain
+      outBody = req.body.body
+      outBody = outBody.replace(/[\r\n]+________________________________[\r\n]+:I.+?\+.+:/g, '')
+      outBody += '\r\n\r\n________________________________\r\n:I' + req.body.issueId + '+' + replyId + ':'
+      template = await ndx.database.selectOne 'emailtemplates', name: 'MessageCenter'
+      template.body = jade.render(template.body, body: outBody)
+      data = 
+        from: template.from or 'Vitalspace Test <testing@mg.vitalspace.co.uk>'
+        to: process.env.EMAIL_OVERRIDE or toEmail
+        subject: req.body.item?.subject or template.subject
+        html: template.body
+      if attachments.length
+        data.attachment = attachments
+      user = ndx.user
+      mailgun.messages().send data, (error, body) ->
+        issue = await ndx.database.selectOne 'issues', _id: req.body.issueId
+        if issue
+          if req.body.prevBody
+            req.body.body = req.body.body.replace req.prevBody, ''
+          issue.messages = issue.messages or []
+          issue.messages.push
+            dir: 'out'
+            subject: data.subject
+            to: data.to
+            toEntity: toEntity
+            toName: toName
+            date: new Date()
+            body: data.text
+            text: req.body.body
+            replyId: replyId
+            user: user
+            attachments: req.body.attachments
+            error: error
+          ndx.database.update 'issues', issue, _id: req.body.issueId
+          
+          #fs.rmdirSync attachment.replace(/\/[^\/]*$/, '')
+        console.log error, body
         
-        #fs.rmdirSync attachment.replace(/\/[^\/]*$/, '')
-      console.log error, body
-      
-    res.end 'OK'
+      res.end 'OK'
+    catch e
+      res.json e
 .start()

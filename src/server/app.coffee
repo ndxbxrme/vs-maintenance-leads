@@ -395,7 +395,9 @@ require 'ndx-server'
             attachments: []
           for key, file of files
             #save file to uploads
-            fileInfo = await ndx.fileTools.saveFile file[0]
+            fileInfo = await new Promise (res) ->
+              ndx.fileUpload.saveFile file[0], (err, fileInfo) ->
+                res fileInfo
             console.log 'file', fileInfo
             try
               fs.unlinkSync file[0].path

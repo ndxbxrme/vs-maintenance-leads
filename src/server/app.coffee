@@ -472,7 +472,7 @@ require 'ndx-server'
       for attachment in req.body.attachments
         response = await superagent.get attachment.url
         .responseType 'arraybuffer'
-        attachments.push new mailgun.attachment
+        attachments.push new mailgun.Attachment
           data: response.body
           filename: attachment.originalFilename
     apiKey = process.env.EMAIL_API_KEY

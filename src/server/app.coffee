@@ -396,7 +396,7 @@ require 'ndx-server'
           for key, file of files
             #save file to uploads
             fileInfo = await new Promise (res) ->
-              ndx.fileUpload.saveFile file[0], (err, fileInfo) ->
+              ndx.fileUpload.saveFile file[0], {}, (err, fileInfo) ->
                 res fileInfo
             console.log 'file', fileInfo
             try

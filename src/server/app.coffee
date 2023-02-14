@@ -218,7 +218,7 @@ require 'ndx-server'
   ndx.database.on 'preInsert', assignLandlord
 .use (ndx) ->
   ndx.addPublicRoute '/api/mailin'
-  ndx.appPublicRoute '/api/fixflo/pdf'
+  ndx.addPublicRoute '/api/fixflo/pdf'
   ndx.app.get '/api/emit', (req, res, next) ->
     issue = await ndx.database.selectOne 'issues'
     ndx.socket.emitToAll 'newIssue', issue

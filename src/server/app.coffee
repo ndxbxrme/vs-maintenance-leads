@@ -465,7 +465,12 @@ require 'ndx-server'
           address: issue.address
           subject: myobj.subject
           from: myobj.from
-          
+    else
+      #pass to other systems to handle      
+      ['leads', 'lettings', 'agency'].forEach (site) ->
+        superagent.post 'https://server.vitalspace.co.uk/' + site + '/api/mailin'
+        .send myobj
+        .end()
     console.log 'done it', myobj
     res.status(200)
     res.end('Ok')

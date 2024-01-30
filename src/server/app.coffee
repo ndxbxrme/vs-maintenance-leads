@@ -384,6 +384,7 @@ require 'ndx-server'
     res.send body
   ndx.app.all '/api/mailin', bodyParser.urlencoded({extended:true}), (req, res, next) ->
     parseForm = ->
+      ndx.reporter.log 'parse form'
       new Promise (resolve, reject) ->
         form = new multiparty.Form();
         form.parse req, (err, fields, files) ->
@@ -394,15 +395,20 @@ require 'ndx-server'
             body: fields['body-plain'][0]
             text: fields['stripped-text'][0]
             attachments: []
+            
+          ndx.reporter.log obj.subject
           for key, file of files
             #save file to uploads
+            ndx.reporter.log 'file upload ' + key
             fileInfo = await new Promise (res) ->
               ndx.fileUpload.saveFile file[0], {}, {}, (err, fileInfo) ->
+                ndx.reporter.log 'file error' + err.toString()
                 res fileInfo
             console.log 'file', fileInfo
             try
               fs.unlinkSync file[0].path
             #await fs.move file[0].path, newPath
+            ndx.reporter.log 'file upload success'
             obj.attachments.push fileInfo
           resolve obj
     myobj = null
@@ -420,6 +426,7 @@ require 'ndx-server'
     try
       [,issueId] = myobj.body.match(/:I(.*)?:/)
     catch e
+      ndx.reporter.log 'email error'
       console.log 'EMAIL ERROR'
       console.log myobj
     if issueId
@@ -465,7 +472,7 @@ require 'ndx-server'
           address: issue.address
           subject: myobj.subject
           from: myobj.from
-          
+    reporter.log 'email handled successfully'
     console.log 'done it', myobj
     res.status(200)
     res.end('Ok')
